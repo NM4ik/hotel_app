@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_colors.dart';
 import 'package:hotel_ma/feature/components/onboarding_content.dart';
+import 'package:hotel_ma/feature/pages/home_screen.dart';
 
 import '../components/defaut_button.dart';
 import '../components/onboarding_dot.dart';
@@ -39,6 +40,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
           Expanded(
               flex: 3,
               child: PageView.builder(
+
                   controller: controller,
                   onPageChanged: (value) {
                     setState(() {
@@ -63,7 +65,18 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                     OnboardingDot(currentPage: currentPage, controller: controller, length: onboardingData.length),
                     const Spacer(),
                     DefaultButton(
-                      press: () {}, //Continue to HomePage()
+                      press: () {
+                        setState(() {
+                          controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+                          if(controller.page == 2){
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => const HomeScreen())
+                            );
+                            currentPage = 0;
+                            controller.initialPage;
+                          }
+                        });
+                      }, //Continue to HomePage()
                     ),
                     const Spacer(),
                   ],
