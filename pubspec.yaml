@@ -21,6 +21,13 @@ dependencies:
   # for a brief time while the native app loads Flutter.
   flutter_native_splash: ^2.1.1
 
+
+  # shadows
+  flutter_neumorphic: ^3.2.0
+
+  # carousel
+  carousel_slider: ^4.0.0
+
   # dot smooth animations
   smooth_page_indicator: ^1.0.0+2
 
