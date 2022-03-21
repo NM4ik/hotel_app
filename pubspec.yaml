@@ -31,6 +31,9 @@ dependencies:
   # dot smooth animations
   smooth_page_indicator: ^1.0.0+2
 
+  # animations
+  animations: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

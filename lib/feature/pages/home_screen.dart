@@ -1,6 +1,6 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/feature/pages/chat_screen.dart';
-
 
 import 'package:hotel_ma/feature/pages/main_screen.dart';
 import 'package:hotel_ma/feature/pages/office_screen.dart';
@@ -25,22 +25,30 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileScreen(),
   ];
 
-
   dynamic imagePath(int index) => Padding(
-    padding: const EdgeInsets.only(bottom: 4.0),
-    child: Image.asset("assets/images/item-$index-bottomBar-unselected.png"),
-  );
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: Image.asset("assets/images/item-$index-bottomBar-unselected.png"),
+      );
+
   dynamic imagePath2(int index) => Padding(
-    padding: const EdgeInsets.only(bottom: 4.0),
-    child: Image.asset("assets/images/item-$index-bottomBar-selected.png"),
-  );
+        padding: const EdgeInsets.only(bottom: 4.0),
+        child: Image.asset("assets/images/item-$index-bottomBar-selected.png"),
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[currentPageIndex],
+      // body: screens[currentPageIndex],
+      body: PageTransitionSwitcher(
+        transitionBuilder: (child, primaryAnimation, secondaryAnimation) => FadeThroughTransition(
+          animation: primaryAnimation,
+          secondaryAnimation: secondaryAnimation,
+          child: child,
+        ),
+        child: screens[currentPageIndex],
+      ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(
               color: Colors.black,
@@ -56,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedFontSize: 12,
           unselectedFontSize: 12,
 
-
           currentIndex: currentPageIndex,
           onTap: (index) => setState(() => currentPageIndex = index),
           selectedItemColor: Color(0xFFADADAD),
@@ -69,10 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(icon: imagePath(3), label: "Кабинет", activeIcon: imagePath2(3)),
             BottomNavigationBarItem(icon: imagePath(4), label: "Чат", activeIcon: imagePath2(4)),
             BottomNavigationBarItem(icon: imagePath(5), label: "Профиль", activeIcon: imagePath2(5)),
-
-
-
-
           ],
         ),
       ),
