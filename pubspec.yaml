@@ -58,6 +58,9 @@ flutter:
           weight: 400
         - asset: assets/fonts/inter/Inter-Medium.ttf
           weight: 500
+    - family: CustomIcons
+      fonts:
+        - asset: assets/icons/fonts/MyFlutterApp.ttf
 
 
   #

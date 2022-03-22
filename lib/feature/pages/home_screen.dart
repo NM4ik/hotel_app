@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_ma/common/app_icons.dart';
 import 'package:hotel_ma/feature/pages/chat_screen.dart';
 
 import 'package:hotel_ma/feature/pages/main_screen.dart';
@@ -25,20 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileScreen(),
   ];
 
-  dynamic imagePath(int index) => Padding(
-        padding: const EdgeInsets.only(bottom: 4.0),
-        child: Image.asset("assets/images/item-$index-bottomBar-unselected.png"),
-      );
-
-  dynamic imagePath2(int index) => Padding(
-        padding: const EdgeInsets.only(bottom: 4.0),
-        child: Image.asset("assets/images/item-$index-bottomBar-selected.png"),
-      );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: screens[currentPageIndex],
       body: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) => FadeThroughTransition(
           animation: primaryAnimation,
@@ -64,18 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedFontSize: 12,
           unselectedFontSize: 12,
 
+
           currentIndex: currentPageIndex,
           onTap: (index) => setState(() => currentPageIndex = index),
+
           selectedItemColor: Color(0xFFADADAD),
-          unselectedItemColor: Color(0xFFADADAD),
-          // showSelectedLabels: false,
-          // showUnselectedLabels: false,
+          unselectedItemColor: Colors.black12,
           items: [
-            BottomNavigationBarItem(icon: imagePath(1), label: "Главная", activeIcon: imagePath2(1)),
-            BottomNavigationBarItem(icon: imagePath(2), label: "Номера", activeIcon: imagePath2(2)),
-            BottomNavigationBarItem(icon: imagePath(3), label: "Кабинет", activeIcon: imagePath2(3)),
-            BottomNavigationBarItem(icon: imagePath(4), label: "Чат", activeIcon: imagePath2(4)),
-            BottomNavigationBarItem(icon: imagePath(5), label: "Профиль", activeIcon: imagePath2(5)),
+            BottomNavigationBarItem(icon:Icon(CustomIcons.home), label: "Главная"),
+            BottomNavigationBarItem(icon: Icon(CustomIcons.rooms), label: "Номера"),
+            BottomNavigationBarItem(icon: Icon(CustomIcons.services), label: "Кабинет"),
+            BottomNavigationBarItem(icon: Icon(CustomIcons.chat), label: "Чат"),
+            BottomNavigationBarItem(icon: Icon(CustomIcons.profile), label: "Профиль"),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_themes.dart';
+import 'package:hotel_ma/feature/pages/home_screen.dart';
 
 import 'feature/pages/onboarding.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         theme: MyThemes.lightTheme,
         darkTheme: MyThemes.darkTheme,
-        home: Onboarding());
+        // home: Onboarding());
+        home: HomeScreen());
   }
 }
