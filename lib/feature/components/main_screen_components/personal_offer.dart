@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:hotel_ma/common/app_colors.dart';
+import 'package:hotel_ma/common/app_constants.dart';
 
 class PersonalOffer extends StatelessWidget {
   const PersonalOffer({Key? key}) : super(key: key);
@@ -25,20 +25,12 @@ class PersonalOffer extends StatelessWidget {
         Stack(children: [
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: Neumorphic(
-              style: NeumorphicStyle(
-                color: Colors.white,
-                depth: 3,
-                lightSource: LightSource.topLeft,
-                intensity: 0.7,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            child: Container(
+              width: double.infinity,
+              height: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.grey,
               ),
             ),
           ),

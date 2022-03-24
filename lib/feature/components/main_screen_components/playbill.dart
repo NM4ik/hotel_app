@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/common/app_colors.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hotel_ma/common/app_constants.dart';
 
 class PlayBill extends StatelessWidget {
   const PlayBill({Key? key}) : super(key: key);
@@ -8,8 +9,9 @@ class PlayBill extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 30,),
-
+        const SizedBox(
+          height: 30,
+        ),
         Align(
           child: Text(
             "Афиша",
@@ -20,11 +22,12 @@ class PlayBill extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        Container(
+        SizedBox(
           height: 300,
           child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3 / 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3 / 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
               itemCount: 4,
               itemBuilder: (context, index) {
                 return Column(
@@ -33,16 +36,23 @@ class PlayBill extends StatelessWidget {
                     Expanded(
                       flex: 3,
                       child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(kEdgeMainBorder)
+                        ),
                         height: 100,
                         alignment: Alignment.center,
-                        child: Text('playbill'),
-                        decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(15)),
+                        child: const Text('playbill'),
                       ),
                     ),
-                    SizedBox(height: 8,),
-                    Text('1 сентября - 7 сентября', style: TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),),
-                    Text('Формула 1', style: TextStyle(fontFamily: "Inter", fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black),),
-
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Text(
+                      '1 сентября - 7 сентября',
+                      style: TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
+                    ),
+                    Text('Формула 1', style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
                   ],
                 );
               }),

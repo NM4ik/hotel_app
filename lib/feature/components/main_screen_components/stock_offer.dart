@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/common/app_colors.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/common/app_themes.dart';
 
 class StockOffer extends StatelessWidget {
   const StockOffer({Key? key}) : super(key: key);
@@ -7,7 +9,9 @@ class StockOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30.0,),
+      padding: const EdgeInsets.only(
+        top: 30.0,
+      ),
       child: Column(
         children: [
           Align(
@@ -20,7 +24,7 @@ class StockOffer extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Container(
+          SizedBox(
             height: 250,
             child: ListView.separated(
               itemCount: 4,
@@ -34,8 +38,7 @@ class StockOffer extends StatelessWidget {
                         width: 120,
                         height: 140,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF6F6F6),
-                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).primaryColorLight,
                         ),
                         child: Image.asset("assets/images/car.png"),
                       ),
@@ -62,9 +65,9 @@ class StockOffer extends StatelessWidget {
                   ),
                   Container(
                       width: 120,
-                      child: const Text(
+                      child: Text(
                         "BMW i520 4л. 500 л.с. задний привод",
-                        style: TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 14, color: Colors.black),
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                       )),
                   const SizedBox(
                     height: 8,
@@ -75,11 +78,14 @@ class StockOffer extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.shade200,
+                          color: Theme.of(context).primaryColorLight,
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-                          child: Text('2300P'),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                          child: Text(
+                            '2300P',
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                       Container(
@@ -90,7 +96,7 @@ class StockOffer extends StatelessWidget {
                             '2300P',
                             style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
-                                decorationColor: Colors.black,
+                                decorationColor: Theme.of(context).primaryColor,
                                 decorationStyle: TextDecorationStyle.solid,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,

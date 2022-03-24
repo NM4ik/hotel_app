@@ -20,10 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final screens = [
     MainScreen(),
-    RoomScreen(),
-    OfficeScreen(),
-    ChatScreen(),
-    ProfileScreen(),
+    const RoomScreen(),
+    const OfficeScreen(),
+    const ChatScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -50,18 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BottomNavigationBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           type: BottomNavigationBarType.fixed,
-
           selectedFontSize: 12,
           unselectedFontSize: 12,
-
-
           currentIndex: currentPageIndex,
           onTap: (index) => setState(() => currentPageIndex = index),
-
-          selectedItemColor: Color(0xFFADADAD),
+          selectedItemColor: const Color(0xFFADADAD),
           unselectedItemColor: Colors.black12,
-          items: [
-            BottomNavigationBarItem(icon:Icon(CustomIcons.home), label: "Главная"),
+          items: const [
+            BottomNavigationBarItem(icon: Icon(CustomIcons.home), label: "Главная"),
             BottomNavigationBarItem(icon: Icon(CustomIcons.rooms), label: "Номера"),
             BottomNavigationBarItem(icon: Icon(CustomIcons.services), label: "Кабинет"),
             BottomNavigationBarItem(icon: Icon(CustomIcons.chat), label: "Чат"),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/common/app_colors.dart';
+import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/components/onboarding_content.dart';
 import 'package:hotel_ma/feature/pages/home_screen.dart';
 

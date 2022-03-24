@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class MyThemes {
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
-      primaryColor: Colors.red,
+      primaryColor: Colors.black,
       cardColor: const Color(0xFFF5F5F5),
       scaffoldBackgroundColor: Colors.white,
+
+      primaryColorLight: const Color(0xFFF5F5F5), // textField - search // price containers
+
+
+
       textTheme: const TextTheme(
         headline1: TextStyle(fontSize: 21, color: Colors.black, fontWeight: FontWeight.w600, fontFamily: "inter", letterSpacing: 1),
 
@@ -17,9 +23,13 @@ class MyThemes {
 
   static ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.black,
+      primaryColor: Colors.white,
       cardColor: const Color(0xFF373737),
       scaffoldBackgroundColor: Color(0xFF1B1B1B),
+
+      primaryColorLight: const Color(0xFF373737), // textField - search
+
+
       textTheme: const TextTheme(
         headline1: TextStyle(fontSize: 21, color: Colors.white, fontWeight: FontWeight.w600, fontFamily: "inter", letterSpacing: 1),
 
