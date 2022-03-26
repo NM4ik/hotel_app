@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/widgets/neumorphic_widget.dart';
 
 class SquareButton extends StatelessWidget {
   const SquareButton({Key? key, required this.color, required this.icon, required this.iconColor}) : super(key: key);

@@ -6,7 +6,7 @@ class MyThemes {
       brightness: Brightness.light,
       primaryColor: Colors.black,
       cardColor: const Color(0xFFF5F5F5),
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Color(0xFFFAFAFA),
 
       primaryColorLight: const Color(0xFFF5F5F5), // textField - search // price containers
 
@@ -19,6 +19,7 @@ class MyThemes {
 
 
         bodyText1: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.w400, fontFamily: "inter"), // main text Inter-12-400
+        bodyText2: TextStyle(fontSize: 9, color: Colors.black, fontWeight: FontWeight.w400, fontFamily: "inter"), // a small text
       ));
 
   static ThemeData darkTheme = ThemeData(
@@ -35,7 +36,7 @@ class MyThemes {
 
         headline3: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600, fontFamily: "inter"), // main text Inter-18-SemiBold
 
-
         bodyText1: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w400, fontFamily: "inter"), // main text Inter-12-400
+        bodyText2: TextStyle(fontSize: 9, color: Colors.black, fontWeight: FontWeight.w400, fontFamily: "inter"), // a small text
       ));
 }

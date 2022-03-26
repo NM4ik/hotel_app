@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/widgets/neumorphic_box.dart';
 
 class InfoComponent extends StatelessWidget {
   const InfoComponent({Key? key, required this.text, this.image}) : super(key: key);

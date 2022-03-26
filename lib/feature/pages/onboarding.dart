@@ -3,7 +3,7 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/components/onboarding_content.dart';
 import 'package:hotel_ma/feature/pages/home_screen.dart';
 
-import '../components/defaut_button.dart';
+import '../widgets/defaut_button.dart';
 import '../components/onboarding_dot.dart';
 
 /*

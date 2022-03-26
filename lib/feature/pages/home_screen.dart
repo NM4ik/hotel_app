@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_icons.dart';
@@ -28,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(Theme.of(context).scaffoldBackgroundColor.toString());
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) => FadeThroughTransition(
           animation: primaryAnimation,
