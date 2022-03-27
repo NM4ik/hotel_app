@@ -13,7 +13,7 @@ class MyThemes {
 
 
       textTheme: const TextTheme(
-        headline1: TextStyle(fontSize: 21, color: Colors.black, fontWeight: FontWeight.w600, fontFamily: "inter", letterSpacing: 1),
+        headline1: TextStyle(fontSize: 21, color: Colors.black, fontWeight: FontWeight.w600, fontFamily: "inter"),
 
         headline3: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w600, fontFamily: "inter"), // main text Inter-18-SemiBold
 
