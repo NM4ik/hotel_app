@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/feature/components/room_screen_components/card_room.dart';
+import 'package:hotel_ma/feature/screens/product_screen.dart';
 
 import '../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';
@@ -7,8 +8,15 @@ import '../components/room_screen_components/header.dart';
 import '../widgets/default_text_field.dart';
 import '../widgets/square_button.dart';
 
-class RoomScreen extends StatelessWidget {
+class RoomScreen extends StatefulWidget {
   const RoomScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RoomScreen> createState() => _RoomScreenState();
+}
+
+class _RoomScreenState extends State<RoomScreen> {
+  final GlobalKey _scaffold = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +79,20 @@ class RoomScreen extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisSpacing: 15,
               crossAxisSpacing: 15,
-              childAspectRatio:  MediaQuery.of(context).size.width /
-                  (MediaQuery.of(context).size.height / 1.55),
+              childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.55),
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return CardRoom();
+                return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          _scaffold.currentContext!,
+                          MaterialPageRoute(
+                              builder: (context) => ProductScreen(
+                                    index: index,
+                                  )));
+                    },
+                    child: CardRoom());
               },
               childCount: 5,
             ),

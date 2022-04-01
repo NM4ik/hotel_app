@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_themes.dart';
-import 'package:hotel_ma/feature/pages/home_screen.dart';
+import 'package:hotel_ma/feature/screens/home_screen.dart';
 
-import 'feature/pages/onboarding.dart';
+import 'feature/screens/onboarding.dart';
+import 'feature/screens/product_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -20,6 +22,8 @@ class MyApp extends StatelessWidget {
         theme: MyThemes.lightTheme,
         darkTheme: MyThemes.darkTheme,
         // home: Onboarding());
+        // home: HomeScreen());
         home: HomeScreen());
+
   }
 }

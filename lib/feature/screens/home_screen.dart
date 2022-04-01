@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_icons.dart';
-import 'package:hotel_ma/feature/pages/chat_screen.dart';
+import 'package:hotel_ma/feature/screens/chat_screen.dart';
 
-import 'package:hotel_ma/feature/pages/main_screen.dart';
-import 'package:hotel_ma/feature/pages/office_screen.dart';
-import 'package:hotel_ma/feature/pages/profile_screen.dart';
-import 'package:hotel_ma/feature/pages/room_screen.dart';
+import 'package:hotel_ma/feature/screens/main_screen.dart';
+import 'package:hotel_ma/feature/screens/office_screen.dart';
+import 'package:hotel_ma/feature/screens/profile_screen.dart';
+import 'package:hotel_ma/feature/screens/room_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log(Theme.of(context).scaffoldBackgroundColor.toString());
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: PageTransitionSwitcher(

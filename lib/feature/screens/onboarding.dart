@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/components/onboarding_content.dart';
-import 'package:hotel_ma/feature/pages/home_screen.dart';
+import 'package:hotel_ma/feature/screens/home_screen.dart';
 
 import '../widgets/defaut_button.dart';
 import '../components/onboarding_dot.dart';
@@ -62,7 +62,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    OnboardingDot(currentPage: currentPage, controller: controller, length: onboardingData.length),
+                    OnboardingDot(currentPage: currentPage, controller: controller, length: onboardingData.length, dotColor: Theme.of(context).cardColor,),
                     const Spacer(),
                     DefaultButton(
                       press: () {
