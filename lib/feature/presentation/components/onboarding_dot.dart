@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../common/app_constants.dart';
+import '../../../common/app_constants.dart';
 
 class OnboardingDot extends StatelessWidget {
   const OnboardingDot({Key? key, required this.currentPage, required this.controller, required this.length, required this.dotColor}) : super(key: key);

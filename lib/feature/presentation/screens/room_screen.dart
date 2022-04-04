@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/feature/components/room_screen_components/card_room.dart';
-import 'package:hotel_ma/feature/screens/product_screen.dart';
+import 'package:hotel_ma/feature/presentation/components/room_screen_components/card_room.dart';
+import 'package:hotel_ma/feature/presentation/screens/product_screen.dart';
 
-import '../../common/app_constants.dart';
+import '../../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';
 import '../components/room_screen_components/header.dart';
 import '../widgets/default_text_field.dart';
@@ -24,7 +24,7 @@ class _RoomScreenState extends State<RoomScreen> {
         child: Padding(
       padding: const EdgeInsets.only(right: kEdgeHorizontalPadding, left: kEdgeHorizontalPadding, top: kEdgeVerticalPadding),
       child: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -82,15 +82,10 @@ class _RoomScreenState extends State<RoomScreen> {
               childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.55),
             ),
             delegate: SliverChildBuilderDelegate(
-              (context, index) {
+              (gridContext, index) {
                 return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          _scaffold.currentContext!,
-                          MaterialPageRoute(
-                              builder: (context) => ProductScreen(
-                                    index: index,
-                                  )));
+                      Navigator.of(gridContext).push(MaterialPageRoute(builder: (gridContext) => ProductScreen(index: index)));
                     },
                     child: CardRoom());
               },

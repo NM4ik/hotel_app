@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_icons.dart';
-import 'package:hotel_ma/feature/screens/chat_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/chat_screen.dart';
 
-import 'package:hotel_ma/feature/screens/main_screen.dart';
-import 'package:hotel_ma/feature/screens/office_screen.dart';
-import 'package:hotel_ma/feature/screens/profile_screen.dart';
-import 'package:hotel_ma/feature/screens/room_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/main_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/office_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/profile_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/room_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

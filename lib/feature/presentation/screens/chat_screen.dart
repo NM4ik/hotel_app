@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/screens/conversation_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/conversation_screen.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);

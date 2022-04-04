@@ -41,6 +41,7 @@ dependencies:
 
   # Platform abilities
   internet_connection_checker: ^0.0.1+3
+#  connectivity_plus: ^2.2.1
 
   # Value equality
   equatable: ^2.0.3
@@ -50,6 +51,9 @@ dependencies:
 
   # Remote API
   http: ^0.13.4
+
+  # dependency injections
+  get_it: ^7.2.0
 
   # Local cache
   shared_preferences: ^2.0.13

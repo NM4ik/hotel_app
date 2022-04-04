@@ -5,7 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-import '../../common/app_constants.dart';
+import '../../../common/app_constants.dart';
 import '../components/onboarding_dot.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -17,12 +17,15 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  final GlobalKey _scaffold = GlobalKey();
   final controller = PageController();
   int currentPage = 0;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffold,
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
@@ -78,11 +81,10 @@ class _ProductScreenState extends State<ProductScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
                             /// back button
                             GestureDetector(
                               onTap: () {
-                                  Navigator.of(context).pop();
+                                Navigator.of(context).pop();
                               },
                               child: ClipRRect(
                                 child: BackdropFilter(

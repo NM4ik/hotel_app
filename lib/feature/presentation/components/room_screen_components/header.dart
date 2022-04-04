@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/widgets/square_button.dart';
+import 'package:hotel_ma/feature/presentation/widgets/square_button.dart';
 
 class Header extends StatelessWidget {
   const Header({Key? key}) : super(key: key);

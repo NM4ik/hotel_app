@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/components/main_screen_components/info.dart';
-import 'package:hotel_ma/feature/components/main_screen_components/personal_offer.dart';
-import 'package:hotel_ma/feature/components/main_screen_components/playbill.dart';
-import 'package:hotel_ma/feature/components/main_screen_components/stock_offer.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/info.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/personal_offer.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/playbill.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/stock_offer.dart';
 
 import '../widgets/default_text_field.dart';
 

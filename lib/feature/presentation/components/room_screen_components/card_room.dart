@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/widgets/defaut_button.dart';
+import 'package:hotel_ma/feature/presentation/widgets/defaut_button.dart';
 
 class CardRoom extends StatelessWidget {
   const CardRoom({Key? key}) : super(key: key);
