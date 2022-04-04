@@ -33,44 +33,44 @@ class _ProductScreenState extends State<ProductScreen> {
               children: [
                 Stack(
                   children: [
-                    /// image carousel
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                      ),
-                      width: double.infinity,
-                      height: 380,
-                      child: PhotoViewGallery.builder(
-                        scrollPhysics: const BouncingScrollPhysics(),
-                        builder: (BuildContext context, int index) {
-                          return PhotoViewGalleryPageOptions(
-                            imageProvider: const AssetImage("assets/images/room_image_3.png"),
-                            heroAttributes: PhotoViewHeroAttributes(tag: index),
-                            basePosition: Alignment.center,
-                            minScale: PhotoViewComputedScale.contained * 0.8,
-                            maxScale: PhotoViewComputedScale.covered * 2,
-                          );
-                        },
-                        pageController: controller,
-                        onPageChanged: (index) {
-                          setState(() {
-                            currentPage = index;
-                          });
-                        },
-                        itemCount: 7,
-                        enableRotation: true,
-                        backgroundDecoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        loadingBuilder: (context, event) => const Center(
-                          child: SizedBox(
-                            width: 20.0,
-                            height: 20.0,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      ),
-                    ),
+                    /// image carousel   not working correctly. an exception throwing when returning back //try to fix or use another from pub.dev
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                    //   ),
+                    //   width: double.infinity,
+                    //   height: 380,
+                    //   child: PhotoViewGallery.builder(
+                    //     scrollPhysics: const BouncingScrollPhysics(),
+                    //     builder: (BuildContext context, int index) {
+                    //       return PhotoViewGalleryPageOptions(
+                    //         imageProvider: const AssetImage("assets/images/room_image_3.png"),
+                    //         heroAttributes: PhotoViewHeroAttributes(tag: index),
+                    //         basePosition: Alignment.center,
+                    //         minScale: PhotoViewComputedScale.contained * 0.8,
+                    //         maxScale: PhotoViewComputedScale.covered * 2,
+                    //       );
+                    //     },
+                    //     pageController: controller,
+                    //     onPageChanged: (index) {
+                    //       setState(() {
+                    //         currentPage = index;
+                    //       });
+                    //     },
+                    //     itemCount: 7,
+                    //     enableRotation: true,
+                    //     backgroundDecoration: BoxDecoration(
+                    //       color: Theme.of(context).canvasColor,
+                    //     ),
+                    //     loadingBuilder: (context, event) => const Center(
+                    //       child: SizedBox(
+                    //         width: 20.0,
+                    //         height: 20.0,
+                    //         child: CircularProgressIndicator(),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                     /// back_button from product_screen and indicator image's dots
                     SizedBox(
