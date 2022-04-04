@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../common/app_constants.dart';
 
-class DefaultButton extends StatelessWidget {
-  const DefaultButton({Key? key, required this.press}) : super(key: key);
+class DefaultButtonWidget extends StatelessWidget {
+  const DefaultButtonWidget({Key? key, required this.press, required this.title}) : super(key: key);
   final VoidCallback press;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,8 @@ class DefaultButton extends StatelessWidget {
             primary: kMainBlueColor,
           ),
           onPressed: press,
-          child: const Text(
-            "Далее",
+          child: Text(
+           title,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, fontFamily: "Inter"),
           )),
     );

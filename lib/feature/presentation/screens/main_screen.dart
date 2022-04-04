@@ -6,7 +6,7 @@ import 'package:hotel_ma/feature/presentation/components/main_screen_components/
 import 'package:hotel_ma/feature/presentation/components/main_screen_components/playbill.dart';
 import 'package:hotel_ma/feature/presentation/components/main_screen_components/stock_offer.dart';
 
-import '../widgets/default_text_field.dart';
+import '../widgets/default_text_field_widget.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
                 ),
 
                 /// search-field
-                DefaultTextField(text: "Поиск по приложению", textEditingController: textEditingController),
+                DefaultTextFieldWidget(text: "Поиск по приложению", textEditingController: textEditingController),
 
                 const SizedBox(
                   height: 30,

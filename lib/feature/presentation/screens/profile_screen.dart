@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/presentation/components/profile_screen/profile_screeen_unsigned.dart';
 
 import '../../../common/app_constants.dart';
 import '../../../core/platform/network_info.dart';
 import '../bloc/profile_bloc/profile_bloc.dart';
+import '../components/profile_screen/profile_screen_info.dart';
+import '../components/profile_screen/profile_screen_visits.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -39,16 +42,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         if (state is ProfileInitialState) {
           return const CircularProgressIndicator();
         }
+        if (state is ProfileUnAuthenticatedState){
+          return const ProfileScreenUnAuth();
+        }
         if (state is ProfileAuthenticatedState) {
           return Scaffold(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              // body: SingleChildScrollView(
-              //   child: Column(
-              //     children: [
-
-              // Expanded(
-              //   child: ListView.builder(physics: BouncingScrollPhysics(), itemCount: 50, itemBuilder: (context, index) => Text('index')),
-              // ),
               body: Column(
                 children: [
                   Stack(
@@ -101,62 +100,61 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       )),
                     ],
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(kEdgeMainBorder * 3),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: TabBar(
-                        indicator: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(kEdgeMainBorder * 3),
-                        ),
-                        controller: tabController,
-                        tabs: [
-                          Tab(
-                            text: 'Информация',
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 2.5, horizontal: kEdgeHorizontalPadding),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorLight,
+                        borderRadius: BorderRadius.circular(kEdgeMainBorder * 3),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: TabBar(
+                          indicator: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: BorderRadius.circular(kEdgeMainBorder * 3),
                           ),
-                          Tab(text: 'Посещения'),
-                        ],
+                          controller: tabController,
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                'Информация',
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                            Tab(
+                              child: Text(
+                                'Посещения',
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   Expanded(
-                    child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(100.0),
-                                child: Text('qwe'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(100.0),
-                                child: Text('qwe'),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(100.0),
-                                child: Text('qwe'),
-                              ),
-                            ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: kEdgeHorizontalPadding),
+                      child: TabBarView(
+                        controller: tabController,
+                        children: const [
+                          /// info
+                          SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: ProfileScreenInfo(),
                           ),
-                        ),
-                        ListView.builder(
-                          itemBuilder: (context, index) => Text('qwe'),
-                          itemCount: 300,
-                        ),
-                      ],
+
+                          ///visits
+                          ProfileScreenVisits(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ));
         } else {
-          return const Text('qwe');
+          return const Text('qwe'); /// need to find this exception
         }
       },
     );

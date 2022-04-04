@@ -5,8 +5,8 @@ import 'package:hotel_ma/feature/presentation/screens/product_screen.dart';
 import '../../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';
 import '../components/room_screen_components/header.dart';
-import '../widgets/default_text_field.dart';
-import '../widgets/square_button.dart';
+import '../widgets/default_text_field_widget.dart';
+import '../widgets/square_button_widget.dart';
 
 class RoomScreen extends StatefulWidget {
   const RoomScreen({Key? key}) : super(key: key);
@@ -28,7 +28,7 @@ class _RoomScreenState extends State<RoomScreen> {
         slivers: [
           SliverAppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            leading: const SquareButton(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
+            leading: const SquareButtonWidget(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
             title: Text(
               'Никита',
               style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
@@ -54,7 +54,8 @@ class _RoomScreenState extends State<RoomScreen> {
           ),
 
           /// Filters for free rooms
-          SliverToBoxAdapter(
+          /// refactor, https://gallery.flutter.dev/ = find calendar picker
+          const SliverToBoxAdapter(
             child: Filters(),
           ),
 

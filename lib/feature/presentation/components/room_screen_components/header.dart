@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/presentation/widgets/square_button.dart';
+import 'package:hotel_ma/feature/presentation/widgets/square_button_widget.dart';
 
 class Header extends StatelessWidget {
   const Header({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class Header extends StatelessWidget {
         Row(
           children: [
             /// avatar
-            const SquareButton(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
+            const SquareButtonWidget(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
 
 
             const SizedBox(

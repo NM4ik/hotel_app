@@ -3,7 +3,7 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/components/onboarding_content.dart';
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
 
-import '../widgets/defaut_button.dart';
+import '../widgets/defaut_button_widget.dart';
 import '../components/onboarding_dot.dart';
 
 /*
@@ -64,7 +64,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                     const Spacer(),
                     OnboardingDot(currentPage: currentPage, controller: controller, length: onboardingData.length, dotColor: Theme.of(context).cardColor,),
                     const Spacer(),
-                    DefaultButton(
+                    DefaultButtonWidget(title: 'Далее',
                       press: () {
                         setState(() {
                           controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../common/app_constants.dart';
 
-class CalendarButton extends StatelessWidget {
-  const CalendarButton({Key? key, required this.text}) : super(key: key);
+class CalendarButtonWidget extends StatelessWidget {
+  const CalendarButtonWidget({Key? key, required this.text}) : super(key: key);
   final String text;
 
   @override

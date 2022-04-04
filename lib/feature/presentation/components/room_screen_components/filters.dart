@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/core/platform/network_info.dart';
-import 'package:hotel_ma/feature/presentation/widgets/calendar_button.dart';
+import 'package:hotel_ma/feature/presentation/widgets/calendar_button_widget.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../../common/app_constants.dart';
-import '../../widgets/default_text_field.dart';
-import '../../widgets/square_button.dart';
+import '../../widgets/default_text_field_widget.dart';
+import '../../widgets/square_button_widget.dart';
 
 class Filters extends StatefulWidget {
   const Filters({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _FiltersState extends State<Filters> {
         ),
         Row(
           children: [
-            Expanded(child: DefaultTextField(text: 'Поиск по номерам', textEditingController: TextEditingController())),
+            Expanded(child: DefaultTextFieldWidget(text: 'Поиск по номерам', textEditingController: TextEditingController())),
             const SizedBox(
               width: kEdgeHorizontalPadding,
             ),
@@ -35,7 +35,7 @@ class _FiltersState extends State<Filters> {
                 onTap: () async {
                   print(await locator.get<NetworkInfo>().getIsConnected());
                 },
-                child: SquareButton(color: Theme.of(context).primaryColorLight, icon: Icons.settings, iconColor: const Color(0xFFBDBDBD))),
+                child: SquareButtonWidget(color: Theme.of(context).primaryColorLight, icon: Icons.settings, iconColor: const Color(0xFFBDBDBD))),
           ],
         ),
         const SizedBox(
@@ -43,11 +43,11 @@ class _FiltersState extends State<Filters> {
         ),
         Row(
           children: const [
-            CalendarButton(text: 'пн, 8 нояб.'),
+            CalendarButtonWidget(text: 'пн, 8 нояб.'), /// refactor, https://gallery.flutter.dev/ = find calendar picker
             SizedBox(
               width: kEdgeHorizontalPadding,
             ),
-            CalendarButton(text: 'пн, 8 нояб.'),
+            CalendarButtonWidget(text: 'пн, 8 нояб.'),
           ],
         )
       ],

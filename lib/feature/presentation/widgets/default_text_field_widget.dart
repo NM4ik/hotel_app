@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 
-class DefaultTextField extends StatelessWidget {
-  const DefaultTextField({Key? key, required this.text, required this.textEditingController}) : super(key: key);
+class DefaultTextFieldWidget extends StatelessWidget {
+  const DefaultTextFieldWidget({Key? key, required this.text, required this.textEditingController}) : super(key: key);
   final String text;
   final TextEditingController textEditingController;
 
