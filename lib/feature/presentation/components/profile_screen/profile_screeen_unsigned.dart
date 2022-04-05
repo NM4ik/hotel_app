@@ -28,50 +28,45 @@ class ProfileScreenUnAuth extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/un_auth_image.png'),
-                const SizedBox(height: kEdgeVerticalPadding/2,),
-                Text('Давай знакомиться!', style: Theme.of(context).textTheme.headline1),
-                const SizedBox(height: kEdgeVerticalPadding,),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/un_auth_image.png', ),
+            const SizedBox(height: kEdgeVerticalPadding/2,),
+            Text('Давай знакомиться!', style: Theme.of(context).textTheme.headline1),
+            const SizedBox(height: kEdgeVerticalPadding,),
 
-                SizedBox(width: 300, child: DefaultButtonWidget(press: () {}, title: 'Войти по номеру телефона')),
-                const SizedBox(height: kEdgeVerticalPadding/2,),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                        primary: Colors.white,
-                        elevation: 2,
+            SizedBox(width: 300, child: DefaultButtonWidget(press: () {}, title: 'Войти по номеру телефона')),
+            const SizedBox(height: kEdgeVerticalPadding/2,),
+            SizedBox(
+              width: 300,
+              height: 50,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
+                    primary: Colors.white,
+                    elevation: 2,
+                  ),
+                  onPressed: () {
+                    locator.get<PersonStatus>().setAuthStatus(true);
+                    context.read<ProfileBloc>().add(ProfileAuthEvent());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/images/google_logo.png', width: 30),
+                      const SizedBox(
+                        width: 10,
                       ),
-                      onPressed: () {
-                        locator.get<PersonStatus>().setStatus(true);
-                        context.read<ProfileBloc>().add(ProfileAuthEvent());
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/images/google_logo.png', width: 30),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'Sign in with google',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, fontFamily: "Inter", color: Colors.black),
-                          ),
-                        ],
-                      )),
-                )
-              ],
-            ),
-          ),
+                      const Text(
+                        'Sign in with google',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, fontFamily: "Inter", color: Colors.black),
+                      ),
+                    ],
+                  )),
+            )
+          ],
         ),
       ),
     ),

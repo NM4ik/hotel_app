@@ -64,6 +64,9 @@ dependencies:
   # for photos gallery
   photo_view: ^0.13.0
 
+  # toggles
+  flutter_switch: ^0.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

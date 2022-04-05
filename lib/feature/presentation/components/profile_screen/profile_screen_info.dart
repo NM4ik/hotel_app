@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 import 'package:hotel_ma/feature/presentation/widgets/row_table_widget.dart';
 
@@ -8,8 +9,16 @@ import '../../../../core/locator_service.dart';
 import '../../../data/datasources/shared_preferences_methods.dart';
 import '../../bloc/profile_bloc/profile_bloc.dart';
 
-class ProfileScreenInfo extends StatelessWidget {
+class ProfileScreenInfo extends StatefulWidget {
   const ProfileScreenInfo({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreenInfo> createState() => _ProfileScreenInfoState();
+}
+
+class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
+
+  bool? notificationStatus = locator.get<PersonStatus>().getNotifications();
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +50,26 @@ class ProfileScreenInfo extends StatelessWidget {
                   .bodyText1!
                   .copyWith(fontSize: 16),)),
               const SizedBox(width: kEdgeHorizontalPadding,),
-              const Expanded(
-                child: TextField(decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'on/off',
-                  hintStyle: TextStyle(fontSize: 16, color: kMainGreyColor, fontWeight: FontWeight.w400),
-                )),
+
+              FlutterSwitch(
+                width: 70,
+                height: 30,
+                valueFontSize: 9,
+                toggleSize: 14.0,
+                value: notificationStatus!,
+                borderRadius: 30.0,
+                padding: 8.0,
+                activeColor: kMainBlueColor,
+                inactiveColor: kMainGreyColor,
+                showOnOff: true,
+                onToggle: (val) {
+                  setState(() {
+                    locator.get<PersonStatus>().setNotificationStatus(val);
+                    notificationStatus = val;
+                  });
+                },
               ),
+
               const SizedBox(height: 50,),
             ],
           ),
@@ -56,7 +78,7 @@ class ProfileScreenInfo extends StatelessWidget {
           const SizedBox(height: kEdgeVerticalPadding,),
 
           SizedBox(width: 170, height: 35, child: DefaultButtonWidget(press: () {
-            locator.get<PersonStatus>().setStatus(false);
+            locator.get<PersonStatus>().setAuthStatus(false);
             context.read<ProfileBloc>().add(ProfileAuthEvent());
           }, title: 'Выйти',)),
 

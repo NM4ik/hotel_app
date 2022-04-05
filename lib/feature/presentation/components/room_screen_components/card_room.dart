@@ -8,15 +8,26 @@ class CardRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 165,
       height: 230,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
         child: Stack(
           children: [
-            Container(child: Image.asset('assets/images/room_card_example.png')),
+            Stack(children: [
+              SizedBox(
+                  width: double.infinity,
+                  child: FittedBox(
+                    child: Image.asset(
+                      'assets/images/room_card_example.png',
+                    ),
+                    fit: BoxFit.fill,
+                  )),
+              Container(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.3), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+              )
+            ]),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

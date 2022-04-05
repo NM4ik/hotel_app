@@ -10,8 +10,19 @@ class PersonStatus{
     return value;
   }
 
-  void setStatus(bool value){
+  void setAuthStatus(bool value){
     value == true ? sharedPreferences.setBool('authStatus', true) : sharedPreferences.setBool('authStatus', false);
+  }
+
+
+  bool? getNotifications(){
+    bool? value = sharedPreferences.getBool('notificationStatus');
+    value ??= true;
+    return value;
+  }
+
+  void setNotificationStatus(bool value){
+    sharedPreferences.setBool('notificationStatus', value);
   }
 
 }

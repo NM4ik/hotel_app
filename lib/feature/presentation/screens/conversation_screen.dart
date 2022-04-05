@@ -1,6 +1,8 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
 
 import '../../../common/app_constants.dart';
 
@@ -137,7 +139,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Padding(
-                            padding: EdgeInsets.all(kEdgeHorizontalPadding),
+                            padding: EdgeInsets.all(kEdgeHorizontalPadding/1.3),
                             child: Icon(
                               Icons.arrow_upward_rounded,
                               color: Colors.white,
