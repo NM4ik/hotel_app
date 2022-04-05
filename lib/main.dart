@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_themes.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 
 import 'feature/presentation/screens/home_screen.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ProfileBloc()),
+        BlocProvider(create: (context) => RoomsBloc()..add(RoomsCheckConnectionEvent())),
         // BlocProvider(create: (context) => ChatsCubit(fireStoreMethods)),
         // BlocProvider(create: (context) => ConversationBloc()),
       ],

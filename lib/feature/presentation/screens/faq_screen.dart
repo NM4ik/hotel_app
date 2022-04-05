@@ -37,8 +37,30 @@ class FaqScreen extends StatelessWidget {
             ]),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
-              child: Text('Какой-то текс'),
+              padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding/2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// faq_date
+                  Text('Статья от 01 апреля 2022', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500, color: kMainGreyColor),),
+                  /// faq_nave
+                  Text('Как зарезервировать автомобиль и оплатить его', style: Theme.of(context).textTheme.headline3!.copyWith(fontWeight: FontWeight.w500,),),
+
+                  const SizedBox(height: kEdgeVerticalPadding,),
+
+                  Text("""Перед первой поездкой на банковской карте блокируется сумма предсписания. Чаще всего это 271,82 ₽, но может быть и другая сумма. Эти деньги не списываются, а только удерживаются на счете. Чтобы узнать точную сумму предсписания перед поездкой, в карточке тарифа нажмите Еще. 
+                  \nЕсли стоимость аренды окажется меньше суммы предсписания, спишется только фактическая стоимость, а разница будет разблокирована. Срок разблокировки зависит от условий вашего банка.""",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+
+                  Text("""Перед первой поездкой на банковской карте блокируется сумма предсписания. Чаще всего это 271,82 ₽, но может быть и другая сумма. Эти деньги не списываются, а только удерживаются на счете. Чтобы узнать точную сумму предсписания перед поездкой, в карточке тарифа нажмите Еще. 
+                  \nЕсли стоимость аренды окажется меньше суммы предсписания, спишется только фактическая стоимость, а разница будет разблокирована. Срок разблокировки зависит от условий вашего банка.",
+                  """,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+
+                ],
+              )
             ),
           ],
         ),

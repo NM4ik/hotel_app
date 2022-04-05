@@ -8,7 +8,7 @@ class MyThemes {
       cardColor: const Color(0xFFF5F5F5),
       scaffoldBackgroundColor: Color(0xFFFAFAFA),
 
-      primaryColorLight: const Color(0xFFF5F5F5), // textField - search // price containers
+      primaryColorLight: const Color(0xFFEEEEEE), // textField - search // price containers
 
 
 

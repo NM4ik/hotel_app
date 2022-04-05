@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/room_screen_components/card_room.dart';
 import 'package:hotel_ma/feature/presentation/screens/product_screen.dart';
 
 import '../../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';
 import '../components/room_screen_components/header.dart';
+import '../components/room_screen_components/rooms_usic_screen.dart';
 import '../widgets/default_text_field_widget.dart';
 import '../widgets/square_button_widget.dart';
 
@@ -16,10 +19,15 @@ class RoomScreen extends StatefulWidget {
 }
 
 class _RoomScreenState extends State<RoomScreen> {
-  final GlobalKey _scaffold = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<RoomsBloc, RoomsState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    if(state is RoomsSICState){
     return SafeArea(
         child: Padding(
       padding: const EdgeInsets.only(right: kEdgeHorizontalPadding, left: kEdgeHorizontalPadding, top: kEdgeVerticalPadding),
@@ -96,5 +104,15 @@ class _RoomScreenState extends State<RoomScreen> {
         ],
       ),
     ));
+  }
+  if(state is RoomsUSICState){
+    return RoomsUsicScreen();
+  } else {
+    return Center(child: Column(
+    children: [Text('Что-то пошло не так, неизвестная ошибка', style: Theme.of(context).textTheme.headline1,)],
+  ),);
+  }
+  }
+);
   }
 }
