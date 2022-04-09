@@ -15,7 +15,8 @@ class ConversationScreen extends StatefulWidget {
 
 class _ConversationScreenState extends State<ConversationScreen> {
   List<String> messages = [
-    'qweqwe',
+    'first',
+    'second',
   ];
 
   @override
@@ -111,7 +112,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                   sendMessage(textController.text);
                                 }),
 
-                            SizedBox(width: kEdgeHorizontalPadding,),
+                            const SizedBox(width: kEdgeHorizontalPadding,),
 
                             Expanded(
                               child: TextField(

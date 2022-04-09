@@ -8,7 +8,8 @@ class CardRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 230,
+      // width: 165,
+      // height: 230,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
         child: Stack(
@@ -16,10 +17,8 @@ class CardRoom extends StatelessWidget {
             Stack(children: [
               SizedBox(
                   width: double.infinity,
-                  child: FittedBox(
-                    child: Image.asset(
-                      'assets/images/room_card_example.png',
-                    ),
+                  child: Image.asset(
+                    'assets/images/room_card_example.png',
                     fit: BoxFit.fill,
                   )),
               Container(

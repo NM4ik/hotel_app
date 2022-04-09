@@ -93,7 +93,7 @@ class _RoomScreenState extends State<RoomScreen> {
                         onTap: () {
                           Navigator.of(gridContext).push(MaterialPageRoute(builder: (gridContext) => ProductScreen(index: index)));
                         },
-                        child: CardRoom());
+                        child: const CardRoom());
                   },
                   childCount: 5,
                 ),
