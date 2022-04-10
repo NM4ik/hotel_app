@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/profile_screen/profile_screeen_unsigned.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/app_constants.dart';
 import '../bloc/auth_bloc/auth_bloc.dart';
@@ -61,20 +63,28 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           children: [
                             Center(
                               child: Text(
-                                '${state.userModel.email}',
+                                // '${state.userModel.displayName}',
+                                'Профиль',
                                 // '${state.user.email}',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
                               ),
                             ),
                             const SizedBox(
                               height: kEdgeVerticalPadding,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(99),
-                                border: Border.all(color: Colors.white, width: 2),
+                            GestureDetector(
+                              onTap: () async{
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                PersonStatus personStatus = PersonStatus(sharedPreferences: prefs);
+                                personStatus.getPersonFromCache();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(99),
+                                  border: Border.all(color: Colors.white, width: 2),
+                                ),
+                                child: Image.asset("assets/images/profile_image.png"),
                               ),
-                              child: Image.asset("assets/images/profile_image.png"),
                             ),
                             const SizedBox(
                               height: kEdgeVerticalPadding / 2,
@@ -134,15 +144,15 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: kEdgeHorizontalPadding),
                       child: TabBarView(
                         controller: tabController,
-                        children: const [
+                        children: [
                           /// info
-                          SingleChildScrollView(
+                          const SingleChildScrollView(
                             physics: BouncingScrollPhysics(),
                             child: ProfileScreenInfo(),
                           ),
 
                           ///visits
-                          ProfileScreenVisits(),
+                          ProfileScreenVisits(uid: state.userModel.uid),
                         ],
                       ),
                     ),

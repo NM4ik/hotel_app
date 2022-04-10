@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
+import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 
@@ -52,14 +56,11 @@ class ProfileScreenUnAuth extends StatelessWidget {
                     primary: Colors.white,
                     elevation: 2,
                   ),
-                  onPressed: () {
-                    // locator.get<PersonStatus>().setAuthStatus(true);
-                    // context.read<ProfileBloc>().add(ProfileAuthEvent());
+                  onPressed: () async{
                     try{
-                      // context.read<AuthBloc>().add(AuthenticationLoggedIn());
-                      authenticationRepository.singInWithGoogle();
-                      locator.get<PersonStatus>().setAuthStatus(false);
-                      print(locator.get<PersonStatus>().getAuthStatus());
+                      final user = await authenticationRepository.singInWithGoogle();
+                      // print(user!.user.toString());
+                      locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user!.user!));
                     }catch(e){
                       print('error auth $e');
                     }
