@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 class PersonEntity extends Equatable {
-  final int uid;
-  final String providerId;
+  final String uid;
 
+  final String? providerId;
   final String? displayName;
   final String? email;
   final String? phoneNumber;
@@ -11,11 +11,11 @@ class PersonEntity extends Equatable {
 
   const PersonEntity({
     required this.uid,
-    required this.providerId,
-    required this.displayName,
-    required this.email,
-    required this.phoneNumber,
-    required this.photoURL,
+    this.providerId,
+    this.displayName,
+    this.email,
+    this.phoneNumber,
+    this.photoURL,
   });
 
   @override

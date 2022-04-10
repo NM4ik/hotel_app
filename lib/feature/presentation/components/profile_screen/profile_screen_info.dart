@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
+import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 import 'package:hotel_ma/feature/presentation/widgets/row_table_widget.dart';
 
@@ -19,6 +21,7 @@ class ProfileScreenInfo extends StatefulWidget {
 class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
 
   bool? notificationStatus = locator.get<PersonStatus>().getNotifications();
+  AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +81,7 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
           const SizedBox(height: kEdgeVerticalPadding,),
 
           SizedBox(width: 170, height: 35, child: DefaultButtonWidget(press: () {
-            locator.get<PersonStatus>().setAuthStatus(false);
-            context.read<ProfileBloc>().add(ProfileAuthEvent());
+            context.read<AuthBloc>().add(AuthLogoutEvent());
           }, title: 'Выйти',)),
 
 

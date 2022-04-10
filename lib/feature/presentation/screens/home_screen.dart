@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_icons.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
 import 'package:hotel_ma/feature/presentation/screens/chat_screen.dart';
 
 import 'package:hotel_ma/feature/presentation/screens/main_screen.dart';
@@ -19,6 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
+  PersonStatus personStatus = PersonStatus(sharedPreferences: locator.get());
+
+
+  @override
+  void initState() {
+    super.initState();
+    log(personStatus.getAuthStatus().toString(), name: 'STATUS');
+  }
 
   final screens = [
     MainScreen(),

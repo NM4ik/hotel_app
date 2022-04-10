@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
+import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 
 import '../../../data/datasources/shared_preferences_methods.dart';
@@ -12,6 +14,8 @@ class ProfileScreenUnAuth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationRepository authenticationRepository = AuthenticationRepository();
+
     return BlocListener<ProfileBloc, ProfileState>(
   listener: (context, state) {
     if(state is ProfileAuthenticatedState){
@@ -49,8 +53,16 @@ class ProfileScreenUnAuth extends StatelessWidget {
                     elevation: 2,
                   ),
                   onPressed: () {
-                    locator.get<PersonStatus>().setAuthStatus(true);
-                    context.read<ProfileBloc>().add(ProfileAuthEvent());
+                    // locator.get<PersonStatus>().setAuthStatus(true);
+                    // context.read<ProfileBloc>().add(ProfileAuthEvent());
+                    try{
+                      // context.read<AuthBloc>().add(AuthenticationLoggedIn());
+                      authenticationRepository.singInWithGoogle();
+                      locator.get<PersonStatus>().setAuthStatus(false);
+                      print(locator.get<PersonStatus>().getAuthStatus());
+                    }catch(e){
+                      print('error auth $e');
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_themes.dart';
+import 'package:hotel_ma/core/firebase.dart';
 import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
+import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 
 import 'feature/presentation/screens/home_screen.dart';
 
-
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setup();
+  await FireBase.initialize();
+  await setup();
   runApp(const MyApp());
 }
 
@@ -19,12 +22,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationRepository authenticationRepository = AuthenticationRepository();
+
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ProfileBloc()),
-        BlocProvider(create: (context) => RoomsBloc()..add(RoomsCheckConnectionEvent())),
-        // BlocProvider(create: (context) => ChatsCubit(fireStoreMethods)),
-        // BlocProvider(create: (context) => ConversationBloc()),
+        BlocProvider(create: (context) => locator<ProfileBloc>()),
+        BlocProvider(create: (context) => locator<RoomsBloc>()..add(RoomsCheckConnectionEvent())),
+        BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -34,8 +38,7 @@ class MyApp extends StatelessWidget {
           darkTheme: MyThemes.darkTheme,
           // home: Onboarding());
           // home: HomeScreen());
-          home: HomeScreen()),
+          home: const HomeScreen()),
     );
-
   }
 }

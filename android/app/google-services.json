@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "774509000650",
+    "project_id": "hotelmobileapp-flutter",
+    "storage_bucket": "hotelmobileapp-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774509000650:android:d04a9b60cade6a4963c133",
+        "android_client_info": {
+          "package_name": "ru.nm4ik.hotel_ma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "774509000650-u56iatdmkj42hb06g80hic790ttpkj9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.nm4ik.hotel_ma",
+            "certificate_hash": "9e26f1b76d43cf2e6fee7e74e72ad65127a27949"
+          }
+        },
+        {
+          "client_id": "774509000650-a5igoqe8t9i6o3lnjs84kkba5dnqg2gs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMFCLLYlwDvBYTRPIsqcyhn2hHnGPdaFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "774509000650-a5igoqe8t9i6o3lnjs84kkba5dnqg2gs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "774509000650-qb88osbkua2s2uo54458r26b0va9h371.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nm4ik.graduate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/profile_screen/profile_screeen_unsigned.dart';
 
 import '../../../common/app_constants.dart';
-import '../../../core/platform/network_info.dart';
-import '../bloc/profile_bloc/profile_bloc.dart';
+import '../bloc/auth_bloc/auth_bloc.dart';
 import '../components/profile_screen/profile_screen_info.dart';
 import '../components/profile_screen/profile_screen_visits.dart';
 
@@ -35,17 +34,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    context.read<ProfileBloc>().add(ProfileAuthEvent());
-
-    return BlocBuilder<ProfileBloc, ProfileState>(
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {},
       builder: (context, state) {
-        if (state is ProfileInitialState) {
-          return const CircularProgressIndicator();
-        }
-        if (state is ProfileUnAuthenticatedState){
+        if (state is UnAuthenticatedState) {
           return const ProfileScreenUnAuth();
         }
-        if (state is ProfileAuthenticatedState) {
+        if (state is AuthenticatedState) {
           return Scaffold(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: Column(
@@ -64,9 +59,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
                         child: Column(
                           children: [
-                            const Center(
+                            Center(
                               child: Text(
-                                'Профиль',
+                                '${state.userModel.email}',
+                                // '${state.user.email}',
                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
                               ),
                             ),
@@ -154,7 +150,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 ],
               ));
         } else {
-          return const Text('qwe'); /// need to find this exception
+          return const Center(
+            child: Text('Что-то пошло не так'),
+          );
+
+          /// need to find this exception
         }
       },
     );

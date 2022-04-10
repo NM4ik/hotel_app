@@ -5,8 +5,9 @@ class PersonStatus{
 
   PersonStatus({required this.sharedPreferences});
 
-  bool? getAuthStatus () {
+  bool getAuthStatus () {
     bool? value = sharedPreferences.getBool('authStatus');
+    value ??= false;
     return value;
   }
 
