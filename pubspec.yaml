@@ -79,6 +79,11 @@ dependencies:
   # for jsons
   json_annotation:
 
+  # chat modules
+  flutter_chat_ui: ^1.5.7
+  image_picker: ^0.8.5
+  flutter_firebase_chat_core: ^1.5.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

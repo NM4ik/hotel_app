@@ -23,6 +23,12 @@ class _ProductScreenState extends State<ProductScreen> {
 
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffold,
@@ -40,16 +46,18 @@ class _ProductScreenState extends State<ProductScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(kEdgeMainBorder),
                       ),
-                      width: double.infinity,
-                      height: 380,
+                      // width: double.infinity,
+                      height: 330,
                       child: PhotoViewGallery.builder(
                         scrollPhysics: const BouncingScrollPhysics(),
                         builder: (BuildContext context, int index) {
                           return PhotoViewGalleryPageOptions(
-                            imageProvider: const AssetImage("assets/images/room_image_3.png"),
+                            // imageProvider: const AssetImage("assets/images/room_image_3.png"),
+                            imageProvider: NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
                             heroAttributes: PhotoViewHeroAttributes(tag: index),
                             basePosition: Alignment.center,
-                            minScale: PhotoViewComputedScale.contained * 0.8,
+                            // initialScale: PhotoViewComputedScale.covered * 0.5,
+                            minScale: PhotoViewComputedScale.covered,
                             maxScale: PhotoViewComputedScale.covered * 2,
                           );
                         },
@@ -68,7 +76,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           child: SizedBox(
                             width: 20.0,
                             height: 20.0,
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(color: kMainBlueColor,),
                           ),
                         ),
                       ),
@@ -76,7 +84,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
                     /// back_button from product_screen and indicator image's dots
                     SizedBox(
-                      height: 380,
+                      height: 330,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 1.5, horizontal: kEdgeHorizontalPadding),
                         child: Column(
@@ -113,14 +121,11 @@ class _ProductScreenState extends State<ProductScreen> {
 
                             /// indicator dots
                             Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: OnboardingDot(
-                                  currentPage: currentPage,
-                                  controller: controller,
-                                  length: 7,
-                                  dotColor: Colors.white.withOpacity(0.4),
-                                ),
+                              child: OnboardingDot(
+                                currentPage: currentPage,
+                                controller: controller,
+                                length: 7,
+                                dotColor: Colors.white.withOpacity(0.4),
                               ),
                             ),
                           ],

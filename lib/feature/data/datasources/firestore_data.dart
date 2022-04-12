@@ -3,12 +3,18 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hotel_ma/feature/data/models/message_model.dart';
 
 import '../models/user_model.dart';
+import '../models/visit_model.dart';
 
 class FirestoreData {
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final messageCollection = 'messages';
 
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference chats = FirebaseFirestore.instance.collection('chats');
+
+  /// adding a first-auth users to firebase
   void addUserToCollection(UserModel? userModel) async {
     try {
       final dataExists = await users.doc(userModel!.uid).get();
@@ -30,28 +36,29 @@ class FirestoreData {
     }
   }
 
+
+  /// send user message to firebase
+  /// chatRoom id(docId) = UserCredentials_uid(UserModel_uid)
+
+  /// change String name to uid!!!!
+  void sendMessage(String content, String docId, String name) {
+    print('hello');
+    print(content);
+    DateTime dateTime = DateTime.now();
+    final message = MessageModel(content: content, sendAt: dateTime, sendBy: name);
+    print(message);
+    chats.doc('user-uid').collection(messageCollection).add(message.toJson());
+  }
+
+
+  /// get a visits by user from firebase
   Future<dynamic> getVisitsByUser(String uid) async {
     try {
-      List<Visit> visits = [];
+      List<VisitModel> visits = [];
       QuerySnapshot querySnapshot = await users.doc(uid).collection('visits').get();
-      querySnapshot.docs.map((e) => visits.add(Visit.fromJson(e.data() as Map<String, dynamic>))).toList();
-      return visits;
+      return querySnapshot;
     } catch (e) {
       print('Exception by getVisitsByUser $e');
     }
   }
-}
-
-class Visit extends Equatable {
-  final String dateEnd;
-  final String dateStart;
-  final String price;
-  final String roomName;
-
-  const Visit({required this.dateEnd, required this.dateStart, required this.price, required this.roomName});
-
-  factory Visit.fromJson(Map<String, dynamic> json) => Visit(dateEnd: json['dateEnd'], dateStart: json['dateStart'], price: json['price'], roomName: json['roomName']);
-
-  @override
-  List<Object> get props => [dateEnd, dateStart, price, roomName];
 }

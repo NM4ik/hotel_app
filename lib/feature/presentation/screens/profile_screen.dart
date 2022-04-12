@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/core/platform/network_info.dart';
 import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/profile_screen/profile_screeen_unsigned.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     );
   }
 
-  List<String> data = ['Page 0', 'Page 1', 'Page 2'];
   int initPosition = 1;
 
   @override
@@ -61,12 +63,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
                         child: Column(
                           children: [
-                            Center(
+                            const Center(
                               child: Text(
                                 // '${state.userModel.displayName}',
                                 'Профиль',
                                 // '${state.user.email}',
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
                               ),
                             ),
                             const SizedBox(
@@ -77,6 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                 PersonStatus personStatus = PersonStatus(sharedPreferences: prefs);
                                 personStatus.getPersonFromCache();
+                                AuthenticationRepository authenticationRepository = AuthenticationRepository();
+                                // print(authenticationRepository.userModel);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -90,9 +94,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               height: kEdgeVerticalPadding / 2,
                             ),
                             Column(
-                              children: const [
+                              children: [
                                 Text(
-                                  'Victoria Robertson',
+                                  state.userModel.displayName.toString(),
                                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                                 Text(

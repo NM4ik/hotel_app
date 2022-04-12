@@ -1,39 +1,32 @@
 import 'package:bubble/bubble.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
 import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
+import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/app_constants.dart';
 
 class ConversationScreen extends StatefulWidget {
-  const ConversationScreen({Key? key}) : super(key: key);
+  const ConversationScreen({Key? key, required this.userModel}) : super(key: key);
+  final UserModel userModel;
 
   @override
   State<ConversationScreen> createState() => _ConversationScreenState();
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
-  List<String> messages = [
-    'first',
-    'second',
-  ];
-
-
   @override
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
     FirestoreData firestoreData = FirestoreData();
 
-
-    void sendMessage(String msg) {
-      setState(() {
-        print(msg);
-        messages.add(msg);
-        textController.clear();
-      });
+    _sendMessage(String message) {
+      firestoreData.sendMessage(message, widget.userModel.uid, widget.userModel.displayName.toString());
+      textController.clear();
     }
 
     return Scaffold(
@@ -59,26 +52,51 @@ class _ConversationScreenState extends State<ConversationScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding/2, horizontal: kEdgeHorizontalPadding),
+          padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 2, horizontal: kEdgeHorizontalPadding),
           child: Column(
             children: [
-              Expanded(
-                  child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                reverse: true,
-                itemCount: messages.length,
-                itemBuilder: (context, index) => Bubble(
-                  alignment: Alignment.centerRight,
-                  color: const Color(0xFF809BD4),
-                  padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
-                  margin: const BubbleEdges.only(top: kEdgeVerticalPadding / 2),
-                  nip: BubbleNip.rightBottom,
-                  child: Text(
-                    messages[index],
-                    style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
-                  ),
-                ),
-              )),
+              StreamBuilder<QuerySnapshot>(
+                  stream:
+                      FirebaseFirestore.instance.collection('chats').doc('user-uid').collection('messages').orderBy('sendAt', descending: true).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text("Something went wrong");
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(
+                        color: kMainBlueColor,
+                      );
+                    }
+
+                    if (snapshot.data!.docs.isEmpty) {
+                      return Center(
+                          child: Text(
+                        "Сообщений нет",
+                        style: Theme.of(context).textTheme.headline3,
+                      ));
+                    }
+
+                    final data = snapshot.data!.docs.map((DocumentSnapshot e) => e.data()! as Map<String, dynamic>).toList();
+
+                    return Expanded(
+                        child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      reverse: true,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) => Bubble(
+                        alignment: Alignment.centerRight,
+                        color: const Color(0xFF809BD4),
+                        padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
+                        margin: const BubbleEdges.only(top: kEdgeVerticalPadding / 2),
+                        nip: BubbleNip.rightBottom,
+                        child: Text(
+                          data[index]['content'].toString(),
+                          style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ));
+                  }),
               const SizedBox(
                 height: kEdgeVerticalPadding / 2,
               ),
@@ -114,16 +132,16 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                       ),
                                     )),
                                 onTap: () {
-                                  sendMessage(textController.text);
                                 }),
-
-                            const SizedBox(width: kEdgeHorizontalPadding,),
-
+                            const SizedBox(
+                              width: kEdgeHorizontalPadding,
+                            ),
                             Expanded(
                               child: TextField(
                                 controller: textController,
                                 decoration: const InputDecoration(hintText: 'message', border: InputBorder.none),
                                 maxLines: 1,
+                                // onSubmitted: _sendMessage(textController.text),
                               ),
                             )
                           ],
@@ -135,7 +153,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     width: kEdgeHorizontalPadding,
                   ),
 
-
                   /// send image
                   GestureDetector(
                       child: Container(
@@ -145,13 +162,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Padding(
-                            padding: EdgeInsets.all(kEdgeHorizontalPadding/1.3),
+                            padding: EdgeInsets.all(kEdgeHorizontalPadding / 1.3),
                             child: Icon(
                               Icons.arrow_upward_rounded,
                               color: Colors.white,
                             ),
                           )),
                       onTap: () {
+                        _sendMessage(textController.text);
                       }),
                 ],
               )

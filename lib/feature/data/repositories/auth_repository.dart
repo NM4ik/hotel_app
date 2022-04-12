@@ -23,7 +23,7 @@ class AuthenticationRepository {
   })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
 
-  var currentUser = UserModel.empty;
+  dynamic currentUser = UserModel.empty;
 
   Stream<UserModel> get userModel {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {

@@ -8,8 +8,6 @@ class CardRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // width: 165,
-      // height: 230,
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
         child: Stack(
@@ -51,7 +49,7 @@ class CardRoom extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
                       ),
                       SizedBox(
-                        width: 60,
+                        width: double.infinity,
                         height: 20,
                         child: ListView.builder(
                             itemCount: 5,
@@ -65,9 +63,19 @@ class CardRoom extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            '3000 руб/ночь',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                '3000',
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+                              ),
+                              SizedBox(width: 3,),
+                              Text(
+                                'руб/ночь',
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 10),
+                              ),
+                            ],
                           ),
                           GestureDetector(
                             onTap: () {
