@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -9,8 +10,8 @@ import '../../../common/app_constants.dart';
 import '../components/onboarding_dot.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({Key? key, required this.index}) : super(key: key);
-  final int index;
+  const ProductScreen({Key? key, required this.roomModel}) : super(key: key);
+  final RoomModel roomModel;
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -20,7 +21,6 @@ class _ProductScreenState extends State<ProductScreen> {
   final GlobalKey _scaffold = GlobalKey();
   final controller = PageController();
   int currentPage = 0;
-
 
   @override
   void dispose() {
@@ -53,7 +53,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         builder: (BuildContext context, int index) {
                           return PhotoViewGalleryPageOptions(
                             // imageProvider: const AssetImage("assets/images/room_image_3.png"),
-                            imageProvider: NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
+                            imageProvider: const NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
                             heroAttributes: PhotoViewHeroAttributes(tag: index),
                             basePosition: Alignment.center,
                             // initialScale: PhotoViewComputedScale.covered * 0.5,
@@ -76,7 +76,9 @@ class _ProductScreenState extends State<ProductScreen> {
                           child: SizedBox(
                             width: 20.0,
                             height: 20.0,
-                            child: CircularProgressIndicator(color: kMainBlueColor,),
+                            child: CircularProgressIndicator(
+                              color: kMainBlueColor,
+                            ),
                           ),
                         ),
                       ),
@@ -148,7 +150,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         children: [
                           /// product name
                           Text(
-                            'Бизнес номер для двоих',
+                            widget.roomModel.name,
                             style: Theme.of(context).textTheme.headline1,
                           ),
 
@@ -157,7 +159,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
 
                           /// product type subtitle
-                          const Text('Премиум', style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
+                          Text(widget.roomModel.type, style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ),
@@ -168,7 +170,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         children: [
                           /// product price
                           Text(
-                            '₽ 3000',
+                            '₽ ${widget.roomModel.price}',
                             style: Theme.of(context).textTheme.headline1,
                           ),
 
@@ -192,8 +194,9 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
 
                 /// Description bloc
-                const Text(
-                  'Расслабьтесь в современном номере площадью 35–36 кв. м с одной большой двуспальной кроватью (King), удобным креслом для чтения, минибаром, душевой кабиной с тропическим душем, отдельной ванной и бесплатным Wi-Fi.',
+                Text(
+                  widget.roomModel.description.toString(),
+                  //'Расслабьтесь в современном номере площадью 35–36 кв. м с одной большой двуспальной кроватью (King), удобным креслом для чтения, минибаром, душевой кабиной с тропическим душем, отдельной ванной и бесплатным Wi-Fi.',
                   style: TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
                 )
               ],
@@ -206,7 +209,7 @@ class _ProductScreenState extends State<ProductScreen> {
           onPressed: () => setState(() {}),
           elevation: 3,
           label: Text(
-            'Забронировать ${widget.index}',
+            'Забронировать ${widget.roomModel.id}',
           ),
         ),
       ),

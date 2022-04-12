@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class RoomEntity extends Equatable {
   final int id;
   final String isSmoking;
-  final String bedsCount;
+  final int bedsCount;
   final String? description;
   final String name;
   final int price;

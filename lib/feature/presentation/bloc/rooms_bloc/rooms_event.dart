@@ -8,3 +8,8 @@ class RoomsCheckConnectionEvent extends RoomsEvent {
   @override
   List<Object> get props => [];
 }
+
+class RoomsLoadingEvent extends RoomsEvent {
+  @override
+  List<Object> get props => [];
+}

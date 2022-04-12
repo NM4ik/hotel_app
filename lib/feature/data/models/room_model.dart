@@ -4,7 +4,7 @@ class RoomModel extends RoomEntity {
   const RoomModel(
       {required int id,
       required String isSmoking,
-      required String bedsCount,
+      required int bedsCount,
       required String? description,
       required String name,
       required int price,

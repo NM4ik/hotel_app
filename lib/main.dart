@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => locator<ProfileBloc>()),
-        BlocProvider(create: (context) => locator<RoomsBloc>()..add(RoomsCheckConnectionEvent())),
+        BlocProvider(create: (context) => locator<RoomsBloc>()),
         BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
       ],
       child: MaterialApp(
