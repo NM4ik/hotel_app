@@ -25,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+    super.initState();
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       setState(() {
         if (user == null) {
@@ -32,10 +33,14 @@ class _ChatScreenState extends State<ChatScreen> {
         } else {
           userModel = UserModel.toUser(user);
         }
-        print(userModel);
       });
     });
-    super.initState();
+
+  }
+
+  Future<DocumentSnapshot> initChat() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('chats').doc(userModel.uid).get();
+    return snapshot;
   }
 
   @override
@@ -95,39 +100,72 @@ class _ChatScreenState extends State<ChatScreen> {
                     showCustomDialog(context, 'Нельзя писать в чат, будучи неавторизованным');
                   }
                   if (userModel != UserModel.empty) {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ConversationScreen(userModel: userModel)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ConversationScreen(userModel: userModel))).then((_) => setState(() {}));
                   }
                 },
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  color: Colors.transparent,
-                  elevation: 0,
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: kMainBlueColor,
-                            borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                          ),
-                          child: const Icon(
-                            Icons.person_pin,
-                            color: Colors.white,
-                            size: 35,
-                          ),
+                child: FutureBuilder(
+                    future: initChat(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      late String lastMessage;
+                      late String lastMessageUid;
+
+                      if (!snapshot.hasData || snapshot.hasError) {
+                        lastMessage = 'Сообщений еще не было или они не загрузились..';
+                        lastMessageUid = '';
+                      }
+
+                      if (snapshot.hasData) {
+                        lastMessage = snapshot.data['recentMessage']['content'];
+                        lastMessageUid = snapshot.data['recentMessage']['sendBy'];
+                      }
+                      return Card(
+                        margin: EdgeInsets.zero,
+                        color: Colors.transparent,
+                        elevation: 0,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  color: kMainBlueColor,
+                                  borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                                ),
+                                child: const Icon(
+                                  Icons.person_pin,
+                                  color: Colors.white,
+                                  size: 35,
+                                ),
+                              ),
+                              title: Text('Поддержка', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16)),
+                              subtitle: Text.rich(
+                                lastMessageUid == userModel.uid
+                                    ? TextSpan(children: [
+                                        TextSpan(
+                                            // text: '${userModel.displayName}: ',
+                                            text: '${'qwe'}: ',
+                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
+                                        TextSpan(
+                                            text: lastMessage,
+                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400))
+                                      ])
+                                    : TextSpan(children: [
+                                        TextSpan(
+                                            text: 'поддержка: ',
+                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
+                                        TextSpan(
+                                            text: lastMessage,
+                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400))
+                                      ]),
+                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                maxLines: 1,
+                              ),
+                            ),
+                          ],
                         ),
-                        title: Text('Поддержка', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16)),
-                        subtitle: Text(
-                          'Какое-то непрочитанное с...',
-                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12),
-                          maxLines: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                      );
+                    }),
               ),
             ],
           )),

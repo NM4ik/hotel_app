@@ -5,7 +5,7 @@ class MessageModel extends MessageEntity {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'content': content,
-        'sendAt': sendAt,
+        'sendAt': sendAt.millisecondsSinceEpoch,
         'sendBy': sendBy,
       };
 }

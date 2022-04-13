@@ -2,6 +2,7 @@ import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_ma/common/app_themes.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
 import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
@@ -23,10 +24,17 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     TextEditingController textController = TextEditingController();
     FirestoreData firestoreData = FirestoreData();
+    late bool isData;
 
-    _sendMessage(String message) {
-      firestoreData.sendMessage(message, widget.userModel.uid, widget.userModel.displayName.toString());
+    _sendMessage(String message, bool isData) async{
+      if (isData == false) {
+        await firestoreData.initializeChat(message, widget.userModel);
+      }
+
+      firestoreData.sendMessage(message, widget.userModel.uid);
       textController.clear();
+
+
     }
 
     return Scaffold(
@@ -56,47 +64,78 @@ class _ConversationScreenState extends State<ConversationScreen> {
           child: Column(
             children: [
               StreamBuilder<QuerySnapshot>(
-                  stream:
-                      FirebaseFirestore.instance.collection('chats').doc('user-uid').collection('messages').orderBy('sendAt', descending: true).snapshots(),
+                  stream: FirebaseFirestore.instance
+                      .collection('chats')
+                      .doc(widget.userModel.uid)
+                      .collection('messages')
+                      .orderBy('sendAt', descending: true)
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Text("Something went wrong");
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator(
-                        color: kMainBlueColor,
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: kMainBlueColor,
+                        ),
                       );
-                    }
-
-                    if (snapshot.data!.docs.isEmpty) {
-                      return Center(
-                          child: Text(
-                        "Сообщений нет",
-                        style: Theme.of(context).textTheme.headline3,
-                      ));
                     }
 
                     final data = snapshot.data!.docs.map((DocumentSnapshot e) => e.data()! as Map<String, dynamic>).toList();
 
+                    if (data.isEmpty) {
+                      isData = false;
+
+                      return Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Bubble(
+                            alignment: Alignment.center,
+                            color: const Color(0xFF809BD4),
+                            child: const Text(
+                              'Сообщений пока что нет...',
+                              style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
+                            ),
+                            padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
+                            margin: const BubbleEdges.only(top: kEdgeVerticalPadding / 2),
+                          ),
+                        ),
+                      );
+                    }else{
+                      isData = true;
+                    }
+
                     return Expanded(
                         child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      reverse: true,
-                      itemCount: data.length,
-                      itemBuilder: (context, index) => Bubble(
-                        alignment: Alignment.centerRight,
-                        color: const Color(0xFF809BD4),
-                        padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
-                        margin: const BubbleEdges.only(top: kEdgeVerticalPadding / 2),
-                        nip: BubbleNip.rightBottom,
-                        child: Text(
-                          data[index]['content'].toString(),
-                          style: const TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ));
+                            physics: const BouncingScrollPhysics(),
+                            reverse: true,
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              final isUser = widget.userModel.uid == data[index]['sendBy'];
+
+                              return Bubble(
+                                alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                                color: isUser ? const Color(0xFF809BD4) : Theme.of(context).cardColor,
+                                padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
+                                margin: const BubbleEdges.only(top: kEdgeVerticalPadding / 2),
+                                nip: isUser ? BubbleNip.rightBottom : BubbleNip.leftBottom,
+                                child: Text(
+                                  data[index]['content'].toString(),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Theme.of(context).brightness == Brightness.light
+                                          ? isUser
+                                              ? Colors.white
+                                              : Colors.black
+                                          : Colors.white,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              );
+                            }));
                   }),
+
               const SizedBox(
                 height: kEdgeVerticalPadding / 2,
               ),
@@ -131,8 +170,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                         color: Colors.white,
                                       ),
                                     )),
-                                onTap: () {
-                                }),
+                                onTap: () {}),
                             const SizedBox(
                               width: kEdgeHorizontalPadding,
                             ),
@@ -169,7 +207,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
                             ),
                           )),
                       onTap: () {
-                        _sendMessage(textController.text);
+                        _sendMessage(
+                          textController.text,
+                          isData,
+                        );
                       }),
                 ],
               )
