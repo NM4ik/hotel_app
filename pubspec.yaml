@@ -41,7 +41,7 @@ dependencies:
 
   # Platform abilities
   internet_connection_checker: ^0.0.1+3
-#  connectivity_plus: ^2.2.1
+  #  connectivity_plus: ^2.2.1
 
   # Value equality
   equatable: ^2.0.3
@@ -76,8 +76,18 @@ dependencies:
   cloud_firestore:
   firebase_storage: ^10.2.9
 
+  # dates
+  syncfusion_flutter_datepicker: ^20.1.48
+
+  # phone auth
+  intl_phone_field: ^3.1.0
+  pinput: ^2.2.7
+
   # for jsons
   json_annotation:
+
+  # toasts
+  bot_toast: ^4.0.1
 
   # chat modules
   flutter_chat_ui: ^1.5.7

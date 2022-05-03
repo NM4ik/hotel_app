@@ -19,41 +19,75 @@ class ProfileScreenInfo extends StatefulWidget {
 }
 
 class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
-
   bool? notificationStatus = locator.get<PersonStatus>().getNotifications();
   AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
-      listener: (context, state) {
-        if(state is ProfileAuthenticatedState){
-          print('LogIn');
-        }
-        if(state is ProfileUnAuthenticatedState){
-          print('LogOut');
-        }
-      },
+      listener: (context, state) {},
       child: Column(
         children: [
-          const RowTableWidget(title: 'Имя', query: 'Никита',),
-          SizedBox(height: 1, child: Opacity(opacity: 0.5, child: Container(color: kMainGreyColor,)),),
-          const RowTableWidget(title: 'Фамилия', query: 'Михайлов',),
-          SizedBox(height: 1, child: Opacity(opacity: 0.5, child: Container(color: kMainGreyColor,)),),
-          const RowTableWidget(title: 'Отчество', query: 'Ярославович',),
-          SizedBox(height: 1, child: Opacity(opacity: 0.5, child: Container(color: kMainGreyColor,)),),
-          const RowTableWidget(title: 'Email', query: 'nikitka32171@gmail.com',),
-          SizedBox(height: 1, child: Opacity(opacity: 0.5, child: Container(color: kMainGreyColor,)),),
+          const RowTableWidget(
+            title: 'Имя',
+            query: 'Никита',
+          ),
+          SizedBox(
+            height: 1,
+            child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  color: kMainGreyColor,
+                )),
+          ),
+          const RowTableWidget(
+            title: 'Фамилия',
+            query: 'Михайлов',
+          ),
+          SizedBox(
+            height: 1,
+            child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  color: kMainGreyColor,
+                )),
+          ),
+          const RowTableWidget(
+            title: 'Отчество',
+            query: 'Ярославович',
+          ),
+          SizedBox(
+            height: 1,
+            child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  color: kMainGreyColor,
+                )),
+          ),
+          const RowTableWidget(
+            title: 'Email',
+            query: 'nikitka32171@gmail.com',
+          ),
+          SizedBox(
+            height: 1,
+            child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  color: kMainGreyColor,
+                )),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(flex: 3, child: Text('Уведомления', style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(fontSize: 16),)),
-              const SizedBox(width: kEdgeHorizontalPadding,),
-
+              Expanded(
+                  flex: 3,
+                  child: Text(
+                    'Уведомления',
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
+                  )),
+              const SizedBox(
+                width: kEdgeHorizontalPadding,
+              ),
               FlutterSwitch(
                 width: 70,
                 height: 30,
@@ -72,19 +106,31 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
                   });
                 },
               ),
-
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 50,
+              ),
             ],
           ),
-          SizedBox(height: 1, child: Opacity(opacity: 0.5, child: Container(color: kMainGreyColor,)),),
-
-          const SizedBox(height: kEdgeVerticalPadding,),
-
-          SizedBox(width: 170, height: 35, child: DefaultButtonWidget(press: () {
-            context.read<AuthBloc>().add(AuthLogoutEvent());
-          }, title: 'Выйти',)),
-
-
+          SizedBox(
+            height: 1,
+            child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  color: kMainGreyColor,
+                )),
+          ),
+          const SizedBox(
+            height: kEdgeVerticalPadding,
+          ),
+          SizedBox(
+              width: 170,
+              height: 35,
+              child: DefaultButtonWidget(
+                press: () {
+                  context.read<AuthBloc>().add(AuthLogoutEvent());
+                },
+                title: 'Выйти',
+              )),
         ],
       ),
     );

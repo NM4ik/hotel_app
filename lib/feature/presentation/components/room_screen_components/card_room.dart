@@ -1,13 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
-import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 
 import '../../screens/product_screen.dart';
 
 class CardRoom extends StatelessWidget {
-  const CardRoom({Key? key, required this.roomModel}) : super(key: key);
+  const CardRoom({Key? key, required this.roomModel, required this.dateTimeFirst, required this.dateTimeSecond}) : super(key: key);
   final RoomModel roomModel;
+  final DateTime dateTimeFirst;
+  final DateTime dateTimeSecond;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,8 @@ class CardRoom extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (gridContext) => ProductScreen(
                   roomModel: roomModel,
+                dateTimeFirst: dateTimeFirst,
+                dateTimeSecond: dateTimeSecond,
                 )));
       },
       child: SizedBox(
@@ -25,10 +29,14 @@ class CardRoom extends StatelessWidget {
             children: [
               Stack(children: [
                 SizedBox(
+                  height: double.infinity,
                     width: double.infinity,
-                    child: Image.asset(
-                      'assets/images/room_card_example.png',
-                      fit: BoxFit.fill,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(kEdgeMainBorder*2),
+                      child: Image.asset(
+                        'assets/images/room_card_example.png',
+                        fit: BoxFit.cover,
+                      ),
                     )),
                 Container(
                   decoration: BoxDecoration(color: Colors.black.withOpacity(0.3), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
@@ -58,7 +66,7 @@ class CardRoom extends StatelessWidget {
                       children: [
                         Text(
                           roomModel.name,
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -80,12 +88,12 @@ class CardRoom extends StatelessWidget {
                               children: [
                                 Text(
                                   roomModel.price.toString(),
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 3,
                                 ),
-                                Text(
+                                const Text(
                                   'руб/ночь',
                                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 10),
                                 ),

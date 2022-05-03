@@ -4,10 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 
-import '../../../../core/locator_service.dart';
-import '../../../data/repositories/firestore_repository.dart';
-
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

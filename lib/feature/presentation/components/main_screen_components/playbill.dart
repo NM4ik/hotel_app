@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -37,22 +38,22 @@ class PlayBill extends StatelessWidget {
                       flex: 3,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(kEdgeMainBorder)
                         ),
                         height: 100,
                         alignment: Alignment.center,
-                        child: const Text('playbill'),
+                        // child: Image.network(images[index], fit: BoxFit.cover,),
                       ),
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     const Text(
-                      '1 сентября - 7 сентября',
+                      'В будущем',
                       style: TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
                     ),
-                    Text('Формула 1', style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
+                    Text('Мероприятие', style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
                   ],
                 );
               }),

@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
-import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 
 import '../../../core/locator_service.dart';
 import '../datasources/shared_preferences_methods.dart';
@@ -14,8 +12,6 @@ import '../models/user_model.dart';
 class AuthenticationRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  final PersonStatus personStatus = PersonStatus(sharedPreferences: locator());
-
 
   AuthenticationRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
@@ -29,7 +25,6 @@ class AuthenticationRepository {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final userModel = firebaseUser == null ? UserModel.empty : firebaseUser.toUser;
       currentUser = userModel;
-      personStatus.writePersonToCache(userModel);
       return userModel;
     });
   }
@@ -46,7 +41,7 @@ class AuthenticationRepository {
 
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      print('Exception by singInWithGoogle $e');
+      log('$e', name: 'Exception by singInWithGoogle');
       return null;
     }
   }
@@ -57,9 +52,8 @@ class AuthenticationRepository {
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
       ]);
-      print(currentUser);
     } catch (e) {
-      print('Exception by logout $e');
+      log('$e', name: 'Exception by logout');
     }
   }
 

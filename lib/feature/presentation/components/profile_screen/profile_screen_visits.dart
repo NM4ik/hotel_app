@@ -15,7 +15,7 @@ class ProfileScreenVisits extends StatelessWidget {
     FirestoreData firestoreData = FirestoreData();
 
     return FutureBuilder(
-        future: users.doc(uid).collection('visits').get(),
+        future: FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text("Не удалось загрузить данные");
@@ -69,7 +69,7 @@ class ProfileScreenVisits extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${visits[index].dateStart}  -  ${visits[index].dateEnd}',
+                                '${visits[index].dateStart.toString()}  -  ${visits[index].dateEnd.toString()}',
                                 style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
                               ),
                               const SizedBox(
@@ -90,18 +90,36 @@ class ProfileScreenVisits extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: visits[index].roomType == 'Премиум' ? kVinousColor : kMainBlueColor,
-                                borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                              child: Text(
-                                visits[index].roomType,
-                                style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                          Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: visits[index].roomType == 'Премиум' ? kVinousColor : kMainBlueColor,
+                                    borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                  child: Text(
+                                    visits[index].roomType,
+                                    style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(width: 10,),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: visits[index].status == 'Забронировано' ? kMainGreyColor : kMainBlueColor,
+                                    borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                  child: Text(
+                                    visits[index].status.toString(),
+                                    style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+
                           Container(
                             decoration: BoxDecoration(color: kMainBlueColor, borderRadius: BorderRadius.circular(10)),
                             child: const Center(

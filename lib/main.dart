@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_themes.dart';
@@ -31,13 +32,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
       ],
       child: MaterialApp(
+          builder: BotToastInit(),
+          navigatorObservers: [BotToastNavigatorObserver()],
           debugShowCheckedModeBanner: false,
           title: 'Hotel App',
           themeMode: ThemeMode.system,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
-          // home: Onboarding());
-          // home: HomeScreen());
           home: const HomeScreen()),
     );
   }

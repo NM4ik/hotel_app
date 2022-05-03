@@ -1,17 +1,23 @@
+import 'dart:developer';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
+import 'package:hotel_ma/feature/presentation/screens/order_screen.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../../common/app_constants.dart';
+import '../../data/models/user_model.dart';
 import '../components/onboarding_dot.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({Key? key, required this.roomModel}) : super(key: key);
+  const ProductScreen({Key? key, required this.roomModel, required this.dateTimeFirst, required this.dateTimeSecond}) : super(key: key);
   final RoomModel roomModel;
+  final DateTime dateTimeFirst;
+  final DateTime dateTimeSecond;
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -30,6 +36,15 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> images = [
+      'assets/images/room_image_4.jpg',
+      'assets/images/room_image_3.jpg',
+      'assets/images/room_image_2.jpg',
+      "assets/images/room_image_1.jpg"
+    ];
+
+    UserModel userModel = UserModel.toUser(FirebaseAuth.instance.currentUser);
+
     return Scaffold(
       key: _scaffold,
       body: SafeArea(
@@ -48,36 +63,39 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       // width: double.infinity,
                       height: 330,
-                      child: PhotoViewGallery.builder(
-                        scrollPhysics: const BouncingScrollPhysics(),
-                        builder: (BuildContext context, int index) {
-                          return PhotoViewGalleryPageOptions(
-                            // imageProvider: const AssetImage("assets/images/room_image_3.png"),
-                            imageProvider: const NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
-                            heroAttributes: PhotoViewHeroAttributes(tag: index),
-                            basePosition: Alignment.center,
-                            // initialScale: PhotoViewComputedScale.covered * 0.5,
-                            minScale: PhotoViewComputedScale.covered,
-                            maxScale: PhotoViewComputedScale.covered * 2,
-                          );
-                        },
-                        pageController: controller,
-                        onPageChanged: (index) {
-                          setState(() {
-                            currentPage = index;
-                          });
-                        },
-                        itemCount: 7,
-                        enableRotation: true,
-                        backgroundDecoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                        ),
-                        loadingBuilder: (context, event) => const Center(
-                          child: SizedBox(
-                            width: 20.0,
-                            height: 20.0,
-                            child: CircularProgressIndicator(
-                              color: kMainBlueColor,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                        child: PhotoViewGallery.builder(
+                          scrollPhysics: const BouncingScrollPhysics(),
+                          builder: (BuildContext context, int index) {
+                            return PhotoViewGalleryPageOptions(
+                              imageProvider: AssetImage(images[index]),
+                              // imageProvider: const NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
+                              heroAttributes: PhotoViewHeroAttributes(tag: index),
+                              basePosition: Alignment.center,
+                              // initialScale: PhotoViewComputedScale.covered * 0.5,
+                              minScale: PhotoViewComputedScale.covered,
+                              maxScale: PhotoViewComputedScale.covered * 2,
+                            );
+                          },
+                          pageController: controller,
+                          onPageChanged: (index) {
+                            setState(() {
+                              currentPage = index;
+                            });
+                          },
+                          itemCount: 4,
+                          enableRotation: true,
+                          backgroundDecoration: BoxDecoration(
+                            color: Theme.of(context).canvasColor,
+                          ),
+                          loadingBuilder: (context, event) => const Center(
+                            child: SizedBox(
+                              width: 20.0,
+                              height: 20.0,
+                              child: CircularProgressIndicator(
+                                color: kMainBlueColor,
+                              ),
                             ),
                           ),
                         ),
@@ -126,7 +144,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               child: OnboardingDot(
                                 currentPage: currentPage,
                                 controller: controller,
-                                length: 7,
+                                length: 4,
                                 dotColor: Colors.white.withOpacity(0.4),
                               ),
                             ),
@@ -159,7 +177,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
 
                           /// product type subtitle
-                          Text(widget.roomModel.type, style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
+                          Text(widget.roomModel.type, style: const TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ),
@@ -197,7 +215,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 Text(
                   widget.roomModel.description.toString(),
                   //'Расслабьтесь в современном номере площадью 35–36 кв. м с одной большой двуспальной кроватью (King), удобным креслом для чтения, минибаром, душевой кабиной с тропическим душем, отдельной ванной и бесплатным Wi-Fi.',
-                  style: TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
+                  style: TextStyle(color: const Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
                 )
               ],
             )),
@@ -206,10 +224,25 @@ class _ProductScreenState extends State<ProductScreen> {
         padding: const EdgeInsets.only(bottom: kEdgeVerticalPadding),
         child: FloatingActionButton.extended(
           backgroundColor: kMainBlueColor,
-          onPressed: () => setState(() {}),
+          onPressed: () {
+            if (userModel == UserModel.empty) {
+              log(userModel.toString(), name: "MODEL: ");
+              showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
+            } else {
+              log(userModel.toString(), name: "MODEL2: ");
+              log(FirebaseAuth.instance.currentUser.toString(), name: "userModel2: ");
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    OrderScreen(
+                      roomModel: widget.roomModel,
+                      dateTimeFirst: widget.dateTimeFirst,
+                      dateTimeSecond: widget.dateTimeSecond,
+                    )));
+            }
+          },
           elevation: 3,
-          label: Text(
-            'Забронировать ${widget.roomModel.id}',
+          label: const Text(
+            'Забронировать номер',
           ),
         ),
       ),
@@ -217,3 +250,32 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 }
+void showCustomDialog(BuildContext context, String content) => showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(kEdgeMainBorder),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(kEdgeVerticalPadding / 2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              content,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            const SizedBox(
+              height: kEdgeVerticalPadding / 2,
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Ок'),
+              style: ElevatedButton.styleFrom(primary: kMainBlueColor),
+            )
+          ],
+        ),
+      ),
+    ));

@@ -30,11 +30,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       if (isData == false) {
         await firestoreData.initializeChat(message, widget.userModel);
       }
-
       firestoreData.sendMessage(message, widget.userModel.uid);
       textController.clear();
-
-
     }
 
     return Scaffold(
@@ -58,6 +55,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
         ),
         centerTitle: true,
       ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 2, horizontal: kEdgeHorizontalPadding),

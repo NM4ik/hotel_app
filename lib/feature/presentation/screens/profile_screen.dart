@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/locator_service.dart';
@@ -6,6 +9,7 @@ import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dar
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/profile_screen/profile_screeen_unsigned.dart';
+import 'package:hotel_ma/feature/presentation/widgets/toat_attachments%20.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/app_constants.dart';
@@ -39,7 +43,16 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AuthenticatedState) {
+          print("IN2");
+          toatAuth("Вход");
+        }
+        if (state is UnAuthenticatedState) {
+          print("OUT2");
+          toatAuth("Выход");
+        }
+      },
       builder: (context, state) {
         if (state is UnAuthenticatedState) {
           return const ProfileScreenUnAuth();
@@ -75,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               height: kEdgeVerticalPadding,
                             ),
                             GestureDetector(
-                              onTap: () async{
+                              onTap: () async {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
                                 PersonStatus personStatus = PersonStatus(sharedPreferences: prefs);
                                 personStatus.getPersonFromCache();
@@ -87,7 +100,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   borderRadius: BorderRadius.circular(99),
                                   border: Border.all(color: Colors.white, width: 2),
                                 ),
-                                child: Image.asset("assets/images/profile_image.png"),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(99),
+                                    child: Image.network(
+                                      '${state.userModel.photoURL}',
+                                      fit: BoxFit.contain,
+                                    )),
                               ),
                             ),
                             const SizedBox(
@@ -97,11 +115,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               children: [
                                 Text(
                                   state.userModel.displayName.toString(),
-                                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
-                                Text(
-                                  'A mantra goes here??',
-                                  style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w400),
+                                const Text(
+                                  'Я тут новенький',
+                                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w400),
                                 ),
                               ],
                             )

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -32,6 +33,10 @@ class PersonalOffer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.grey,
               ),
+              child: CachedNetworkImage(
+                imageUrl: 'https://cdn.dribbble.com/users/1292088/screenshots/14587244/media/3a3964374422db0fb6359560bb67a929.jpg?compress=1&resize=800x600',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Align(
@@ -43,7 +48,7 @@ class PersonalOffer extends StatelessWidget {
                 color: kMainBlueColor,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Center(child: Text('до окончания: 35 дней 23:26:21', style: TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 9, color: Colors.white),)),
+              child: Center(child: Text('до окончания: 35 дней 23:26:21', style: const TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 9, color: Colors.white),)),
             ),
           ),
         ])

@@ -14,11 +14,21 @@ import '../widgets/square_button_widget.dart';
 class RoomScreen extends StatefulWidget {
   const RoomScreen({Key? key}) : super(key: key);
 
+
   @override
   State<RoomScreen> createState() => _RoomScreenState();
 }
 
 class _RoomScreenState extends State<RoomScreen> {
+  DateTime dateTimeFirst = DateTime.now();
+  late DateTime dateTimeSecond = dateTimeFirst.add(const Duration(days: 1));
+  void getDateValues(DateTime dateTimeFirst, DateTime dateTimeSecond){
+    setState(() {
+      this.dateTimeFirst = dateTimeFirst;
+      this.dateTimeSecond = dateTimeSecond;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     context.read<RoomsBloc>().add(RoomsCheckConnectionEvent());
@@ -36,13 +46,13 @@ class _RoomScreenState extends State<RoomScreen> {
 
           if (state is RoomsEmptyState) {
             return const Center(
-              child: Text('Комнат нет'),
+              child: Text('Свободных номеров нет'),
             );
           }
 
           if (state is RoomsLoadingErrorState) {
             return const Center(
-              child: Text('Комнаты не загрузились'),
+              child: Text('Номена не загрузились'),
             );
           }
 
@@ -82,8 +92,12 @@ class _RoomScreenState extends State<RoomScreen> {
 
                   /// Filters for free rooms
                   /// refactor, https://gallery.flutter.dev/ = find calendar picker
-                  const SliverToBoxAdapter(
-                    child: Filters(),
+                  SliverToBoxAdapter(
+                    child: Filters(
+                      dateTimeFirst: dateTimeFirst,
+                      dateTimeSecond: dateTimeSecond,
+                      changeDateTime: getDateValues,
+                    ),
                   ),
 
                   /// Grid free rooms
@@ -112,6 +126,8 @@ class _RoomScreenState extends State<RoomScreen> {
                     delegate: SliverChildBuilderDelegate(
                       (gridContext, index) {
                         return CardRoom(
+                          dateTimeSecond: dateTimeSecond,
+                          dateTimeFirst: dateTimeFirst,
                           roomModel: state.rooms[index],
                         );
                       },

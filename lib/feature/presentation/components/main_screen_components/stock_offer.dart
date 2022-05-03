@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -27,7 +28,7 @@ class StockOffer extends StatelessWidget {
           SizedBox(
             height: 250,
             child: ListView.separated(
-              itemCount: 4,
+              itemCount: 3,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) => Column(
                 children: [
@@ -40,7 +41,9 @@ class StockOffer extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColorLight,
                         ),
-                        child: Image.asset("assets/images/car.png"),
+                        // child: CachedNetworkImage(
+                        //   imageUrl: images[index],
+                        // )
                       ),
                     ),
                     Align(
@@ -66,7 +69,8 @@ class StockOffer extends StatelessWidget {
                   Container(
                       width: 120,
                       child: Text(
-                        "BMW i520 4л. 500 л.с. задний привод",
+                        'Название автопрома',
+                        // names[index],
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                       )),
                   const SizedBox(
@@ -83,7 +87,8 @@ class StockOffer extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                           child: Text(
-                            '2300P',
+                            '3000Р',
+                            // '${prices[index]}P',
                             style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
                           ),
                         ),

@@ -5,7 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/screens/conversation_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/faq_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/product_screen.dart';
@@ -21,34 +23,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late UserModel userModel;
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      setState(() {
-        if (user == null) {
-          userModel = UserModel.empty;
-        } else {
-          userModel = UserModel.toUser(user);
-        }
-      });
-    });
-
-  }
-
-  Future<DocumentSnapshot> initChat() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('chats').doc(userModel.uid).get();
-    return snapshot;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   final String imageRoot = "assets/images/car_2.png";
+  final currentUser = locator.get<AuthenticationRepository>().currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +53,36 @@ class _ChatScreenState extends State<ChatScreen> {
                 height: kEdgeVerticalPadding / 2,
               ),
 
-              SizedBox(
-                height: 110,
-                child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => _cardWidget(context, index),
-                    separatorBuilder: (context, index) => const SizedBox(
-                          width: 15,
-                        ),
-                    itemCount: 6),
-              ),
+              FutureBuilder(
+                  future: FirebaseFirestore.instance.collection('FAQ').get(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const SizedBox(
+                          height: 110,
+                          child: CircularProgressIndicator(
+                            color: kMainBlueColor,
+                          ));
+                    }
+
+                    if (snapshot.hasData) {
+                      final data = snapshot.data!.docs.map((e) => e.data() as Map<String, dynamic>).toList();
+
+                      return SizedBox(
+                        height: 110,
+                        child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => _cardWidget(context, index, data),
+                            separatorBuilder: (context, index) => const SizedBox(
+                                  width: 15,
+                                ),
+                            itemCount: snapshot.data!.docs.length),
+                      );
+                    } else {
+                      return const Text('Что-то пошло не так');
+                    }
+                  }),
 
               const SizedBox(
                 height: kEdgeVerticalPadding / 2,
@@ -96,29 +90,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
               GestureDetector(
                 onTap: () {
-                  if (userModel == UserModel.empty) {
+                  if (currentUser == UserModel.empty) {
                     showCustomDialog(context, 'Нельзя писать в чат, будучи неавторизованным');
                   }
-                  if (userModel != UserModel.empty) {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ConversationScreen(userModel: userModel))).then((_) => setState(() {}));
+                  if (currentUser != UserModel.empty) {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => ConversationScreen(userModel: currentUser)))
+                        .then((_) => setState(() {}));
                   }
                 },
-                child: FutureBuilder(
-                    future: initChat(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      late String lastMessage;
-                      late String lastMessageUid;
-
-                      if (!snapshot.hasData || snapshot.hasError) {
-                        lastMessage = 'Сообщений еще не было или они не загрузились..';
-                        lastMessageUid = '';
-                      }
-
-                      if (snapshot.hasData) {
-                        lastMessage = snapshot.data['recentMessage']['content'];
-                        lastMessageUid = snapshot.data['recentMessage']['sendBy'];
-                      }
-                      return Card(
+                child: currentUser == UserModel.empty
+                    ? Card(
                         margin: EdgeInsets.zero,
                         color: Colors.transparent,
                         elevation: 0,
@@ -139,44 +121,89 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ),
                               title: Text('Поддержка', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16)),
-                              subtitle: Text.rich(
-                                lastMessageUid == userModel.uid
-                                    ? TextSpan(children: [
-                                        TextSpan(
-                                            // text: '${userModel.displayName}: ',
-                                            text: '${'qwe'}: ',
-                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
-                                        TextSpan(
-                                            text: lastMessage,
-                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400))
-                                      ])
-                                    : TextSpan(children: [
-                                        TextSpan(
-                                            text: 'поддержка: ',
-                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
-                                        TextSpan(
-                                            text: lastMessage,
-                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400))
-                                      ]),
+                              subtitle: Text(
+                                'Последнее сообщение',
                                 style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
                                 maxLines: 1,
                               ),
                             ),
                           ],
                         ),
-                      );
-                    }),
+                      )
+                    : StreamBuilder(
+                        stream: FirebaseFirestore.instance.collection('chats').doc(currentUser.uid).snapshots(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          late String lastMessage;
+                          late String lastMessageUid;
+
+                          if (!snapshot.hasData || snapshot.hasError) {
+                            lastMessage = 'Сообщений еще не было или они не загрузились..';
+                            lastMessageUid = '';
+                          }
+
+                          if (snapshot.hasData) {
+                            lastMessage = snapshot.data['recentMessage']['content'];
+                            lastMessageUid = snapshot.data['recentMessage']['sendBy'];
+                          }
+                          return Card(
+                            margin: EdgeInsets.zero,
+                            color: Colors.transparent,
+                            elevation: 0,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Container(
+                                    width: 70,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: kMainBlueColor,
+                                      borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                                    ),
+                                    child: const Icon(
+                                      Icons.person_pin,
+                                      color: Colors.white,
+                                      size: 35,
+                                    ),
+                                  ),
+                                  title: Text('Поддержка', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16)),
+                                  subtitle: Text.rich(
+                                    lastMessageUid == currentUser.uid
+                                        ? TextSpan(children: [
+                                            TextSpan(
+                                                text: '${currentUser.displayName}: ',
+                                                // text: '${'qwe'}: ',
+                                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
+                                            TextSpan(
+                                                text: lastMessage,
+                                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400))
+                                          ])
+                                        : TextSpan(children: [
+                                            TextSpan(
+                                                text: 'поддержка: ',
+                                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
+                                            TextSpan(
+                                                text: lastMessage,
+                                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400))
+                                          ]),
+                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                                    maxLines: 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
               ),
             ],
           )),
     );
   }
 
-  _cardWidget(BuildContext context, int index) {
+  _cardWidget(BuildContext context, int index, List<dynamic> data) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FaqScreen(index: index, imageRoot: imageRoot),
+          builder: (context) => FaqScreen(index: index, data: data[index]),
         ));
       },
       child: SizedBox(
@@ -186,8 +213,8 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(kEdgeMainBorder),
-              child: Image.asset(
-                imageRoot,
+              child: Image.network(
+                data[index]['imageRoot'],
                 fit: BoxFit.cover,
                 width: 74,
                 height: 74,
@@ -197,8 +224,10 @@ class _ChatScreenState extends State<ChatScreen> {
               height: 5,
             ),
             Text(
-              'Как оплатить автомобиль',
+              data[index]['title'],
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 11),
             ),
           ],

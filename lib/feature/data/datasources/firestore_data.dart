@@ -20,6 +20,7 @@ class FirestoreData {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   CollectionReference rooms = FirebaseFirestore.instance.collection('rooms');
+  CollectionReference bookings = FirebaseFirestore.instance.collection('bookings');
 
   /// adding a first-auth users to firebase
   void addUserToCollection(UserModel? userModel) async {
@@ -58,7 +59,7 @@ class FirestoreData {
     chats.doc(uid).update({'recentMessage': json});
   }
 
-  Future<void> initializeChat(String content, UserModel userModel) async{
+  Future<void> initializeChat(String content, UserModel userModel) async {
     DateTime dateTime = DateTime.now();
     List<String> userIds = [userModel.uid];
 
@@ -96,10 +97,19 @@ class FirestoreData {
     }
   }
 
-  // Future<AsyncSnapshot> getData() async{
-  //   UserModel userModel;
-  //   await authenticationRepository.userModel.listen((event) {
-  //     userModel = event;
-  //   });
-  // }
+  void sendBooking(DateTime dateStart, DateTime dateEnd, String roomName, int totalPrice, String uid, String roomType) {
+    const String status = 'Забронировано';
+    Map<String, dynamic> json = <String, dynamic>{
+      'dateEnd': dateEnd,
+      'dateStart': dateStart,
+      'roomName': roomName,
+      'totalPrice': totalPrice,
+      'uid': uid,
+      'roomType': roomType,
+      'status': status,
+    };
+
+    bookings.add(json);
+  }
+// }
 }

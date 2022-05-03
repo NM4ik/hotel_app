@@ -42,12 +42,14 @@ class MainScreen extends StatelessWidget {
                   children: const [
                     InfoComponent(
                       text: "План отеля",
+                      image: 'http://domostroy.vglazkov.com/images/chemal800/p_2.jpg',
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     InfoComponent(
                       text: "Афиша",
+                      image: 'https://pic-h.cdn-pegast.net/getimage-nc/thumb800/78/af/02/2f110583f5aa5070b197845c698d404e17e74c2094f927eb505afd657f/5db29bb415f03.jpg',
                     ),
                   ],
                 ),
