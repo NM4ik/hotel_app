@@ -5,6 +5,8 @@ abstract class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
+class LoadingState extends AuthState{}
+
 class UnAuthenticatedState extends AuthState {}
 
 class AuthenticatedState extends AuthState {
@@ -15,3 +17,4 @@ class AuthenticatedState extends AuthState {
   @override
   List<Object> get props => [userModel];
 }
+

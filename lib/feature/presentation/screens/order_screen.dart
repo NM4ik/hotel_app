@@ -31,7 +31,7 @@ class _OrderScreenState extends State<OrderScreen> {
     data.sendBooking(widget.dateTimeFirst, widget.dateTimeSecond, widget.roomModel.name, widget.roomModel.price, userModel.uid, widget.roomModel.type);
     showCustomDialog(context, 'Вы успешно забронировали ${widget.roomModel.name}');
     new Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeScreen(page: null,)), (route) => false);
 
     });
   }

@@ -9,6 +9,7 @@ import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 
+import 'feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'feature/presentation/screens/home_screen.dart';
 
 void main() async {
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => locator<ProfileBloc>()),
         BlocProvider(create: (context) => locator<RoomsBloc>()),
         BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
+        BlocProvider(create: (context) => locator<LoginPhoneCubit>()),
       ],
       child: MaterialApp(
           builder: BotToastInit(),
@@ -39,7 +41,9 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
-          home: const HomeScreen()),
+          home: const HomeScreen(
+            page: null,
+          )),
     );
   }
 }

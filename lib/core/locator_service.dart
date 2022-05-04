@@ -8,6 +8,7 @@ import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dar
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:hotel_ma/feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,6 +28,7 @@ Future<void> setup() async {
   /// Bloc & Cubit
   locator.registerFactory(() => ProfileBloc());
   locator.registerFactory(() => RoomsBloc());
+  locator.registerFactory(() => LoginPhoneCubit());
   locator.registerFactory(() => AuthBloc(authenticationRepository: locator()));
 
   /// Core

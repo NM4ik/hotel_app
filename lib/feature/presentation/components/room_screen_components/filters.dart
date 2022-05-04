@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/core/platform/network_info.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/widgets/calendar_button_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -74,8 +76,9 @@ class _FiltersState extends State<Filters> {
             ),
             GestureDetector(
                 onTap: () async {
-                  print(await locator.get<NetworkInfo>().getIsConnected());
+                  print(FirebaseAuth.instance.currentUser.toString());
                   BotToast.showSimpleNotification(title: 'qwe');
+
                 },
                 child: SquareButtonWidget(color: Theme.of(context).primaryColorLight, icon: Icons.settings, iconColor: const Color(0xFFBDBDBD))),
           ],

@@ -25,25 +25,7 @@ class ProfileScreenUnAuth extends StatelessWidget {
     AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
     return BlocListener<ProfileBloc, ProfileState>(
-      listener: (context, state) {
-        if (state is AuthenticatedState) {
-          print("IN");
-          // BotToast.showSimpleNotification(
-          //   title: 'Здравствуйте!',
-          //   backgroundColor: kMainBlueColor,
-          //   animationDuration: Duration(seconds: 2),
-          // );
-        }
-        if (state is UnAuthenticatedState) {
-          print("OUT");
-
-          // BotToast.showSimpleNotification(
-          //   title: 'Здравствуйте!',
-          //   backgroundColor: kMainBlueColor,
-          //   animationDuration: Duration(seconds: 2),
-          // );
-        }
-      },
+      listener: (context, state) {},
       child: Stack(children: [
         Align(
           alignment: Alignment(-1.2, -1.2),
@@ -89,10 +71,9 @@ class ProfileScreenUnAuth extends StatelessWidget {
                           primary: kMainBlueColor,
                           elevation: 2,
                         ),
-                        onPressed: () async {
+                        onPressed: () {
                           try {
-                            final user = await authenticationRepository.singInWithGoogle();
-                            locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user!.user!));
+                            authenticationRepository.singInWithGoogle();
                           } catch (e) {
                             log('$e', name: 'error auth');
                           }
@@ -104,7 +85,7 @@ class ProfileScreenUnAuth extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: kEdgeVerticalPadding/2,
+                      height: kEdgeVerticalPadding / 2,
                     ),
                     SizedBox(
                       width: double.infinity,

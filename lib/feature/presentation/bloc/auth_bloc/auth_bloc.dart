@@ -25,15 +25,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<UserModel> _userSubscription;
+  String phoneNumber = "";
+  String code = "";
 
   void _onUserChanged(AuthUserChangedEvent event, Emitter<AuthState> emit) {
     emit(
       event.userModel.isNotEmpty ? AuthenticatedState(event.userModel) : UnAuthenticatedState(),
     );
+
+    phoneNumber = "";
+    code = "";
   }
 
   void _onLogoutRequested(AuthLogoutEvent event, Emitter<AuthState> emit) {
     _authenticationRepository.logOut();
+
+    phoneNumber = "";
+    code = "";
   }
 
   @override

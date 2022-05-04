@@ -45,13 +45,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthenticatedState) {
-          print("IN2");
-          toatAuth("Вход");
+          BotToast.showSimpleNotification(
+            title: 'Вход',
+            backgroundColor: Colors.red,
+            animationDuration: const Duration(seconds: 2),
+          );
         }
-        if (state is UnAuthenticatedState) {
-          print("OUT2");
-          toatAuth("Выход");
-        }
+
       },
       builder: (context, state) {
         if (state is UnAuthenticatedState) {
@@ -84,30 +84,30 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
                               ),
                             ),
-                            const SizedBox(
-                              height: kEdgeVerticalPadding,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                PersonStatus personStatus = PersonStatus(sharedPreferences: prefs);
-                                personStatus.getPersonFromCache();
-                                AuthenticationRepository authenticationRepository = AuthenticationRepository();
-                                // print(authenticationRepository.userModel);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(99),
-                                  border: Border.all(color: Colors.white, width: 2),
-                                ),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(99),
-                                    child: Image.network(
-                                      '${state.userModel.photoURL}',
-                                      fit: BoxFit.contain,
-                                    )),
-                              ),
-                            ),
+                            // const SizedBox(
+                            //   height: kEdgeVerticalPadding,
+                            // ),
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     SharedPreferences prefs = await SharedPreferences.getInstance();
+                            //     PersonStatus personStatus = PersonStatus(sharedPreferences: prefs);
+                            //     personStatus.getPersonFromCache();
+                            //     AuthenticationRepository authenticationRepository = AuthenticationRepository();
+                            //     // print(authenticationRepository.userModel);
+                            //   },
+                            //   child: Container(
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(99),
+                            //       border: Border.all(color: Colors.white, width: 2),
+                            //     ),
+                            //     child: ClipRRect(
+                            //         borderRadius: BorderRadius.circular(99),
+                            //         child: Image.network(
+                            //           '${state.userModel.photoURL}',
+                            //           fit: BoxFit.contain,
+                            //         )),
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: kEdgeVerticalPadding / 2,
                             ),

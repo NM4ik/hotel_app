@@ -40,7 +40,6 @@ class _OnboardingBodyState extends State<OnboardingBody> {
           Expanded(
               flex: 3,
               child: PageView.builder(
-
                   controller: controller,
                   onPageChanged: (value) {
                     setState(() {
@@ -62,16 +61,23 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    OnboardingDot(currentPage: currentPage, controller: controller, length: onboardingData.length, dotColor: Theme.of(context).cardColor,),
+                    OnboardingDot(
+                      currentPage: currentPage,
+                      controller: controller,
+                      length: onboardingData.length,
+                      dotColor: Theme.of(context).cardColor,
+                    ),
                     const Spacer(),
-                    DefaultButtonWidget(title: 'Далее',
+                    DefaultButtonWidget(
+                      title: 'Далее',
                       press: () {
                         setState(() {
                           controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
-                          if(controller.page == 2){
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => const HomeScreen())
-                            );
+                          if (controller.page == 2) {
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => const HomeScreen(
+                                      page: null,
+                                    )));
                             currentPage = 0;
                             controller.initialPage;
                           }

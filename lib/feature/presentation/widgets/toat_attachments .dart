@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../../../common/app_constants.dart';
 
-void toatAuth(String title){
-  BotToast.showSimpleNotification(
-    title: title,
-    // backgroundColor: kMainBlueColor,
-    hideCloseButton: true,
-    backgroundColor: Colors.white,
-  );
-}
-
+/// auth
+void toatAuth(String title, context) => BotToast.showSimpleNotification(
+      title: title,
+      hideCloseButton: true,
+      backgroundColor: Theme.of(context).primaryColorLight,
+      titleStyle: Theme.of(context).textTheme.bodyText1,
+    );

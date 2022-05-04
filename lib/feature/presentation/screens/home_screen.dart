@@ -13,7 +13,8 @@ import 'package:hotel_ma/feature/presentation/screens/profile_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/room_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.page}) : super(key: key);
+  final int? page;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
   PersonStatus personStatus = PersonStatus(sharedPreferences: locator.get());
 
-
   @override
   void initState() {
+    currentPageIndex = widget.page ?? 0;
     super.initState();
     log(personStatus.getAuthStatus().toString(), name: 'STATUS');
   }
