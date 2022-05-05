@@ -103,7 +103,7 @@ List<Map<String, String>> onboardingData = [
   {
     "image": "assets/images/onboarding-2.png",
     "text": "Авторизация",
-    "subtext": "Авторизируйтесь или зарегистрируйтесь по номеру телефона, чтобы оформить и оплатить номер",
+    "subtext": "Авторизируйтесь черезу гугл-аккаунт или по номеру телефона, чтобы оформить и оплатить номер",
   },
   {
     "image": "assets/images/onboarding-3.png",

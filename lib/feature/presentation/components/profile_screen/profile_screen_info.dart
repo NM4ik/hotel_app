@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -5,6 +8,7 @@ import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 import 'package:hotel_ma/feature/presentation/widgets/row_table_widget.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../../common/app_constants.dart';
 import '../../../../core/locator_service.dart';
@@ -127,7 +131,73 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
               height: 35,
               child: DefaultButtonWidget(
                 press: () {
-                  context.read<AuthBloc>().add(AuthLogoutEvent());
+                  showMaterialModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Вы действительно хотите выйти?',
+                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                                ),
+                                const Divider(),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    Timer(const Duration(milliseconds: 400), () => context.read<AuthBloc>().add(AuthLogoutEvent()));
+                                  },
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Center(
+                                        child: Text(
+                                      'Выйти',
+                                      style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.red),
+                                    )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: kEdgeVerticalPadding / 2,
+                          ),
+                          Center(
+                            child: GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Container(
+                                width: double.infinity,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Отменить',
+                                    style: Theme.of(context).textTheme.headline3!.copyWith(color: kMainBlueColor),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
                 title: 'Выйти',
               )),

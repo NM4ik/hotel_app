@@ -86,6 +86,9 @@ dependencies:
   # for jsons
   json_annotation:
 
+  # bottom sheets
+  modal_bottom_sheet: ^2.0.1
+
   # toasts
   bot_toast: ^4.0.1
 
