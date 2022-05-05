@@ -32,6 +32,7 @@ class FirestoreData {
         return null;
       } else {
         users.doc(userModel.uid).set({
+          "uid": userModel.uid,
           "email": userModel.email,
           "name": userModel.displayName,
           "phone": userModel.phoneNumber,
@@ -67,7 +68,7 @@ class FirestoreData {
     final initChat = ChatModel(name: userModel.displayName, createdAt: dateTime, status: 1, uid: userModel.uid, userIds: userIds, recentMessage: recentMessage);
 
     await chats.doc(userModel.uid).set(initChat.toJson());
-    // await chats.doc(userModel.uid).collection(messageCollection).add(initChat.toJson());
+    // await chats.doc(userModel.uid).collection(messageCollection).add(initChat.toJson());уйт
   }
 
   /// request for visits by user from firebase

@@ -32,16 +32,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       event.userModel.isNotEmpty ? AuthenticatedState(event.userModel) : UnAuthenticatedState(),
     );
-
-    phoneNumber = "";
-    code = "";
   }
 
   void _onLogoutRequested(AuthLogoutEvent event, Emitter<AuthState> emit) {
     _authenticationRepository.logOut();
-
-    phoneNumber = "";
-    code = "";
   }
 
   @override

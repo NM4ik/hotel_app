@@ -114,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                             Column(
                               children: [
                                 Text(
-                                  state.userModel.displayName.toString(),
+                                  state.userModel.uid.toString(),
                                   style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                                 const Text(

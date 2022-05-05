@@ -1,7 +1,10 @@
 part of 'login_phone_cubit.dart';
 
-abstract class LoginPhoneState {
+abstract class LoginPhoneState extends Equatable {
   const LoginPhoneState();
+
+  @override
+  List<Object> get props => [];
 }
 
 class LoginPhoneInitialState extends LoginPhoneState {}
@@ -18,4 +21,15 @@ class LoginPhoneErrorState extends LoginPhoneState {
   final String message;
 
   const LoginPhoneErrorState({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class LoginPhoneFirstState extends LoginPhoneState {
+  final UserModel user;
+
+  const LoginPhoneFirstState({required this.user});
+
+  List<Object> get props => [user];
 }

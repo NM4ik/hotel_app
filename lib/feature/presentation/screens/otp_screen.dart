@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/feature/presentation/screens/get_user_info_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/toat_attachments%20.dart';
 import 'package:pinput/pinput.dart';
@@ -21,7 +22,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final controller = TextEditingController();
-  final focusNode = FocusNode();
+  late final _focusNode = FocusNode();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
@@ -30,12 +31,14 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void dispose() {
     controller.dispose();
-    focusNode.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(_focusNode);
+
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 50,
@@ -62,7 +65,15 @@ class _OtpScreenState extends State<OtpScreen> {
 
     return BlocConsumer<LoginPhoneCubit, LoginPhoneState>(
       listener: (context, state) {
-        if (state is LoginPhoneLoggedInState) {
+        if (state is LoginPhoneFirstState) {
+          setState(() {
+            loading = false;
+          });
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => GetUserInfoScreen(
+                    user: state.user,
+                  )));
+        } else if (state is LoginPhoneLoggedInState) {
           setState(() {
             loading = false;
           });
@@ -72,7 +83,6 @@ class _OtpScreenState extends State<OtpScreen> {
                         page: 4,
                       )),
               (route) => false);
-          
           toatAuth("Успешный вход", context);
         } else if (state is LoginPhoneLoadingState) {
           setState(() {
@@ -101,12 +111,12 @@ class _OtpScreenState extends State<OtpScreen> {
                             color: kMainBlueColor,
                           ),
                           Text(
-                            'Телефон',
+                            'назад',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],
                       ),
-                      onTap: Navigator.of(context).pop,
+                      onTap: Navigator.of(context, rootNavigator: true).pop,
                     ),
                     alignment: Alignment.centerLeft,
                   ),
@@ -126,7 +136,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   Pinput(
                     length: 6,
                     controller: controller,
-                    focusNode: focusNode,
+                    focusNode: _focusNode,
                     defaultPinTheme: defaultPinTheme,
                     separator: const SizedBox(width: 16),
                     focusedPinTheme: defaultPinTheme.copyWith(
@@ -148,6 +158,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     onChanged: (value) {
                       if (value.length == 6) {
                         context.read<LoginPhoneCubit>().verifyCode(value);
+                        _focusNode.enclosingScope;
                       }
                     },
                     showCursor: true,
