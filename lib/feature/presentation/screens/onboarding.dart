@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/presentation/components/onboarding_content.dart';
+import 'package:hotel_ma/feature/presentation/components/onboarding_components/onboarding_content.dart';
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
 
-import '../widgets/defaut_button_widget.dart';
 import '../components/onboarding_dot.dart';
+import '../widgets/defaut_button_widget.dart';
 
 /*
 * Onboarding screens for first join by user
@@ -61,7 +61,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    OnboardingDot(
+                    ViewDots(
                       currentPage: currentPage,
                       controller: controller,
                       length: onboardingData.length,

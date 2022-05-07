@@ -16,6 +16,7 @@ import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 import '../../../data/datasources/shared_preferences_methods.dart';
 import '../../bloc/profile_bloc/profile_bloc.dart';
 import '../../screens/phone_enter_screen.dart';
+import '../toat_attachments.dart';
 
 class ProfileScreenUnAuth extends StatelessWidget {
   const ProfileScreenUnAuth({Key? key}) : super(key: key);
@@ -24,11 +25,15 @@ class ProfileScreenUnAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
-    return BlocListener<ProfileBloc, ProfileState>(
-      listener: (context, state) {},
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthenticatedState) {
+          toatAuth("Здравствуйте, ${state.userModel.displayName ?? state.userModel.phoneNumber}", context);
+        }
+      },
       child: Stack(children: [
         Align(
-          alignment: Alignment(-1.2, -1.2),
+          alignment: const Alignment(-1.2, -1.2),
           child: Image.asset(
             'assets/images/un_auth_image.png',
             width: 300,
@@ -98,7 +103,7 @@ class ProfileScreenUnAuth extends StatelessWidget {
                           elevation: 2,
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(createRouteAnim(PhoneEnterScreen()));
+                          Navigator.of(context).push(createRouteAnim(const PhoneEnterScreen()));
                         },
                         child: const Text(
                           'Войти по телефону',

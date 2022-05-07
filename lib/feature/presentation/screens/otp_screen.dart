@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/screens/get_user_info_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
-import 'package:hotel_ma/feature/presentation/widgets/toat_attachments%20.dart';
+import 'package:hotel_ma/feature/presentation/components/toat_attachments%20.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../data/repositories/auth_repository.dart';
@@ -83,7 +83,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         page: 4,
                       )),
               (route) => false);
-          toatAuth("Успешный вход", context);
+          // toatAuth("Успешный вход", context);
         } else if (state is LoginPhoneLoadingState) {
           setState(() {
             loading = true;

@@ -149,7 +149,7 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
+                              children: [
                                 Text(
                                   'Вы действительно хотите выйти?',
                                   style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
@@ -160,7 +160,8 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
                                     Navigator.of(context).pop();
                                     Timer(const Duration(milliseconds: 400), () => context.read<AuthBloc>().add(AuthLogoutEvent()));
                                   },
-                                  child: SizedBox(
+                                  child: Container(
+                                    color: Colors.transparent,
                                     width: double.infinity,
                                     child: Center(
                                         child: Text(

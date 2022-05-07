@@ -12,6 +12,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../../../common/app_constants.dart';
 import '../../data/models/user_model.dart';
 import '../components/onboarding_dot.dart';
+import '../components/onboarding_dot.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key, required this.roomModel, required this.dateTimeFirst, required this.dateTimeSecond}) : super(key: key);
@@ -141,7 +142,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
                             /// indicator dots
                             Center(
-                              child: OnboardingDot(
+                              child: ViewDots(
                                 currentPage: currentPage,
                                 controller: controller,
                                 length: 4,
@@ -232,12 +233,11 @@ class _ProductScreenState extends State<ProductScreen> {
               log(userModel.toString(), name: "MODEL2: ");
               log(FirebaseAuth.instance.currentUser.toString(), name: "userModel2: ");
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    OrderScreen(
-                      roomModel: widget.roomModel,
-                      dateTimeFirst: widget.dateTimeFirst,
-                      dateTimeSecond: widget.dateTimeSecond,
-                    )));
+                  builder: (context) => OrderScreen(
+                        roomModel: widget.roomModel,
+                        dateTimeFirst: widget.dateTimeFirst,
+                        dateTimeSecond: widget.dateTimeSecond,
+                      )));
             }
           },
           elevation: 3,
@@ -250,32 +250,33 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 }
+
 void showCustomDialog(BuildContext context, String content) => showDialog(
     context: context,
     builder: (context) => Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(kEdgeMainBorder),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(kEdgeVerticalPadding / 2),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              content,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kEdgeMainBorder),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(kEdgeVerticalPadding / 2),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  content,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                const SizedBox(
+                  height: kEdgeVerticalPadding / 2,
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Ок'),
+                  style: ElevatedButton.styleFrom(primary: kMainBlueColor),
+                )
+              ],
             ),
-            const SizedBox(
-              height: kEdgeVerticalPadding / 2,
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Ок'),
-              style: ElevatedButton.styleFrom(primary: kMainBlueColor),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
