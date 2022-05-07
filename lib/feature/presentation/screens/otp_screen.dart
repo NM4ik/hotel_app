@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/screens/get_user_info_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
-import 'package:hotel_ma/feature/presentation/components/toat_attachments%20.dart';
 import 'package:pinput/pinput.dart';
 
 import '../../data/repositories/auth_repository.dart';
@@ -14,7 +13,9 @@ import '../bloc/login_phone_cubit/login_phone_cubit.dart';
 class OtpScreen extends StatefulWidget {
   const OtpScreen({
     Key? key,
+    required this.phoneNumber,
   }) : super(key: key);
+  final String phoneNumber;
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -83,7 +84,6 @@ class _OtpScreenState extends State<OtpScreen> {
                         page: 4,
                       )),
               (route) => false);
-          // toatAuth("Успешный вход", context);
         } else if (state is LoginPhoneLoadingState) {
           setState(() {
             loading = true;
@@ -120,19 +120,26 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     alignment: Alignment.centerLeft,
                   ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding,
+                  ),
                   Text(
                     'Теперь введите код',
                     style: Theme.of(context).textTheme.headline3,
                   ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding / 3,
+                  ),
                   Text(
                     'Код отправили на номер',
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                   ),
                   Text(
-                    'p',
+                    widget.phoneNumber,
                     // widget.phoneNumber,
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                   ),
+                  const SizedBox(height: kEdgeVerticalPadding),
                   Pinput(
                     length: 6,
                     controller: controller,

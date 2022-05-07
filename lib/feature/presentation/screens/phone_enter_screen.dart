@@ -27,7 +27,6 @@ class _PhoneEnterScreenState extends State<PhoneEnterScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginPhoneCubit, LoginPhoneState>(
       listener: (context, state) {
-        print('$state STATETETE');
         if (state is LoginPhoneLoadingState) {
           setState(() {
             loading = true;
@@ -37,7 +36,9 @@ class _PhoneEnterScreenState extends State<PhoneEnterScreen> {
           setState(() {
             loading = false;
           });
-          Navigator.of(context).push(createRouteAnim(const OtpScreen()));
+          Navigator.of(context).push(createRouteAnim(OtpScreen(
+            phoneNumber: phoneNumber,
+          )));
         }
       },
       builder: (context, state) {
@@ -57,13 +58,20 @@ class _PhoneEnterScreenState extends State<PhoneEnterScreen> {
                     ),
                     alignment: Alignment.centerLeft,
                   ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding,
+                  ),
                   Text(
                     'Укажите телефон',
                     style: Theme.of(context).textTheme.headline3,
                   ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding,
+                  ),
                   IntlPhoneField(
                     decoration: const InputDecoration(
-                      labelText: 'Phone Number',
+                      labelText: 'Номер телефона',
+                      labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: kMainGreyColor),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(),
                       ),
@@ -71,13 +79,26 @@ class _PhoneEnterScreenState extends State<PhoneEnterScreen> {
                     initialCountryCode: 'RU',
                     onChanged: (phone) {
                       phoneNumber = phone.completeNumber;
-                      print('$phoneNumber');
                     },
-                    onSubmitted: (phone) async {
+                    onSubmitted: (phone) {
                       if (phone.length == 10) {
                         context.read<LoginPhoneCubit>().verifyNumber(phoneNumber);
                       }
                     },
+                  ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding / 2,
+                  ),
+                  Text(
+                    'Продолжая,вы соглашаетесь со сбором, обработкой песрональных данных и Пользовательским соглашением',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontSize: 10,
+                          color: kMainGreyColor,
+                        ),
+                  ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding,
                   ),
                   loading
                       ? const Center(

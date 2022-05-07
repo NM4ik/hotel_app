@@ -5,7 +5,6 @@ import 'package:hotel_ma/feature/presentation/components/profile_screen_componen
 
 import '../../../../common/app_constants.dart';
 import '../../bloc/auth_bloc/auth_bloc.dart';
-import 'package:hotel_ma/feature/data/models/user_model.dart';
 
 class ProfileScreenAuth extends StatefulWidget {
   const ProfileScreenAuth({Key? key}) : super(key: key);

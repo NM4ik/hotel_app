@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:hotel_ma/feature/presentation/components/toat_attachments.dart';
 
 import '../bloc/auth_bloc/auth_bloc.dart';
 import '../components/profile_screen_components/profile_screeen_unsigned.dart';
@@ -17,12 +16,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        // if (state is UnAuthenticatedState) {
-        //   toatAuth("До свидания!", context);
-        // } // yes or no?
-      },
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is UnAuthenticatedState) {
           return const ProfileScreenUnAuth();
@@ -33,8 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(
             child: Text('Что-то пошло не так'),
           );
-
-          /// need to find this exception
         }
       },
     );
