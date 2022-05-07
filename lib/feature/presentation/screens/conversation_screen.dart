@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_themes.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
-import 'package:hotel_ma/feature/data/datasources/shared_preferences_methods.dart';
+import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

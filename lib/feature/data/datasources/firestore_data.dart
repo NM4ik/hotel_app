@@ -1,17 +1,12 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hotel_ma/feature/data/models/chat_model.dart';
 import 'package:hotel_ma/feature/data/models/message_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 
 import '../models/user_model.dart';
-import '../models/visit_model.dart';
 
 class FirestoreData {
   final messageCollection = 'messages';
@@ -43,6 +38,18 @@ class FirestoreData {
     } catch (e) {
       log('$e - ', name: 'Error from _addUserToCollection');
     }
+  }
+
+  void updateUser(String field, String value, String uid) {
+    users.doc(uid).update({field: value});
+  }
+
+  Future<UserModel> getUserFromUserCollection(String uid) async {
+    print(uid);
+    final user = await users.doc(uid).get();
+    final userModel = UserModel.fromJson(user.data() as Map<String, dynamic>);
+    print(userModel.toString());
+    return userModel;
   }
 
   /// send user message to firebase

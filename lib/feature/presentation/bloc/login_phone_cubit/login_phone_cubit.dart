@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
+import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/locator_service.dart';
@@ -46,12 +47,14 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user.user));
 
       if (user.user != null) {
-        if (user.additionalUserInfo?.isNewUser == true) {
-          // emit(LoginPhoneFirstState(user: UserModel.toUser(user.user))); /// fix otp screen :D
-          emit(LoginPhoneLoggedInState());
-        } else {
-          emit(LoginPhoneLoggedInState());
-        }
+        // if (user.additionalUserInfo?.isNewUser == true) {
+        //   // emit(LoginPhoneFirstState(user: UserModel.toUser(user.user))); /// fix otp screen :D
+        //   print('${user.user?.uid} FIRST AUTH');
+        //   emit(LoginPhoneLoggedInState());
+        // } else {
+        locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
+        emit(LoginPhoneLoggedInState());
+        // }
       }
     } on FirebaseAuthException catch (ex) {
       emit(LoginPhoneErrorState(message: ex.message.toString()));

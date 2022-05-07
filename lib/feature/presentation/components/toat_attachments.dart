@@ -10,3 +10,19 @@ void toatAuth(String title, context) => BotToast.showSimpleNotification(
       backgroundColor: Theme.of(context).primaryColorLight,
       titleStyle: Theme.of(context).textTheme.bodyText1,
     );
+
+/// update profile_fields
+void updateProfileFields(String field, context) => BotToast.showSimpleNotification(
+      title: 'поле $field успешно обновлено',
+      hideCloseButton: true,
+      // backgroundColor: Theme.of(context).primaryColorLight,
+      backgroundColor: Colors.green,
+      titleStyle: Theme.of(context).textTheme.bodyText1,
+    );
+
+void nonUpdateProfileFields(String field, context) => BotToast.showSimpleNotification(
+      title: 'поле $field не обновлено',
+      hideCloseButton: true,
+      backgroundColor: Colors.red,
+      titleStyle: Theme.of(context).textTheme.bodyText1,
+    );

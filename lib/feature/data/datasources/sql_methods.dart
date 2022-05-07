@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PersonStatus {
+class SqlMethods {
   final SharedPreferences sharedPreferences;
 
-  PersonStatus({required this.sharedPreferences});
+  SqlMethods({required this.sharedPreferences});
 
   bool getAuthStatus() {
     bool? value = sharedPreferences.getBool('authStatus');

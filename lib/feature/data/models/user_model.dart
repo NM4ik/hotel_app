@@ -28,4 +28,6 @@ class UserModel extends PersonEntity {
       return UserModel(uid: user.uid, email: user.email, displayName: user.displayName, phoneNumber: user.phoneNumber, photoURL: user.photoURL);
     }
   }
+
+
 }

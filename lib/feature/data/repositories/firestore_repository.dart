@@ -10,5 +10,13 @@ class FirestoreRepository {
     firestoreData.addUserToCollection(userModel);
   }
 
+  getUserFromUserCollection(String uid) {
+    firestoreData.getUserFromUserCollection(uid);
+  }
+
+  updateUser(String field, String value, String uid) {
+    firestoreData.updateUser(field, value, uid);
+  }
+
   Future<List<RoomModel>?> getRooms() async => await firestoreData.getRooms();
 }

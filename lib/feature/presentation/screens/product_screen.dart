@@ -216,7 +216,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 Text(
                   widget.roomModel.description.toString(),
                   //'Расслабьтесь в современном номере площадью 35–36 кв. м с одной большой двуспальной кроватью (King), удобным креслом для чтения, минибаром, душевой кабиной с тропическим душем, отдельной ванной и бесплатным Wi-Fi.',
-                  style: TextStyle(color: const Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
+                  style: const TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
                 )
               ],
             )),

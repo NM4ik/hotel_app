@@ -12,8 +12,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../../common/app_constants.dart';
 import '../../../../core/locator_service.dart';
-import '../../../data/datasources/shared_preferences_methods.dart';
-import '../../bloc/profile_bloc/profile_bloc.dart';
+import '../../../data/datasources/sql_methods.dart';
 
 class ProfileScreenInfo extends StatefulWidget {
   const ProfileScreenInfo({Key? key}) : super(key: key);
@@ -23,12 +22,12 @@ class ProfileScreenInfo extends StatefulWidget {
 }
 
 class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
-  bool? notificationStatus = locator.get<PersonStatus>().getNotifications();
+  bool? notificationStatus = locator.get<SqlMethods>().getNotifications();
   AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProfileBloc, ProfileState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {},
       child: Column(
         children: [
@@ -105,7 +104,7 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
                 showOnOff: true,
                 onToggle: (val) {
                   setState(() {
-                    locator.get<PersonStatus>().setNotificationStatus(val);
+                    locator.get<SqlMethods>().setNotificationStatus(val);
                     notificationStatus = val;
                   });
                 },
