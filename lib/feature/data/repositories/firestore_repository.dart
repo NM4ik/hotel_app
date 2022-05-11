@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
+
+import '../models/user_model.dart';
 
 class FirestoreRepository {
   final FirestoreData firestoreData;
@@ -10,8 +13,8 @@ class FirestoreRepository {
     firestoreData.addUserToCollection(userModel);
   }
 
-  getUserFromUserCollection(String uid) {
-    firestoreData.getUserFromUserCollection(uid);
+  Future<UserModel> getUserFromUserCollection(String uid) async {
+    return firestoreData.getUserFromUserCollection(uid);
   }
 
   updateUser(String field, String value, String uid) {

@@ -8,8 +8,8 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel extends PersonEntity {
-  const UserModel({required String uid, String? providerId, String? displayName, String? email, String? phoneNumber, String? photoURL})
-      : super(uid: uid, providerId: providerId, displayName: displayName, email: email, phoneNumber: phoneNumber, photoURL: photoURL);
+  const UserModel({required String uid, String? displayName, String? email, String? phoneNumber, String? photoURL})
+      : super(uid: uid, displayName: displayName, email: email, phoneNumber: phoneNumber, photoURL: photoURL);
 
   static const empty = UserModel(uid: '');
 

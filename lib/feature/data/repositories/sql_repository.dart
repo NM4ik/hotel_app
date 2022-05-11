@@ -10,7 +10,7 @@ class SqlRepository {
     sqlMethods.writePersonToCache(userModel);
   }
 
-  void userFromSql() {
-    sqlMethods.getPersonFromCache();
+  UserModel userFromSql() {
+    return sqlMethods.getPersonFromCache();
   }
 }

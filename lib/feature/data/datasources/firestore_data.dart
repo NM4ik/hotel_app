@@ -45,10 +45,8 @@ class FirestoreData {
   }
 
   Future<UserModel> getUserFromUserCollection(String uid) async {
-    print(uid);
     final user = await users.doc(uid).get();
     final userModel = UserModel.fromJson(user.data() as Map<String, dynamic>);
-    print(userModel.toString());
     return userModel;
   }
 

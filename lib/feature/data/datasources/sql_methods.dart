@@ -23,11 +23,13 @@ class SqlMethods {
     sharedPreferences.setString('personCache', person);
   }
 
-
-  String? getPersonFromCache(){
+  UserModel getPersonFromCache() {
     String? json = sharedPreferences.getString('personCache');
-    print('Loaded data: $json');
-    return json;
+    UserModel userModel = UserModel.empty;
+    if (json != null) {
+      userModel = UserModel.fromJson(jsonDecode(json));
+    }
+    return userModel;
   }
 
   bool? getNotifications() {
