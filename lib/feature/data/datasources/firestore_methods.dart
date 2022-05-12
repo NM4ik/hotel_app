@@ -6,9 +6,12 @@ import 'package:hotel_ma/feature/data/models/message_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 
+import '../../../core/locator_service.dart';
 import '../models/user_model.dart';
+import '../repositories/firestore_repository.dart';
+import '../repositories/sql_repository.dart';
 
-class FirestoreData {
+class FirestoreMethods {
   final messageCollection = 'messages';
   AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
@@ -18,30 +21,46 @@ class FirestoreData {
   CollectionReference bookings = FirebaseFirestore.instance.collection('bookings');
 
   /// adding a first-auth users to firebase
-  void addUserToCollection(UserModel? userModel) async {
+  Future<UserModel?> addUserToCollection(UserModel? userModel) async {
     try {
       final dataExists = await users.doc(userModel!.uid).get();
+      log(dataExists.data().toString(), name: "DATAEXISTS");
 
       if (dataExists.exists) {
         log('user already added', name: "UserToFireBase");
-        return null;
+        final userModel = UserModel.fromJson(dataExists.data() as Map<String, dynamic>);
+        return userModel;
       } else {
         users.doc(userModel.uid).set({
           "uid": userModel.uid,
           "email": userModel.email,
-          "name": userModel.displayName,
+          "name": userModel.name,
           "phone": userModel.phoneNumber,
           "photoUrl": userModel.photoURL,
+          "isNotifications": true,
         });
         log('user was added', name: "UserToFireBase");
+        return null;
       }
     } catch (e) {
       log('$e - ', name: 'Error from _addUserToCollection');
+      return null;
     }
   }
 
-  void updateUser(String field, String value, String uid) {
-    users.doc(uid).update({field: value});
+  void updateUser(dynamic value, String fieldName, String uid) {
+    users.doc(uid).update({fieldName: value});
+  }
+
+  void updateField(dynamic value, String fieldName, String uid) async {
+    try {
+      locator.get<FirestoreMethods>().updateUser(value, fieldName, uid);
+      final userModel = await locator.get<FirestoreRepository>().getUserFromUserCollection(uid);
+      locator.get<SqlRepository>().userToSql(userModel);
+      print('EXCEPTION NONE');
+    } catch (e) {
+      print('EXCEPTION $e');
+    }
   }
 
   Future<UserModel> getUserFromUserCollection(String uid) async {
@@ -70,7 +89,7 @@ class FirestoreData {
     List<String> userIds = [userModel.uid];
 
     final recentMessage = MessageModel(content: content, sendAt: dateTime, sendBy: userModel.uid);
-    final initChat = ChatModel(name: userModel.displayName, createdAt: dateTime, status: 1, uid: userModel.uid, userIds: userIds, recentMessage: recentMessage);
+    final initChat = ChatModel(name: userModel.name, createdAt: dateTime, status: 1, uid: userModel.uid, userIds: userIds, recentMessage: recentMessage);
 
     await chats.doc(userModel.uid).set(initChat.toJson());
     // await chats.doc(userModel.uid).collection(messageCollection).add(initChat.toJson());уйт

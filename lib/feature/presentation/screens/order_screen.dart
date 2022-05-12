@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
+import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
@@ -25,7 +25,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   UserModel userModel = UserModel.toUser(FirebaseAuth.instance.currentUser);
-  FirestoreData data = FirestoreData();
+  FirestoreMethods data = FirestoreMethods();
 
   void _addBooking() async {
     data.sendBooking(widget.dateTimeFirst, widget.dateTimeSecond, widget.roomModel.name, widget.roomModel.price, userModel.uid, widget.roomModel.type);

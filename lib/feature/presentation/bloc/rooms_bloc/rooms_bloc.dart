@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hotel_ma/core/platform/network_info.dart';
-import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
+import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 
@@ -20,7 +20,7 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     on<RoomsLoadingEvent>(_onRoomsLoading);
   }
 
-  FirestoreRepository firestoreRepository = FirestoreRepository(firestoreData: locator.get<FirestoreData>());
+  FirestoreRepository firestoreRepository = FirestoreRepository(firestoreMethods: locator.get<FirestoreMethods>());
 
   FutureOr<void> _onRoomsStatus(RoomsCheckConnectionEvent event, Emitter<RoomsState> emit) async =>
       await locator.get<NetworkInfo>().getIsConnected() == true ? add(RoomsLoadingEvent()) : emit(RoomsUSICState());

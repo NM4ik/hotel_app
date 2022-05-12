@@ -42,57 +42,21 @@ class AuthenticationRepository {
       );
 
       final user = await _firebaseAuth.signInWithCredential(credential);
-      locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
-      locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user.user));
+
+      if (user.user != null) {
+        final userModel = await locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user.user));
+
+        if (userModel == null) {
+          locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
+        } else {
+          locator.get<SqlRepository>().userToSql(userModel);
+        }
+      }
     } catch (e) {
       log('$e', name: 'Exception by singInWithGoogle');
       return null;
     }
   }
-
-  // Future<void> verifyNumber(
-  //   String phone, {
-  //   void Function(firebase_auth.PhoneAuthCredential)? completed,
-  //   void Function(firebase_auth.FirebaseAuthException)? failed,
-  //   void Function(String, int?)? codeSent,
-  //   void Function(String)? timeout,
-  // }) async {
-  //   await _firebaseAuth.verifyPhoneNumber(
-  //       phoneNumber: phone, verificationCompleted: completed!, verificationFailed: failed!, codeSent: codeSent!, codeAutoRetrievalTimeout: timeout!);
-  // }
-  //
-  // Future<void> verifyAndLogin(String verificationId, String smsCode, String phone) async {
-  //   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-  //   final user = await _firebaseAuth.signInWithCredential(credential);
-  //   locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user.user));
-  // }
-
-  // Future<void> verifyNumber(String phoneNumber) async {
-  //   await _firebaseAuth.verifyPhoneNumber(
-  //       phoneNumber: phoneNumber,
-  //       verificationCompleted: (PhoneAuthCredential credential) async {
-  //         await _firebaseAuth.signInWithCredential(credential).then((value) => print('Logged IN!'));
-  //       },
-  //       verificationFailed: (FirebaseAuthException exception) {
-  //         if (exception.code == 'invalid-phone-number') {
-  //           print('The provided phone number is not valid.');
-  //         } else {
-  //           print(exception.message);
-  //         }
-  //       },
-  //       codeSent: (String verificationId, int? resendToken) {
-  //
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationID) {}
-  //   );
-  // }
-
-  // void verifyCode(String verificationId, String smsCode) async {
-  //   print("$verificationId IDID@@");
-  //   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-  //   final user = await _firebaseAuth.signInWithCredential(credential);
-  //   locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user.user));
-  // }
 
   void logOut() async {
     try {
@@ -108,6 +72,11 @@ class AuthenticationRepository {
 
 extension on firebase_auth.User {
   UserModel get toUser {
-    return UserModel(uid: uid, email: email, displayName: displayName, phoneNumber: phoneNumber, photoURL: photoURL);
+    return UserModel(
+      uid: uid,
+      email: email,
+      name: displayName,
+      phoneNumber: phoneNumber,
+    );
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 
@@ -49,6 +52,7 @@ class _ProfileTextFieldWidgetState extends State<ProfileTextFieldWidget> {
                 _iconSee = true;
               });
             },
+            keyboardType: widget.fieldName == "phoneNumber" ? TextInputType.number : TextInputType.text,
             onEditingComplete: () {
               FocusManager.instance.primaryFocus?.unfocus();
               setState(() {
@@ -65,11 +69,13 @@ class _ProfileTextFieldWidgetState extends State<ProfileTextFieldWidget> {
                   validateName = false;
                 });
                 if (widget.fieldValue != _controller.text) {
-                  _updateField(value);
+                  locator.get<FirestoreRepository>().updateField(value, widget.fieldName, widget.uid);
+                  // _updateField(value);
                 }
               }
             },
             cursorColor: kMainBlueColor,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
             decoration: InputDecoration(
                 suffixIcon: _iconSee
                     ? IconButton(
@@ -96,15 +102,14 @@ class _ProfileTextFieldWidgetState extends State<ProfileTextFieldWidget> {
       ],
     );
   }
-
-  void _updateField(String value) async {
-    try {
-      await locator.get<FirestoreRepository>().updateUser(widget.fieldName, value, widget.uid);
-      final userModel = await locator.get<FirestoreRepository>().getUserFromUserCollection(widget.uid);
-      locator.get<SqlRepository>().userToSql(userModel);
-      print('EXCEPTION NONE');
-    } catch (e) {
-      print('EXCEPTION');
-    }
-  }
+  // void _updateField(String value) async {
+  //   try {
+  //     await locator.get<FirestoreRepository>().updateUser(widget.fieldName, value, widget.uid);
+  //     final userModel = await locator.get<FirestoreRepository>().getUserFromUserCollection(widget.uid);
+  //     locator.get<SqlRepository>().userToSql(userModel);
+  //     print('EXCEPTION NONE');
+  //   } catch (e) {
+  //     print('EXCEPTION');
+  //   }
+  // }
 }

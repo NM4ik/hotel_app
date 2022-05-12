@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hotel_ma/core/firebase.dart';
 import 'package:hotel_ma/core/platform/network_info.dart';
-import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
+import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
@@ -18,12 +18,12 @@ final locator = GetIt.instance;
 
 Future<void> setup() async {
   /// data
-  locator.registerLazySingleton<FirestoreData>(() => FirestoreData());
+  locator.registerLazySingleton<FirestoreMethods>(() => FirestoreMethods());
 
   /// repo
   locator.registerLazySingleton<AuthenticationRepository>(() => AuthenticationRepository());
   locator.registerLazySingleton<SqlRepository>(() => SqlRepository(sqlMethods: locator()));
-  locator.registerLazySingleton<FirestoreRepository>(() => FirestoreRepository(firestoreData: locator()));
+  locator.registerLazySingleton<FirestoreRepository>(() => FirestoreRepository(firestoreMethods: locator()));
 
   /// Bloc & Cubit
   locator.registerFactory(() => RoomsBloc());

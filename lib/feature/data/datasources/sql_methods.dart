@@ -14,10 +14,6 @@ class SqlMethods {
     return value;
   }
 
-  void setAuthStatus(bool value) {
-    value == true ? sharedPreferences.setBool('authStatus', true) : sharedPreferences.setBool('authStatus', false);
-  }
-
   void writePersonToCache(UserModel userModel) {
     String person = jsonEncode(userModel);
     sharedPreferences.setString('personCache', person);
@@ -30,15 +26,5 @@ class SqlMethods {
       userModel = UserModel.fromJson(jsonDecode(json));
     }
     return userModel;
-  }
-
-  bool? getNotifications() {
-    bool? value = sharedPreferences.getBool('notificationStatus');
-    value ??= true;
-    return value;
-  }
-
-  void setNotificationStatus(bool value) {
-    sharedPreferences.setBool('notificationStatus', value);
   }
 }

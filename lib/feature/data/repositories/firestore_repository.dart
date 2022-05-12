@@ -1,25 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hotel_ma/feature/data/datasources/firestore_data.dart';
+import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 
 import '../models/user_model.dart';
 
 class FirestoreRepository {
-  final FirestoreData firestoreData;
+  final FirestoreMethods firestoreMethods;
 
-  FirestoreRepository({required this.firestoreData});
+  FirestoreRepository({required this.firestoreMethods});
 
-  personToUserCollection(userModel) {
-    firestoreData.addUserToCollection(userModel);
+  Future<UserModel?> personToUserCollection(userModel) async {
+    return await firestoreMethods.addUserToCollection(userModel);
   }
 
   Future<UserModel> getUserFromUserCollection(String uid) async {
-    return firestoreData.getUserFromUserCollection(uid);
+    return firestoreMethods.getUserFromUserCollection(uid);
   }
 
   updateUser(String field, String value, String uid) {
-    firestoreData.updateUser(field, value, uid);
+    firestoreMethods.updateUser(field, value, uid);
   }
 
-  Future<List<RoomModel>?> getRooms() async => await firestoreData.getRooms();
+  updateField(dynamic value, String fieldName, String uid) {
+    firestoreMethods.updateField(value, fieldName, uid);
+  }
+
+  Future<List<RoomModel>?> getRooms() async => await firestoreMethods.getRooms();
 }

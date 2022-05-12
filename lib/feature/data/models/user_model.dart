@@ -7,11 +7,11 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_model.g.dart';
 
 @JsonSerializable()
-class UserModel extends PersonEntity {
-  const UserModel({required String uid, String? displayName, String? email, String? phoneNumber, String? photoURL})
-      : super(uid: uid, displayName: displayName, email: email, phoneNumber: phoneNumber, photoURL: photoURL);
+class UserModel extends UserEntity {
+  const UserModel({required String uid, String? name, String? email, String? phoneNumber, bool? isNotifications})
+      : super(uid: uid, name: name, email: email, phoneNumber: phoneNumber, isNotifications: isNotifications);
 
-  static const empty = UserModel(uid: '');
+  static const empty = UserModel(uid: '', isNotifications: false);
 
   bool get isEmpty => this == UserModel.empty;
 
@@ -25,9 +25,12 @@ class UserModel extends PersonEntity {
     if (user == null) {
       return UserModel.empty;
     } else {
-      return UserModel(uid: user.uid, email: user.email, displayName: user.displayName, phoneNumber: user.phoneNumber, photoURL: user.photoURL);
+      return UserModel(
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName,
+        phoneNumber: user.phoneNumber,
+      );
     }
   }
-
-
 }

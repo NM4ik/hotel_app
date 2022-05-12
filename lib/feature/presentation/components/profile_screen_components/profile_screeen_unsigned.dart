@@ -22,7 +22,7 @@ class ProfileScreenUnAuth extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthenticatedState) {
-          toatAuth("Здравствуйте, ${state.userModel.displayName ?? state.userModel.phoneNumber}", context);
+          toatAuth("Здравствуйте, ${state.userModel.name ?? state.userModel.phoneNumber}", context);
         }
       },
       child: Scaffold(

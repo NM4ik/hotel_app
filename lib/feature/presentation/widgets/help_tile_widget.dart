@@ -12,19 +12,22 @@ class HelpTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).push(createRouteAnim(whereTo)),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: kMainBlueColor,
-          ),
-          const SizedBox(
-            width: 15,
-          ),
-          Text(title, style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w400)),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding/4),
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).push(createRouteAnim(whereTo)),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: kMainBlueColor,
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            Text(title, style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16)),
+          ],
+        ),
       ),
     );
   }
