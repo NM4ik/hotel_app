@@ -13,3 +13,12 @@ class RoomsLoadingEvent extends RoomsEvent {
   @override
   List<Object> get props => [];
 }
+
+class RoomsUpdateEvent extends RoomsEvent {
+  final List<RoomModel> rooms;
+
+  const RoomsUpdateEvent({required this.rooms});
+
+  @override
+  List<Object> get props => [rooms];
+}

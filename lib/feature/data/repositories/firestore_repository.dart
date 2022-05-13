@@ -9,7 +9,7 @@ class FirestoreRepository {
 
   FirestoreRepository({required this.firestoreMethods});
 
-  Future<UserModel?> personToUserCollection(userModel) async {
+  Future<UserModel?> addUserToUserCollection(userModel) async {
     return await firestoreMethods.addUserToCollection(userModel);
   }
 

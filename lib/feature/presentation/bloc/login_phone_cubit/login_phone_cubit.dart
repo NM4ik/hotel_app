@@ -47,9 +47,9 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: _verificationId!, smsCode: smsCode);
       final user = await _firebaseAuth.signInWithCredential(credential);
 
+
       if (user.user != null) {
-        final userModel = await locator.get<FirestoreRepository>().personToUserCollection(UserModel.toUser(user.user));
-        log(userModel.toString(), name: "USERMODEL");
+        final userModel = await locator.get<FirestoreRepository>().addUserToUserCollection(UserModel.toUser(user.user));
 
         if (user.additionalUserInfo?.isNewUser == true) {
           // emit(LoginPhoneFirstState(user: UserModel.toUser(user.user))); /// fix otp screen :D

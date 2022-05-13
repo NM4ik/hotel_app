@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 
@@ -18,8 +19,8 @@ class CardRoom extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (gridContext) => ProductScreen(
                   roomModel: roomModel,
-                dateTimeFirst: dateTimeFirst,
-                dateTimeSecond: dateTimeSecond,
+                  dateTimeFirst: dateTimeFirst,
+                  dateTimeSecond: dateTimeSecond,
                 )));
       },
       child: SizedBox(
@@ -29,10 +30,10 @@ class CardRoom extends StatelessWidget {
             children: [
               Stack(children: [
                 SizedBox(
-                  height: double.infinity,
+                    height: double.infinity,
                     width: double.infinity,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(kEdgeMainBorder*2),
+                      borderRadius: BorderRadius.circular(kEdgeMainBorder * 2),
                       child: Image.asset(
                         'assets/images/room_card_example.png',
                         fit: BoxFit.cover,
@@ -50,12 +51,12 @@ class CardRoom extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: Container(
-                        decoration: BoxDecoration(
-                            color: roomModel.type == 'Премиум' ? kVinousColor : kMainBlueColor, borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                        decoration:
+                            BoxDecoration(color: Color(int.parse(roomModel.roomTypeModel.color)), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                           child: Text(
-                            roomModel.type,
+                            roomModel.roomTypeModel.title,
                             style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -99,19 +100,14 @@ class CardRoom extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                print('Ты тыкаешь на кнопку "БРОНЬ"');
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(color: kMainBlueColor, borderRadius: BorderRadius.circular(10)),
-                                child: const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                                    child: Text(
-                                      'Бронь',
-                                      style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
-                                    ),
+                            Container(
+                              decoration: BoxDecoration(color: kMainBlueColor, borderRadius: BorderRadius.circular(10)),
+                              child: const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                                  child: Text(
+                                    'Бронь',
+                                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
                                   ),
                                 ),
                               ),

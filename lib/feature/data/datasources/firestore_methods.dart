@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hotel_ma/feature/data/models/chat_model.dart';
 import 'package:hotel_ma/feature/data/models/message_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
+import 'package:hotel_ma/feature/data/models/room_type_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 
 import '../../../core/locator_service.dart';
@@ -18,6 +19,7 @@ class FirestoreMethods {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   CollectionReference rooms = FirebaseFirestore.instance.collection('rooms');
+  CollectionReference roomType = FirebaseFirestore.instance.collection('roomTypes');
   CollectionReference bookings = FirebaseFirestore.instance.collection('bookings');
 
   /// adding a first-auth users to firebase
@@ -109,10 +111,16 @@ class FirestoreMethods {
   Future<List<RoomModel>?> getRooms() async {
     try {
       List<RoomModel> roomsList = [];
+      List<RoomTypeModel> roomTypesList = [];
       final snapshot = await rooms.get();
+      final roomTypeSnapshot = await roomType.get();
+
+      for (var element in roomTypeSnapshot.docs) {
+        roomTypesList.add(RoomTypeModel.fromJson(element.data() as Map<String, dynamic>, element.id));
+      }
 
       for (var element in snapshot.docs) {
-        roomsList.add(RoomModel.fromJson(element.data() as Map<String, dynamic>));
+        roomsList.add(RoomModel.fromJson(element.data() as Map<String, dynamic>, element.id, roomTypesList));
       }
 
       return roomsList;

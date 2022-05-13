@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
@@ -34,7 +36,11 @@ class _RoomScreenState extends State<RoomScreen> {
     context.read<RoomsBloc>().add(RoomsCheckConnectionEvent());
 
     return BlocConsumer<RoomsBloc, RoomsState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if(state is RoomsLoadedState){
+            log('update');
+          }
+        },
         builder: (context, state) {
           if (state is RoomsLoadingState) {
             return const Center(
