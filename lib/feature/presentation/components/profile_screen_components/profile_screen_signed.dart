@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,22 +80,22 @@ class _ProfileScreenAuthState extends State<ProfileScreenAuth> with SingleTicker
                         title: 'Имя',
                         uid: state.userModel.uid,
                         fieldName: 'name',
-                        fieldValue: userModel.name.toString(),
+                        fieldValue: userModel.name ?? "",
                         enable: true,
                       ),
                       ProfileTextFieldWidget(
                         title: 'Почта',
                         uid: state.userModel.uid,
                         fieldName: 'email',
-                        fieldValue: userModel.email.toString(),
+                        fieldValue: userModel.email ?? "",
                         enable: true,
                       ),
                       ProfileTextFieldWidget(
                         title: 'Телефон',
                         uid: state.userModel.uid,
                         fieldName: 'phoneNumber',
-                        fieldValue: userModel.phoneNumber ?? "",
-                        enable: false,
+                        fieldValue: state.userModel.phoneNumber ?? "",
+                        enable: true,
                       ),
                       const SizedBox(
                         height: kEdgeVerticalPadding / 3,

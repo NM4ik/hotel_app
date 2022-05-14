@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -69,6 +70,12 @@ class AuthenticationRepository {
     } catch (e) {
       log('$e', name: 'Exception by logout');
     }
+  }
+
+  Future<void> setUpAccount(String uid, String email, String name) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({'email': email, 'name': name});
+    final userModel = await locator.get<FirestoreRepository>().getUserFromUserCollection(uid);
+    locator.get<SqlRepository>().userToSql(userModel);
   }
 }
 

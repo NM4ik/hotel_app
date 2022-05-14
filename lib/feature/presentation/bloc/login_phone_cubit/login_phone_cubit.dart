@@ -47,29 +47,32 @@ class LoginPhoneCubit extends Cubit<LoginPhoneState> {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: _verificationId!, smsCode: smsCode);
       final user = await _firebaseAuth.signInWithCredential(credential);
 
-
       if (user.user != null) {
         final userModel = await locator.get<FirestoreRepository>().addUserToUserCollection(UserModel.toUser(user.user));
+        log(userModel.toString(), name: "USERFROMCOLLE");
 
         if (user.additionalUserInfo?.isNewUser == true) {
-          // emit(LoginPhoneFirstState(user: UserModel.toUser(user.user))); /// fix otp screen :D
-          if (userModel == null) {
-            locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
-          } else {
-            locator.get<SqlRepository>().userToSql(userModel);
-          }
-          emit(LoginPhoneLoggedInState());
+          setUserToSql(userModel, user);
+          emit(LoginPhoneFirstState(user: UserModel.toUser(user.user))); // fix otp screen :D
         } else {
-          if (userModel == null) {
-            locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
-          } else {
-            locator.get<SqlRepository>().userToSql(userModel);
-          }
+          setUserToSql(userModel, user);
           emit(LoginPhoneLoggedInState());
         }
       }
     } on FirebaseAuthException catch (ex) {
       emit(LoginPhoneErrorState(message: ex.message.toString()));
     }
+  }
+
+  void setUserToSql(UserModel? userModel, UserCredential? user) {
+    if (userModel == null) {
+      locator.get<SqlRepository>().userToSql(UserModel.toUser(user!.user));
+    } else {
+      locator.get<SqlRepository>().userToSql(userModel);
+    }
+  }
+
+  void updateUser(UserModel userModel) {
+    emit(LoginPhoneLoggedInState());
   }
 }

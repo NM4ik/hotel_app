@@ -23,7 +23,6 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final controller = TextEditingController();
-  late final _focusNode = FocusNode();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   AuthenticationRepository authenticationRepository = AuthenticationRepository();
 
@@ -32,14 +31,11 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   void dispose() {
     controller.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(_focusNode);
-
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 50,
@@ -143,7 +139,6 @@ class _OtpScreenState extends State<OtpScreen> {
                   Pinput(
                     length: 6,
                     controller: controller,
-                    focusNode: _focusNode,
                     defaultPinTheme: defaultPinTheme,
                     separator: const SizedBox(width: 16),
                     focusedPinTheme: defaultPinTheme.copyWith(
@@ -165,7 +160,6 @@ class _OtpScreenState extends State<OtpScreen> {
                     onChanged: (value) {
                       if (value.length == 6) {
                         context.read<LoginPhoneCubit>().verifyCode(value);
-                        _focusNode.enclosingScope;
                       }
                     },
                     showCursor: true,
