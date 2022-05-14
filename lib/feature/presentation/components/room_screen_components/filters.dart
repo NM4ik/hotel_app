@@ -11,6 +11,7 @@ import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 import 'package:hotel_ma/feature/presentation/widgets/calendar_button_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../../common/app_constants.dart';
 import '../../../data/models/room_model.dart';
@@ -30,6 +31,14 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   final items = ['Цена по убыванию', 'Цена по возрастанию'];
   String? value;
+  late DateFormat dateFormat;
+
+  @override
+  void initState() {
+    initializeDateFormatting();
+    dateFormat = DateFormat.MMMEd("ru");
+    super.initState();
+  }
 
   void changeDateTimeFirst(DateTime? dateTime) {
     if (dateTime == null) return;
@@ -59,7 +68,6 @@ class _FiltersState extends State<Filters> {
   }
 
   var result = false;
-  final dateFormat = DateFormat("MMMEd");
   DateTime now = DateTime.now();
   late DateTime dateTimeFirst = widget.dateTimeFirst;
 

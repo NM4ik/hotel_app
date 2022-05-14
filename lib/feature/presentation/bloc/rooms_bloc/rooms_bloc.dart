@@ -20,6 +20,7 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     on<RoomsCheckConnectionEvent>(_onRoomsStatus);
     on<RoomsLoadingEvent>(_onRoomsLoading);
     on<RoomsUpdateEvent>(_onRoomsUpdateEvent);
+    on<RoomsChooseEvent>(_onRoomsChooseEvent);
   }
 
   FirestoreRepository firestoreRepository = FirestoreRepository(firestoreMethods: locator.get<FirestoreMethods>());
@@ -44,5 +45,9 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
   FutureOr<void> _onRoomsUpdateEvent(RoomsUpdateEvent event, Emitter<RoomsState> emit) {
     emit(RoomsLoadingState());
     emit(RoomsLoadedState(rooms: event.rooms));
+  }
+
+  FutureOr<void> _onRoomsChooseEvent(RoomsChooseEvent event, Emitter<RoomsState> emit) {
+    emit(RoomsChooseState(room: event.room, firstDate: event.firstDate, lastDate: event.lastDate));
   }
 }

@@ -22,3 +22,14 @@ class RoomsUpdateEvent extends RoomsEvent {
   @override
   List<Object> get props => [rooms];
 }
+
+class RoomsChooseEvent extends RoomsEvent {
+  final RoomModel room;
+  final DateTime firstDate;
+  final DateTime lastDate;
+
+  const RoomsChooseEvent({required this.room, required this.firstDate, required this.lastDate});
+
+  @override
+  List<Object> get props => [room, firstDate, lastDate];
+}

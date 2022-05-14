@@ -39,4 +39,15 @@ class RoomsLoadedState extends RoomsState {
   List<Object> get props => [rooms];
 }
 
+class RoomsChooseState extends RoomsState {
+  final RoomModel room;
+  final DateTime firstDate;
+  final DateTime lastDate;
+
+  const RoomsChooseState({required this.room, required this.firstDate, required this.lastDate});
+
+  @override
+  List<Object> get props => [room, firstDate, lastDate];
+}
+
 class RoomsLoadingErrorState extends RoomsState {}

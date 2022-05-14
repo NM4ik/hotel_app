@@ -13,6 +13,8 @@ class RoomEntity extends Equatable {
   final int price;
   final int rating;
   final String type;
+  final String checkIn;
+  final String eviction;
 
   const RoomEntity(
       {required this.id,
@@ -24,7 +26,9 @@ class RoomEntity extends Equatable {
       required this.name,
       required this.price,
       required this.rating,
-      required this.type});
+      required this.type,
+      required this.checkIn,
+      required this.eviction});
 
   @override
   List<Object?> get props => [
@@ -38,5 +42,7 @@ class RoomEntity extends Equatable {
         price,
         rating,
         type,
+    checkIn,
+    eviction
       ];
 }

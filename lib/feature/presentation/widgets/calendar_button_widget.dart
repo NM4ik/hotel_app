@@ -6,7 +6,8 @@ class CalendarButtonWidget extends StatefulWidget {
   const CalendarButtonWidget({
     Key? key,
     required this.text,
-    required this.changeDateTime, required this.initialDate,
+    required this.changeDateTime,
+    required this.initialDate,
   }) : super(key: key);
   final String text;
   final Function changeDateTime;
@@ -24,7 +25,6 @@ class _CalendarButtonWidgetState extends State<CalendarButtonWidget> {
         height: 47,
         width: double.infinity,
         child: TextButton(
-
           onPressed: () async {
             DateTime? newDate = await showDatePicker(
                 context: context, initialDate: widget.initialDate, firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 365)));

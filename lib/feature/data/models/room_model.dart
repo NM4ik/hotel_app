@@ -12,7 +12,9 @@ class RoomModel extends RoomEntity {
       required String name,
       required int price,
       required int rating,
-      required String type})
+      required String type,
+      required String checkIn,
+      required String eviction})
       : super(
             id: id,
             isSmoking: isSmoking,
@@ -23,18 +25,9 @@ class RoomModel extends RoomEntity {
             rating: rating,
             type: type,
             images: images,
-            roomTypeModel: roomTypeModel);
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'isSmoking': isSmoking,
-        'bedsCount': bedsCount,
-        'description': description,
-        'name': name,
-        'price': price,
-        'rating': rating,
-        'type': type,
-      };
+            roomTypeModel: roomTypeModel,
+            checkIn: checkIn,
+            eviction: eviction);
 
   factory RoomModel.fromJson(Map<String, dynamic> json, String id, List<RoomTypeModel> roomTypes) => RoomModel(
       id: id,
@@ -46,5 +39,7 @@ class RoomModel extends RoomEntity {
       price: json['price'],
       rating: json['rating'],
       type: json['type'],
-      roomTypeModel: roomTypes.where((element) => element.id == json['type']).single);
+      roomTypeModel: roomTypes.where((element) => element.id == json['type']).single,
+      checkIn: json['checkIn'],
+      eviction: json['eviction']);
 }
