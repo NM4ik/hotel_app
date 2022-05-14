@@ -1,22 +1,17 @@
 import 'dart:developer';
 import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hotel_ma/feature/data/models/room_model.dart';
+import 'package:hotel_ma/feature/presentation/bloc/booking_bloc/booking_bloc.dart';
 import 'package:hotel_ma/feature/presentation/screens/order_screen.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 import '../../../common/app_constants.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/rooms_bloc/rooms_bloc.dart';
-import '../components/onboarding_dot.dart';
 import '../components/onboarding_dot.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -283,14 +278,13 @@ class _ProductScreenState extends State<ProductScreen> {
                     log(userModel.toString(), name: "MODEL: ");
                     showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
                   } else {
-                    log(userModel.toString(), name: "MODEL2: ");
-                    log(FirebaseAuth.instance.currentUser.toString(), name: "userModel2: ");
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => OrderScreen(
-                    //         // roomModel: widget.roomModel,
-                    //         // dateTimeFirst: widget.FTimeFirst,
-                    //         // dateTimeSecond: widget.dateTimeSecond,
-                    //         )));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => OrderScreen(
+                              dateStart: state.firstDate,
+                              roomModel: state.room,
+                              dateEnd: state.lastDate,
+                              totalCost: totalCost!,
+                            )));
                   }
                 },
                 elevation: 3,

@@ -87,9 +87,9 @@ class _FiltersState extends State<Filters> {
                 height: kEdgeVerticalPadding,
               ),
               Row(
-                children: [
-                  Expanded(child: DefaultTextFieldWidget(text: 'Поиск по номерам', textEditingController: TextEditingController())),
-                  const SizedBox(
+                children: const [
+                  Expanded(child: DefaultTextFieldWidget(text: 'Поиск по номерам',)),
+                  SizedBox(
                     width: kEdgeHorizontalPadding / 2,
                   ),
 

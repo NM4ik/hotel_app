@@ -2,10 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 
-class DefaultTextFieldWidget extends StatelessWidget {
-  const DefaultTextFieldWidget({Key? key, required this.text, required this.textEditingController}) : super(key: key);
+class DefaultTextFieldWidget extends StatefulWidget {
+  const DefaultTextFieldWidget({Key? key, required this.text}) : super(key: key);
   final String text;
-  final TextEditingController textEditingController;
+
+  @override
+  State<DefaultTextFieldWidget> createState() => _DefaultTextFieldWidgetState();
+}
+
+class _DefaultTextFieldWidgetState extends State<DefaultTextFieldWidget> {
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    _controller.text = widget.text;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +27,14 @@ class DefaultTextFieldWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20.0, right: 10.0),
         child: TextField(
-          controller: textEditingController,
+          controller: _controller,
           decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              hintText: text,
+              hintText: widget.text,
               hintStyle: const TextStyle(color: kMainGreyColor, fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400),
               suffixIcon: const Icon(
                 Icons.search_rounded,

@@ -8,6 +8,7 @@ import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 
+import 'feature/presentation/bloc/booking_bloc/booking_bloc.dart';
 import 'feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'feature/presentation/screens/home_screen.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => locator<RoomsBloc>()),
         BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
         BlocProvider(create: (context) => locator<LoginPhoneCubit>()),
+        BlocProvider(create: (context) => locator<BookingBloc>()),
       ],
       child: MaterialApp(
           builder: BotToastInit(),

@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
                 ),
 
                 /// search-field
-                DefaultTextFieldWidget(text: "Поиск по приложению", textEditingController: textEditingController),
+                const DefaultTextFieldWidget(text: "Поиск по приложению",),
 
                 const SizedBox(
                   height: 30,
