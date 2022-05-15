@@ -2,17 +2,14 @@ part of 'booking_bloc.dart';
 
 abstract class BookingState extends Equatable {
   const BookingState();
-}
 
-class BookingInitialState extends BookingState {
   @override
   List<Object> get props => [];
 }
 
-class BookingLoadingState extends BookingState {
-  @override
-  List<Object> get props => [];
-}
+class BookingInitialState extends BookingState {}
+
+class BookingLoadingState extends BookingState {}
 
 class BookingProcessState extends BookingState {
   final UserModel userModel;
@@ -24,7 +21,8 @@ class BookingProcessState extends BookingState {
   const BookingProcessState({required this.userModel, required this.roomModel, required this.dateStart, required this.dateEnd, required this.totalPrice});
 
   @override
-  List<Object> get props => [
+  List<Object> get props =>
+      [
         userModel,
         roomModel,
         dateStart,

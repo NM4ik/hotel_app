@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hotel_ma/feature/data/models/booking_model.dart';
 import 'package:hotel_ma/feature/data/models/chat_model.dart';
 import 'package:hotel_ma/feature/data/models/message_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
@@ -128,6 +129,10 @@ class FirestoreMethods {
       log('$e', name: 'Exception by getRooms()');
       return null;
     }
+  }
+
+  void createBooking(BookingModel bookingModel) {
+    bookings.add(bookingModel.toJson());
   }
 
   void sendBooking(DateTime dateStart, DateTime dateEnd, String roomName, int totalPrice, String uid, String roomType) {

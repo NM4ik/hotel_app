@@ -12,6 +12,8 @@ import 'package:hotel_ma/feature/presentation/bloc/booking_bloc/booking_bloc.dar
 import 'package:hotel_ma/feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 

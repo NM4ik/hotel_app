@@ -27,7 +27,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  final GlobalKey _scaffold = GlobalKey();
   final controller = PageController();
   int currentPage = 0;
   late DateFormat dateFormat;
@@ -59,13 +58,16 @@ class _ProductScreenState extends State<ProductScreen> {
     UserModel userModel = UserModel.toUser(FirebaseAuth.instance.currentUser);
 
     return BlocConsumer<RoomsBloc, RoomsState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is RoomsLoadedState) {
+          Navigator.of(context).pop();
+        }
+      },
       builder: (context, state) {
         if (state is RoomsChooseState) {
           totalCost = ((state.lastDate.difference(state.firstDate).inDays) * state.room.price).toString();
 
           return Scaffold(
-            key: _scaffold,
             body: SafeArea(
               child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
@@ -274,18 +276,19 @@ class _ProductScreenState extends State<ProductScreen> {
               child: FloatingActionButton.extended(
                 backgroundColor: kMainBlueColor,
                 onPressed: () {
-                  if (userModel == UserModel.empty) {
-                    log(userModel.toString(), name: "MODEL: ");
-                    showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
-                  } else {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => OrderScreen(
-                              dateStart: state.firstDate,
-                              roomModel: state.room,
-                              dateEnd: state.lastDate,
-                              totalCost: totalCost!,
-                            )));
-                  }
+                  // if (userModel == UserModel.empty) {
+                  //   log(userModel.toString(), name: "MODEL: ");
+                  //   showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
+                  // } else {
+                  // context.read<BookingBloc>().add(StartBookingEvent(dateEnd: state.lastDate, dateStart: state.firstDate, roomModel: state.room, totalPrice: totalCost!, userModel: userModel));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => OrderScreen(
+                            dateStart: state.firstDate,
+                            roomModel: state.room,
+                            dateEnd: state.lastDate,
+                            totalCost: totalCost!,
+                          )));
+                  // }
                 },
                 elevation: 3,
                 label: Text(

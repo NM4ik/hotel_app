@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
                 ),
 
                 /// search-field
-                const DefaultTextFieldWidget(text: "Поиск по приложению",),
+                DefaultTextFieldWidget(text: "Поиск по приложению",),
 
                 const SizedBox(
                   height: 30,

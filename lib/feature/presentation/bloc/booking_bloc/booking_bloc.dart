@@ -8,35 +8,37 @@ import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 
 part 'booking_event.dart';
-
 part 'booking_state.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc() : super(BookingInitialState()) {
     on<BookingEvent>((event, emit) {
-      on<StartBookingEvent>(_onStartBookingEvent);
+      on<StartBookingEvent>(_onBookingProcess);
       on<SuccessBookingEvent>(_onSuccessBookingEvent);
       on<ErrorBookingEvent>(_onErrorBookingEvent);
     });
   }
 
-  FutureOr<void> _onStartBookingEvent(StartBookingEvent event, Emitter<BookingState> emit) {
-    try {
-      emit(BookingLoadingState());
-      FirebaseFirestore.instance.collection("users").get();
-      log('qweqweqwe', name: 'qweqwe');
-      emit(BookingProcessState(
-          userModel: event.userModel, roomModel: event.roomModel, dateStart: event.dateStart, dateEnd: event.dateEnd, totalPrice: event.totalPrice));
-    } catch (e) {
-      emit(BookingErrorState(message: e.toString()));
-    }
+  void _onBookingProcess(StartBookingEvent event, Emitter<BookingState> emit) {
+    emit(BookingLoadingState());
   }
 
+  // FutureOr<void> _onStartBookingEvent(StartBookingEvent event, Emitter<BookingState> emit) {
+  //     // emit(BookingLoadingState());
+  //     // log('qweqweqwe', name: 'qweqwe');
+  //     // emit(BookingProcessState(
+  //     //     userModel: event.userModel, roomModel: event.roomModel, dateStart: event.dateStart, dateEnd: event.dateEnd, totalPrice: event.totalPrice));
+  //   emit(BookingLoadingState());
+  // }
+
   FutureOr<void> _onSuccessBookingEvent(SuccessBookingEvent event, Emitter<BookingState> emit) {
-    emit(BookingSuccessState(message: event.message));
+    // emit(BookingSuccessState(message: event.message));
+    emit(BookingLoadingState());
   }
 
   FutureOr<void> _onErrorBookingEvent(ErrorBookingEvent event, Emitter<BookingState> emit) {
     emit(BookingErrorState(message: event.message));
   }
+
+
 }

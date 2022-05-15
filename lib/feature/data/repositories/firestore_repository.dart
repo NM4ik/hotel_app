@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
+import 'package:hotel_ma/feature/data/models/booking_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 
 import '../models/user_model.dart';
@@ -17,6 +18,8 @@ class FirestoreRepository {
     return firestoreMethods.getUserFromUserCollection(uid);
   }
 
+  Future<List<RoomModel>?> getRooms() async => await firestoreMethods.getRooms();
+
   updateUser(String field, String value, String uid) {
     firestoreMethods.updateUser(field, value, uid);
   }
@@ -25,5 +28,7 @@ class FirestoreRepository {
     firestoreMethods.updateField(value, fieldName, uid);
   }
 
-  Future<List<RoomModel>?> getRooms() async => await firestoreMethods.getRooms();
+  createBooking(BookingModel bookingModel){
+    firestoreMethods.createBooking(bookingModel);
+  }
 }

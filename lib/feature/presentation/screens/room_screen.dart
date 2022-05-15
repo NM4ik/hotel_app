@@ -35,128 +35,126 @@ class _RoomScreenState extends State<RoomScreen> {
   Widget build(BuildContext context) {
     context.read<RoomsBloc>().add(RoomsCheckConnectionEvent());
 
-    return BlocConsumer<RoomsBloc, RoomsState>(listener: (context, state) {
-      if (state is RoomsLoadedState) {
-        log('update');
-      }
-    }, builder: (context, state) {
-      if (state is RoomsLoadingState) {
-        return const Center(
-          child: CircularProgressIndicator(
-            color: kMainBlueColor,
-          ),
-        );
-      }
+    return BlocConsumer<RoomsBloc, RoomsState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is RoomsLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: kMainBlueColor,
+              ),
+            );
+          }
 
-      if (state is RoomsEmptyState) {
-        return const Center(
-          child: Text('Свободных номеров нет'),
-        );
-      }
+          if (state is RoomsEmptyState) {
+            return const Center(
+              child: Text('Свободных номеров нет'),
+            );
+          }
 
-      if (state is RoomsLoadingErrorState) {
-        return const Center(
-          child: Text('Номена не загрузились'),
-        );
-      }
+          if (state is RoomsLoadingErrorState) {
+            return const Center(
+              child: Text('Номена не загрузились'),
+            );
+          }
 
-      if (state is RoomsLoadedState) {
-        return SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(right: kEdgeHorizontalPadding, left: kEdgeHorizontalPadding, top: kEdgeVerticalPadding),
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                leading: const SquareButtonWidget(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
-                title: Text(
-                  'Никита',
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
-                ),
-                actions: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: Theme.of(context).primaryColor,
+          if (state is RoomsLoadedState) {
+            return SafeArea(
+                child: Padding(
+              padding: const EdgeInsets.only(right: kEdgeHorizontalPadding, left: kEdgeHorizontalPadding, top: kEdgeVerticalPadding),
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    leading: const SquareButtonWidget(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
+                    title: Text(
+                      'Никита',
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                    ),
+                    actions: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          Text(
+                            'Русский',
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
+                          ),
+                          Icon(
+                            Icons.outlined_flag_outlined,
+                            color: Theme.of(context).primaryColor,
+                          )
+                        ],
                       ),
-                      Text(
-                        'Русский',
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
-                      ),
-                      Icon(
-                        Icons.outlined_flag_outlined,
-                        color: Theme.of(context).primaryColor,
-                      )
                     ],
+                  ),
+
+                  /// Filters for free rooms
+                  /// refactor, https://gallery.flutter.dev/ = find calendar picker
+                  SliverToBoxAdapter(
+                    child: Filters(
+                      dateTimeFirst: dateTimeFirst,
+                      dateTimeSecond: dateTimeSecond,
+                      changeDateTime: getDateValues,
+                    ),
+                  ),
+
+                  /// Grid free rooms
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: kEdgeVerticalPadding, bottom: kEdgeVerticalPadding / 2),
+                      child: Align(
+                        child: Text(
+                          "Доступные номера",
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        alignment: Alignment.centerLeft,
+                      ),
+                    ),
+                  ),
+
+                  // SizedBox(height: kEdgeVerticalPadding/2,),
+
+                  SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15,
+                      childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.55),
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (gridContext, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            context.read<RoomsBloc>().add(RoomsChooseEvent(room: state.rooms[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (gridContext) => const ProductScreen()));
+                          },
+                          child: CardRoom(
+                            roomModel: state.rooms[index],
+                          ),
+                        );
+                      },
+                      childCount: state.rooms.length,
+                    ),
                   ),
                 ],
               ),
-
-              /// Filters for free rooms
-              /// refactor, https://gallery.flutter.dev/ = find calendar picker
-              SliverToBoxAdapter(
-                child: Filters(
-                  dateTimeFirst: dateTimeFirst,
-                  dateTimeSecond: dateTimeSecond,
-                  changeDateTime: getDateValues,
+            ));
+          }
+          if (state is RoomsUSICState) {
+            return const RoomsUsicScreen();
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: kMainBlueColor,
                 ),
               ),
-
-              /// Grid free rooms
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: kEdgeVerticalPadding, bottom: kEdgeVerticalPadding / 2),
-                  child: Align(
-                    child: Text(
-                      "Доступные номера",
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                    alignment: Alignment.centerLeft,
-                  ),
-                ),
-              ),
-
-              // SizedBox(height: kEdgeVerticalPadding/2,),
-
-              SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 15,
-                  childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.55),
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (gridContext, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        context.read<RoomsBloc>().add(RoomsChooseEvent(room: state.rooms[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
-                        Navigator.of(context).push(MaterialPageRoute(builder: (gridContext) => const ProductScreen()));
-                      },
-                      child: CardRoom(
-                        roomModel: state.rooms[index],
-                      ),
-                    );
-                  },
-                  childCount: state.rooms.length,
-                ),
-              ),
-            ],
-          ),
-        ));
-      }
-      if (state is RoomsUSICState) {
-        return const RoomsUsicScreen();
-      } else {
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(
-              color: kMainBlueColor,
-            ),
-          ),
-        );
-      }
-    });
+            );
+          }
+        });
   }
 }

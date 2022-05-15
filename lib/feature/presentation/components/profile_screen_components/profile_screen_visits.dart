@@ -4,7 +4,7 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
 
-import '../../../data/models/visit_model.dart';
+import '../../../data/models/booking_model.dart';
 
 class ProfileScreenVisits extends StatelessWidget {
   const ProfileScreenVisits({Key? key, required this.uid}) : super(key: key);
@@ -51,8 +51,8 @@ class ProfileScreenVisits extends StatelessWidget {
               }
 
               if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                List<VisitModel> visits = [];
-                snapshot.data?.docs.map((e) => visits.add(VisitModel.fromJson(e.data() as Map<String, dynamic>))).toList();
+                List<BookingModel> visits = [];
+                snapshot.data?.docs.map((e) => visits.add(BookingModel.fromJson(e.data() as Map<String, dynamic>))).toList();
                 return ListView.separated(
                   physics: const BouncingScrollPhysics(),
                   itemCount: visits.length,
@@ -89,7 +89,7 @@ class ProfileScreenVisits extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                'Счет: ${visits[index].price}',
+                                'Счет: ${visits[index].totalPrice}',
                                 style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10, color: kMainGreyColor),
                               ),
                             ],
