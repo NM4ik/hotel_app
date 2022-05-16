@@ -4,6 +4,7 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
+import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:hotel_ma/feature/presentation/screens/conversation_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/faq_screen.dart';
 
@@ -16,7 +17,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final String imageRoot = "assets/images/car_2.png";
-  final currentUser = locator.get<AuthenticationRepository>().currentUser;
+  final userModel = locator.get<SqlRepository>().getUserFromSql();
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +83,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
               GestureDetector(
                 onTap: () {
-                  if (currentUser == UserModel.empty) {
+                  if (userModel == UserModel.empty) {
                     showCustomDialog(context, 'Нельзя писать в чат, будучи неавторизованным');
                   }
-                  if (currentUser != UserModel.empty) {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => ConversationScreen(userModel: currentUser)))
-                        .then((_) => setState(() {}));
+                  if (userModel != UserModel.empty) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ConversationScreen(userModel: userModel))).then((_) => setState(() {}));
                   }
                 },
-                child: currentUser == UserModel.empty
+                child: userModel == UserModel.empty
                     ? Card(
                         margin: EdgeInsets.zero,
                         color: Colors.transparent,
@@ -122,21 +121,41 @@ class _ChatScreenState extends State<ChatScreen> {
                           ],
                         ),
                       )
+                    // : StreamBuilder(
+                    //     stream: FirebaseFirestore.instance.collection('chats').doc(userModel.uid).snapshots(),
+                    //     builder: (context, snapshot) {
+                    //       if (snapshot.hasError) {
+                    //         ListTile(title: Text('error'));
+                    //       }
+                    //
+                    //       if (!snapshot.hasData) {
+                    //         ListTile(title: Text('error'));
+                    //       }
+                    //
+                    //       return Card(child: ListTile(title: Text('name')));
+                    //     })),
+
                     : StreamBuilder(
-                        stream: FirebaseFirestore.instance.collection('chats').doc(currentUser.uid).snapshots(),
+                        stream: FirebaseFirestore.instance.collection('chats').doc(userModel.uid).snapshots(),
                         builder: (context, AsyncSnapshot snapshot) {
                           late String lastMessage;
                           late String lastMessageUid;
 
-                          if (!snapshot.hasData || snapshot.hasError) {
+                          if (snapshot.hasError) {
+                            lastMessage = 'Ошибка загрузки чата..';
+                            lastMessageUid = '';
+                          }
+
+                          if (!snapshot.hasData || snapshot.hasData) {
                             lastMessage = 'Сообщений еще не было или они не загрузились..';
                             lastMessageUid = '';
                           }
 
-                          if (snapshot.hasData) {
+                          if (snapshot.connectionState == ConnectionState.done) {
                             lastMessage = snapshot.data['recentMessage']['content'];
                             lastMessageUid = snapshot.data['recentMessage']['sendBy'];
                           }
+
                           return Card(
                             margin: EdgeInsets.zero,
                             color: Colors.transparent,
@@ -159,11 +178,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                   title: Text('Поддержка', style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16)),
                                   subtitle: Text.rich(
-                                    lastMessageUid == currentUser.uid
+                                    lastMessageUid == userModel.uid
                                         ? TextSpan(children: [
                                             TextSpan(
-                                                text: '${currentUser.displayName}: ',
-                                                // text: '${'qwe'}: ',
+                                                text: '${userModel.name}: ',
                                                 style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, fontWeight: FontWeight.w500)),
                                             TextSpan(
                                                 text: lastMessage,
@@ -205,8 +223,8 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(kEdgeMainBorder),
-              child: Image.network(
-                data[index]['imageRoot'],
+              child: Image.asset(
+                imageRoot,
                 fit: BoxFit.cover,
                 width: 74,
                 height: 74,

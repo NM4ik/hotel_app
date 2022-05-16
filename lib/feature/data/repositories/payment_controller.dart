@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class PaymentController {
   Map<String, dynamic>? paymentIntentData;
 
-  Future<void> makePayment({required String amount, required String currency}) async {
+  Future<Map<String, dynamic>?> makePayment({required String amount, required String currency}) async {
     try {
       paymentIntentData = await createPaymentIntent(amount, currency);
       if (paymentIntentData != null) {
@@ -21,17 +21,18 @@ class PaymentController {
           paymentIntentClientSecret: paymentIntentData!['client_secret'],
           customerEphemeralKeySecret: paymentIntentData!['ephemeralKey'],
         ));
-        displayPaymentSheet();
+        await displayPaymentSheet();
       }
+      return paymentIntentData;
     } catch (e, s) {
       print('exception:$e$s');
+      return null;
     }
   }
 
-  displayPaymentSheet() async {
+  Future<void> displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      log("SUCCESS");
     } on Exception catch (e) {
       if (e is StripeException) {
         print("Error from Stripe: ${e.error.localizedMessage}");

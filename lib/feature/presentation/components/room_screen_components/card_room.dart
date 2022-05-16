@@ -6,7 +6,7 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 
 import '../../bloc/rooms_bloc/rooms_bloc.dart';
-import '../../screens/product_screen.dart';
+import 'room_detail_screen.dart';
 
 class CardRoom extends StatelessWidget {
   final RoomModel roomModel;

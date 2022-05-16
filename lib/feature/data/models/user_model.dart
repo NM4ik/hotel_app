@@ -1,4 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
+import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 
 import '../../domain/entities/user_entity.dart';
 
@@ -31,6 +34,18 @@ class UserModel extends UserEntity {
         name: user.displayName,
         phoneNumber: user.phoneNumber,
       );
+    }
+  }
+
+  static updateUser() async {
+    UserModel userModel = locator.get<SqlRepository>().getUserFromSql();
+
+    if (userModel != UserModel.empty) {
+      final response = await locator.get<FirestoreRepository>().getUserFromUserCollection(userModel.uid);
+      locator.get<SqlRepository>().userToSql(response);
+      return;
+    } else {
+      return;
     }
   }
 }

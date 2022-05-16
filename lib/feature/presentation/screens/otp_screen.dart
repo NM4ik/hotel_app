@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/feature/presentation/components/toat_attachments.dart';
 import 'package:hotel_ma/feature/presentation/screens/get_user_info_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/router_screen.dart';
 import 'package:pinput/pinput.dart';
@@ -85,7 +86,7 @@ class _OtpScreenState extends State<OtpScreen> {
             loading = true;
           });
         } else if (state is LoginPhoneErrorState) {
-          BotToast.showSimpleNotification(title: state.message, backgroundColor: Colors.purple);
+          errorOtpCode('Вы ввели неверный смс-код', context);
           setState(() {
             loading = false;
           });

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/room_screen_components/card_room.dart';
-import 'package:hotel_ma/feature/presentation/screens/product_screen.dart';
+import 'package:hotel_ma/feature/presentation/components/room_screen_components/room_detail_screen.dart';
 
 import '../../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';

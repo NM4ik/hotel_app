@@ -9,11 +9,10 @@ class SqlRepository {
   SqlRepository({required this.sqlMethods});
 
   void userToSql(UserModel userModel) {
-    log(userModel.toString(), name: "TOSQL");
     sqlMethods.writePersonToCache(userModel);
   }
 
-  UserModel userFromSql() {
+  UserModel getUserFromSql() {
     return sqlMethods.getPersonFromCache();
   }
 }

@@ -28,7 +28,7 @@ class FirestoreRepository {
     firestoreMethods.updateField(value, fieldName, uid);
   }
 
-  createBooking(BookingModel bookingModel){
+  createBooking(BookingModel bookingModel) {
     firestoreMethods.createBooking(bookingModel);
   }
 }

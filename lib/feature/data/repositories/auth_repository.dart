@@ -67,6 +67,7 @@ class AuthenticationRepository {
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
       ]);
+      locator.get<SqlRepository>().userToSql(UserModel.empty);
     } catch (e) {
       log('$e', name: 'Exception by logout');
     }

@@ -11,7 +11,7 @@ import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/office_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/profile_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/room_screen.dart';
-import 'package:hotel_ma/payment_controller.dart';
+import 'package:hotel_ma/feature/data/repositories/payment_controller.dart';
 
 class RouterScreen extends StatefulWidget {
   const RouterScreen({Key? key, required this.page}) : super(key: key);

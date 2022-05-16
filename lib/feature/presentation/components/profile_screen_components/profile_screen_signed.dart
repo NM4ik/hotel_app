@@ -36,7 +36,7 @@ class _ProfileScreenAuthState extends State<ProfileScreenAuth> with SingleTicker
 
   @override
   void initState() {
-    userModel = locator.get<SqlRepository>().userFromSql();
+    userModel = locator.get<SqlRepository>().getUserFromSql();
     isNotifications = userModel.isNotifications ?? true;
     tabController = TabController(
       vsync: this,
@@ -191,7 +191,7 @@ class _ProfileScreenAuthState extends State<ProfileScreenAuth> with SingleTicker
                                     .bodyText1!
                                     .copyWith(fontSize: 16, color: kMainBlueColor, fontWeight: FontWeight.w500),
                               )),
-                          ElevatedButton(onPressed: () => print(locator.get<SqlRepository>().userFromSql()), child: Text('fetch')),
+                          ElevatedButton(onPressed: () => print(locator.get<SqlRepository>().getUserFromSql()), child: Text('fetch')),
                           ElevatedButton(
                               onPressed: () async {
                                 final user = await locator.get<FirestoreRepository>().getUserFromUserCollection(state.userModel.uid);

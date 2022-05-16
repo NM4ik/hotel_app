@@ -3,24 +3,23 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/booking_bloc/booking_bloc.dart';
 import 'package:hotel_ma/feature/presentation/screens/order_screen.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import '../../../common/app_constants.dart';
-import '../../data/models/user_model.dart';
-import '../bloc/rooms_bloc/rooms_bloc.dart';
-import '../components/onboarding_dot.dart';
+import '../../../../common/app_constants.dart';
+import '../../../data/models/user_model.dart';
+import '../../bloc/rooms_bloc/rooms_bloc.dart';
+import '../onboarding_dot.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({
     Key? key,
-  }) : super(key: key); //required this.roomModel, required this.dateTimeFirst, required this.dateTimeSecond
-  // final RoomModel roomModel;
-  // final DateTime dateTimeFirst;
-  // final DateTime dateTimeSecond;
+  }) : super(key: key);
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -28,10 +27,11 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   final controller = PageController();
-  int currentPage = 0;
-  late DateFormat dateFormat;
+  final userModel = locator.get<SqlRepository>().getUserFromSql();
 
+  int currentPage = 0;
   String? totalCost;
+  late DateFormat dateFormat;
 
   @override
   void initState() {
@@ -54,8 +54,6 @@ class _ProductScreenState extends State<ProductScreen> {
       'assets/images/room_image_2.jpg',
       "assets/images/room_image_1.jpg"
     ];
-
-    UserModel userModel = UserModel.toUser(FirebaseAuth.instance.currentUser);
 
     return BlocConsumer<RoomsBloc, RoomsState>(
       listener: (context, state) {
@@ -276,19 +274,19 @@ class _ProductScreenState extends State<ProductScreen> {
               child: FloatingActionButton.extended(
                 backgroundColor: kMainBlueColor,
                 onPressed: () {
-                  // if (userModel == UserModel.empty) {
-                  //   log(userModel.toString(), name: "MODEL: ");
-                  //   showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
-                  // } else {
-                  // context.read<BookingBloc>().add(StartBookingEvent(dateEnd: state.lastDate, dateStart: state.firstDate, roomModel: state.room, totalPrice: totalCost!, userModel: userModel));
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => OrderScreen(
-                            dateStart: state.firstDate,
-                            roomModel: state.room,
-                            dateEnd: state.lastDate,
-                            totalCost: totalCost!,
-                          )));
-                  // }
+                  if (userModel == UserModel.empty) {
+                    showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
+                  } else {
+                    context.read<BookingBloc>().add(StartBookingEvent(
+                        dateEnd: state.lastDate, dateStart: state.firstDate, roomModel: state.room, totalPrice: totalCost!, userModel: userModel));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => OrderScreen(
+                              dateStart: state.firstDate,
+                              roomModel: state.room,
+                              dateEnd: state.lastDate,
+                              totalCost: totalCost!,
+                            )));
+                  }
                 },
                 elevation: 3,
                 label: Text(

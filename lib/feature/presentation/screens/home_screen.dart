@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
+import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:hotel_ma/feature/presentation/components/main_screen_components/info.dart';
 import 'package:hotel_ma/feature/presentation/components/main_screen_components/personal_offer.dart';
 import 'package:hotel_ma/feature/presentation/components/main_screen_components/playbill.dart';
 import 'package:hotel_ma/feature/presentation/components/main_screen_components/stock_offer.dart';
 
-import '../../../payment_controller.dart';
+import '../../data/repositories/payment_controller.dart';
 import '../widgets/default_text_field_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -34,13 +39,14 @@ class HomeScreen extends StatelessWidget {
 
                 ElevatedButton(
                     onPressed: () {
-                      paymentController.makePayment(amount: "10", currency: "USD");
+                      log(locator.get<SqlRepository>().getUserFromSql().toString());
                     },
                     child: const Text('test')),
 
                 const SizedBox(
                   height: 25,
                 ),
+
 
                 /// search-field
                 DefaultTextFieldWidget(

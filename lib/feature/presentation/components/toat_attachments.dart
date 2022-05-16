@@ -26,3 +26,17 @@ void nonUpdateProfileFields(String field, context) => BotToast.showSimpleNotific
       backgroundColor: Colors.red,
       titleStyle: Theme.of(context).textTheme.bodyText1,
     );
+
+void errorOtpCode(String title, context) => BotToast.showSimpleNotification(
+      title: title,
+      hideCloseButton: true,
+      backgroundColor: Colors.red,
+      titleStyle: Theme.of(context).textTheme.bodyText1,
+    );
+
+void successCreateBooking(String title, context) => BotToast.showSimpleNotification(
+      title: 'Бронирование $title успешно',
+      hideCloseButton: true,
+      backgroundColor: Colors.green,
+      titleStyle: Theme.of(context).textTheme.bodyText1,
+    );

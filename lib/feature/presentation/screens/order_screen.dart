@@ -7,7 +7,9 @@ import 'package:hotel_ma/feature/data/models/booking_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 import 'package:hotel_ma/feature/presentation/components/toat_attachments.dart';
+import 'package:hotel_ma/feature/presentation/screens/router_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
+import 'package:hotel_ma/feature/data/repositories/payment_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -37,7 +39,8 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   late DateFormat dateFormat;
-  final UserModel userModel = locator.get<SqlRepository>().userFromSql();
+  final UserModel userModel = locator.get<SqlRepository>().getUserFromSql();
+  PaymentController paymentController = PaymentController();
   String? name;
   String? secondName;
   String? phoneNumber;
@@ -320,7 +323,7 @@ class _OrderScreenState extends State<OrderScreen> {
             Padding(
               padding: const EdgeInsets.all(30),
               child: DefaultButtonWidget(
-                  press: () {
+                  press: () async {
                     BookingModel bookingModel = BookingModel(
                         roomName: widget.roomModel.name,
                         roomType: widget.roomModel.roomTypeModel.title,
@@ -331,12 +334,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         totalPrice: int.parse(widget.totalCost),
                         uid: userModel.uid);
 
-                    try {
-                      locator.get<FirestoreRepository>().createBooking(bookingModel);
-                      toatAuth('Успешно', context);
-                    } catch (e) {
-                      toatAuth('$e', context);
-                    }
+                    _createOrder(context, bookingModel);
                   },
                   title: 'Забронировать'),
             ),
@@ -344,6 +342,18 @@ class _OrderScreenState extends State<OrderScreen> {
         ),
       ),
     );
+  }
+
+  void _createOrder(BuildContext context, BookingModel bookingModel) async {
+    try {
+      final response = await paymentController.makePayment(amount: widget.totalCost, currency: "RUB");
+      log(response.toString());
+      locator.get<FirestoreRepository>().createBooking(bookingModel);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const RouterScreen(page: null)), (route) => false);
+      successCreateBooking(widget.roomModel.name, context);
+    } catch (e) {
+      toatAuth('$e', context);
+    }
   }
 
   void _setField(String value, String field) {
