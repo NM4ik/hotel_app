@@ -9,7 +9,7 @@ import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'package:hotel_ma/feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
-import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/router_screen.dart';
 
 import '../../../common/app_constants.dart';
 
@@ -33,7 +33,7 @@ class _GetUserInfoScreenState extends State<GetUserInfoScreen> {
         if (state is LoginPhoneLoggedInState) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (context) => const HomeScreen(
+                  builder: (context) => const RouterScreen(
                         page: null,
                       )),
               (route) => false);
@@ -59,7 +59,7 @@ class _GetUserInfoScreenState extends State<GetUserInfoScreen> {
                     ],
                   ),
                   onTap: () async {
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen(page: null)), (route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const RouterScreen(page: null)), (route) => false);
                   },
                 ),
                 alignment: Alignment.centerLeft,

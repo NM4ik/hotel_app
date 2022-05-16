@@ -7,13 +7,15 @@ import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
-
 import 'feature/presentation/bloc/booking_bloc/booking_bloc.dart';
 import 'feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
-import 'feature/presentation/screens/home_screen.dart';
+import 'feature/presentation/screens/router_screen.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = "pk_test_51KzoBqB80MaXbORHYNqCSCaseL5WbwEXhmRc5povmp9iKtA1F2ABQBKjRWngW1LAHvAupIZSvAHfPpC07jf4qDNy00uZm3cdQI";
   await FireBase.initialize();
   await setup();
   runApp(const MyApp());
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
-          home: const HomeScreen(
+          home: const RouterScreen(
             page: null,
           )),
     );

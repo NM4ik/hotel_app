@@ -1,82 +1,89 @@
-import 'dart:developer';
-
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/common/app_icons.dart';
-import 'package:hotel_ma/core/locator_service.dart';
-import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
-import 'package:hotel_ma/feature/presentation/screens/chat_screen.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/info.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/personal_offer.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/playbill.dart';
+import 'package:hotel_ma/feature/presentation/components/main_screen_components/stock_offer.dart';
 
-import 'package:hotel_ma/feature/presentation/screens/main_screen.dart';
-import 'package:hotel_ma/feature/presentation/screens/office_screen.dart';
-import 'package:hotel_ma/feature/presentation/screens/profile_screen.dart';
-import 'package:hotel_ma/feature/presentation/screens/room_screen.dart';
+import '../../../payment_controller.dart';
+import '../widgets/default_text_field_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.page}) : super(key: key);
-  final int? page;
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int currentPageIndex = 0;
-  SqlMethods personStatus = SqlMethods(sharedPreferences: locator.get());
-
-  @override
-  void initState() {
-    currentPageIndex = widget.page ?? 0;
-    super.initState();
-    log(personStatus.getAuthStatus().toString(), name: 'STATUS');
-  }
-
-  final screens = [
-    MainScreen(),
-    const RoomScreen(),
-    const OfficeScreen(),
-    const ChatScreen(),
-    const ProfileScreen(),
-  ];
+class HomeScreen extends StatelessWidget {
+  HomeScreen({Key? key}) : super(key: key);
+  PageController cardController = PageController();
+  TextEditingController textEditingController = TextEditingController();
+  final PaymentController paymentController = PaymentController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) => FadeThroughTransition(
-          animation: primaryAnimation,
-          secondaryAnimation: secondaryAnimation,
-          child: child,
-        ),
-        child: screens[currentPageIndex],
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black,
-              blurRadius: 200,
-              spreadRadius: -32,
+    return SafeArea(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
+            child: Column(
+              children: [
+                /// title = UPDATE TO SPACER OR FLEX OR SOMETHING
+                Text('ASIA HOTEL', style: Theme.of(context).textTheme.headline1),
+
+                const SizedBox(
+                  height: 25,
+                ),
+
+                ElevatedButton(
+                    onPressed: () {
+                      paymentController.makePayment(amount: "10", currency: "USD");
+                    },
+                    child: const Text('test')),
+
+                const SizedBox(
+                  height: 25,
+                ),
+
+                /// search-field
+                DefaultTextFieldWidget(
+                  text: "Поиск по приложению",
+                ),
+
+                const SizedBox(
+                  height: 30,
+                ),
+
+                /// info-block
+                Row(
+                  children: const [
+                    InfoComponent(
+                      text: "План отеля",
+                      image: 'http://domostroy.vglazkov.com/images/chemal800/p_2.jpg',
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InfoComponent(
+                      text: "Афиша",
+                      image:
+                          'https://pic-h.cdn-pegast.net/getimage-nc/thumb800/78/af/02/2f110583f5aa5070b197845c698d404e17e74c2094f927eb505afd657f/5db29bb415f03.jpg',
+                    ),
+                  ],
+                ),
+
+                const SizedBox(
+                  height: 30,
+                ),
+
+                /// personal-offer block
+                const PersonalOffer(),
+
+                /// stocks
+                const StockOffer(),
+
+                /// playbill  Failed assertion: line 1814 pos 12: '!_debugDoingThisLayout': is not true.
+                const PlayBill(),
+              ],
             ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
-          currentIndex: currentPageIndex,
-          onTap: (index) => setState(() => currentPageIndex = index),
-          selectedItemColor: const Color(0xFFADADAD),
-          unselectedItemColor: Colors.black12,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(CustomIcons.home), label: "Главная"),
-            BottomNavigationBarItem(icon: Icon(CustomIcons.rooms), label: "Номера"),
-            BottomNavigationBarItem(icon: Icon(CustomIcons.services), label: "Кабинет"),
-            BottomNavigationBarItem(icon: Icon(CustomIcons.chat), label: "Чат"),
-            BottomNavigationBarItem(icon: Icon(CustomIcons.profile), label: "Профиль"),
-          ],
+          ),
         ),
       ),
     );

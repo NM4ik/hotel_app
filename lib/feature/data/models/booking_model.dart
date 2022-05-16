@@ -35,8 +35,8 @@ class BookingModel extends BookingEntity {
         'roomName': roomName,
         'roomType': roomType,
 
-        'dateStart': dateStart.millisecondsSinceEpoch,
-        'dateEnd': dateEnd.millisecondsSinceEpoch,
+        'dateStart': dateStart,
+        'dateEnd': dateEnd,
         'roomId': roomId,
         'status': status,
         'totalPrice': totalPrice,

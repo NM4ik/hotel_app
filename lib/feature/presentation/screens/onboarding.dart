@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/components/onboarding_components/onboarding_content.dart';
-import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/router_screen.dart';
 
 import '../components/onboarding_dot.dart';
 import '../widgets/defaut_button_widget.dart';
@@ -75,7 +75,7 @@ class _OnboardingBodyState extends State<OnboardingBody> {
                           controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
                           if (controller.page == 2) {
                             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => const HomeScreen(
+                                builder: (context) => const RouterScreen(
                                       page: null,
                                     )));
                             currentPage = 0;

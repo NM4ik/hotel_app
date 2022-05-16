@@ -97,6 +97,8 @@ dependencies:
   image_picker: ^0.8.5
   flutter_firebase_chat_core: ^1.5.3
 
+  flutter_stripe: ^2.3.0
+
 
 dev_dependencies:
   flutter_test:
