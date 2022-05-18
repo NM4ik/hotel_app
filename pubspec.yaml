@@ -16,13 +16,13 @@ dependencies:
     sdk: flutter
 
 
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.2 # useless
 
   # for a brief time while the native app loads Flutter.
   flutter_native_splash: ^2.1.1
 
   # shadows
-  flutter_neumorphic: ^3.2.0
+  flutter_neumorphic: ^3.2.0 # useless
 
   # carousel
   carousel_slider: ^4.0.0
@@ -47,7 +47,7 @@ dependencies:
   equatable: ^2.0.3
 
   # Functional programming
-  dartz: ^0.10.1
+  dartz: ^0.10.1 # useless
 
   # Remote API
   http: ^0.13.4
@@ -77,7 +77,7 @@ dependencies:
   firebase_storage: ^10.2.9
 
   # dates
-  syncfusion_flutter_datepicker: ^20.1.48
+  syncfusion_flutter_datepicker: ^20.1.48 # useless
 
   # phone auth
   intl_phone_field: ^3.1.0

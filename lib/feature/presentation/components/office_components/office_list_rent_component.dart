@@ -46,7 +46,6 @@ class OfficeListRentComponent extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) => GestureDetector(
                           onTap: () async {
-                            final List<String> ids = [];
                             final category = await FirebaseFirestore.instance
                                 .collection('rentCategory')
                                 .doc(doc)
@@ -54,7 +53,7 @@ class OfficeListRentComponent extends StatelessWidget {
                                 .where("title", isEqualTo: data[index]['title'])
                                 .get();
 
-                            Navigator.of(context).push(createRouteAnim(OfficeProductComponent(type: category.docs.single.id)));
+                            Navigator.of(context).push(createRouteAnim(OfficeListProductsComponent(type: category.docs.single.id, title: data[index]['title'],)));
                           },
                           child: _listComponent(context, data[index])),
                       separatorBuilder: (context, index) => const SizedBox(

@@ -17,54 +17,54 @@ class OfficeScreen extends StatefulWidget {
 class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    // TabController _tabController = TabController(length: 3, vsync: this);
-    TabController _tabController = TabController(length: 2, vsync: this);
+    TabController _tabController = TabController(length: 4, vsync: this);
 
     return SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TabBar(
-                  controller: _tabController,
-                  labelPadding: const EdgeInsets.only(left: 15, right: 15),
-                  labelColor: Colors.black,
-                  isScrollable: true,
-                  indicator: CircleTabIndicator(color: kMainBlueColor, radius: 4),
-                  onTap: (value) => log(value.toString()),
-                  tabs: const [
-                    Tab(
-                      text: "Номер",
-                    ),
-                    Tab(
-                      text: "Аренда",
-                    ),
-                    // Tab(
-                    //   text: "Услуги",
-                    // ),
-                    // Tab(
-                    //   text: "Мероприятия",
-                    // ),
-                  ],
+      padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TabBar(
+              controller: _tabController,
+              labelPadding: const EdgeInsets.only(left: 15, right: 15),
+              labelColor: Colors.black,
+              isScrollable: true,
+              indicator: CircleTabIndicator(color: kMainBlueColor, radius: 4),
+              onTap: (value) => log(value.toString()),
+              tabs: const [
+                Tab(
+                  text: "Номер",
                 ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                height: 600,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: const [
-                  OfficeRentComponent(),
-                    Text('1'),
-                    // NamesClass(),
-                  ],
+                Tab(
+                  text: "Аренда",
                 ),
-              )
-            ],
+                Tab(
+                  text: "Услуги",
+                ),
+                Tab(
+                  text: "Мероприятия",
+                ),
+              ],
+            ),
           ),
-        ));
+          SizedBox(
+            width: double.maxFinite,
+            height: 600,
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                Text('1'),
+                OfficeRentComponent(),
+                Text('2'),
+                Text('3'),
+              ],
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }
 
@@ -127,8 +127,7 @@ class _CirclePainter extends BoxPainter {
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
     late Paint _paint;
-    _paint = Paint()
-      ..color = color;
+    _paint = Paint()..color = color;
     _paint = _paint..isAntiAlias = true;
     final Offset circleOffset = offset + Offset(cfg.size!.width / 2, cfg.size!.height - radius);
     canvas.drawCircle(circleOffset, radius, _paint);

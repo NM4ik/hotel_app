@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
 import 'office_list_rent_component.dart';
+import 'office_products_component.dart';
 
 class OfficeRentComponent extends StatefulWidget {
   const OfficeRentComponent({Key? key}) : super(key: key);
@@ -83,50 +85,58 @@ Widget _rentComponent(Map<String, dynamic> json, BuildContext context) => Column
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             ...json['children']
                 .map(
-                  (item) => SizedBox(
-                    width: 170,
-                    child: Stack(
-                      children: [
-                        Container(
-                          height: 130,
-                          width: 170,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                            child: Image.asset(
-                              item['image'],
-                              fit: BoxFit.cover,
-                              width: double.infinity,
+                  (item) => GestureDetector(
+                    onTap: () async {
+                      Navigator.of(context).push(createRouteAnim(OfficeListProductsComponent(
+                        type: item['doc'],
+                        title: item['title'],
+                      )));
+                    },
+                    child: SizedBox(
+                      width: 170,
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            height: 130,
+                            width: 170,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                              child: Image.asset(
+                                item['image'],
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                item['title'],
-                                // textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white, fontSize: 16),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Подробнее',
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white, fontSize: 10),
-                                  ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Colors.white,
-                                    size: 14,
-                                  )
-                                ],
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  item['title'],
+                                  // textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white, fontSize: 16),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Подробнее',
+                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white, fontSize: 10),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.white,
+                                      size: 14,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 )
