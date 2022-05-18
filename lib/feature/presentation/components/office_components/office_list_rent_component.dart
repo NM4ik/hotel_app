@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hotel_ma/feature/presentation/components/office_components/office_products_component.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
+import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
 import '../../../../common/app_constants.dart';
 
@@ -42,14 +44,30 @@ class OfficeListRentComponent extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => _listComponent(context, data[index]),
+                      itemBuilder: (context, index) => GestureDetector(
+                          onTap: () async {
+                            final List<String> ids = [];
+                            final category = await FirebaseFirestore.instance
+                                .collection('rentCategory')
+                                .doc(doc)
+                                .collection('children')
+                                .where("title", isEqualTo: data[index]['title'])
+                                .get();
+
+                            Navigator.of(context).push(createRouteAnim(OfficeProductComponent(type: category.docs.single.id)));
+                          },
+                          child: _listComponent(context, data[index])),
                       separatorBuilder: (context, index) => const SizedBox(
                             height: 15,
                           ),
                       itemCount: snapshot.data!.docs.length),
                 );
               } else {
-                return Center(child: Text('Что-то пошло не так или данные не загрузились..', style: Theme.of(context).textTheme.headline1,));
+                return Center(
+                    child: Text(
+                  'Что-то пошло не так или данные не загрузились..',
+                  style: Theme.of(context).textTheme.headline1,
+                ));
               }
             }),
       ),
