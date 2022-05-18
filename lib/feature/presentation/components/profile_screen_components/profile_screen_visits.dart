@@ -22,7 +22,7 @@ class ProfileScreenVisits extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding),
         child: FutureBuilder(
-            future: FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).get(),
+            future: FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).orderBy("dateEnd", descending: true).get(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return const Text("Не удалось загрузить данные");

@@ -46,7 +46,7 @@ class CardRoom extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: Container(
                           decoration:
-                              BoxDecoration(color: Color(int.parse(roomModel.roomTypeModel.color)), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                              BoxDecoration(color: Color(int.parse('0xFF${roomModel.roomTypeModel.color}')), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                             child: Text(

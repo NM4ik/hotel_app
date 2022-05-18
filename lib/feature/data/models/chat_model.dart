@@ -12,7 +12,7 @@ class ChatModel extends ChatEntity {
       : super(name: name, createdAt: createdAt, status: status, uid: uid, userIds: userIds, recentMessage: recentMessage);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'createdAt': createdAt.millisecondsSinceEpoch,
+        'createdAt': createdAt,
         'name': name,
         'status': status,
         'uid': uid,
