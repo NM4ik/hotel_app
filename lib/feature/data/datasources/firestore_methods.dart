@@ -91,7 +91,7 @@ class FirestoreMethods {
     List<String> userIds = [userModel.uid];
 
     final recentMessage = MessageModel(content: content, sendAt: dateTime, sendBy: userModel.uid);
-    final initChat = ChatModel(name: userModel.name, createdAt: dateTime, status: 1, uid: userModel.uid, userIds: userIds, recentMessage: recentMessage);
+    final initChat = ChatModel(name: userModel.name, createdAt: dateTime, status: "active", userIds: userIds, recentMessage: recentMessage);
 
     await chats.doc(userModel.uid).set(initChat.toJson());
     // await chats.doc(userModel.uid).collection(messageCollection).add(initChat.toJson());уйт
