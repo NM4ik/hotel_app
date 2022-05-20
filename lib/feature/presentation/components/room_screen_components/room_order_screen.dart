@@ -13,19 +13,19 @@ import 'package:hotel_ma/feature/data/repositories/payment_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../../core/locator_service.dart';
-import '../../data/models/room_model.dart';
-import '../../data/repositories/sql_repository.dart';
-import '../widgets/order_text_field_widget.dart';
-import '../widgets/row_table_widget.dart';
+import '../../../../core/locator_service.dart';
+import '../../../data/models/room_model.dart';
+import '../../../data/repositories/sql_repository.dart';
+import '../../widgets/order_text_field_widget.dart';
+import '../../widgets/row_table_widget.dart';
 
-class OrderScreen extends StatefulWidget {
+class RoomOrderScreen extends StatefulWidget {
   final RoomModel roomModel;
   final DateTime dateStart;
   final DateTime dateEnd;
   final String totalCost;
 
-  const OrderScreen({
+  const RoomOrderScreen({
     Key? key,
     required this.roomModel,
     required this.dateStart,
@@ -34,10 +34,10 @@ class OrderScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OrderScreenState createState() => _OrderScreenState();
+  _RoomOrderScreenState createState() => _RoomOrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _RoomOrderScreenState extends State<RoomOrderScreen> {
   late DateFormat dateFormat;
   final UserModel userModel = locator.get<SqlRepository>().getUserFromSql();
   PaymentController paymentController = PaymentController();

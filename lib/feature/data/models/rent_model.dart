@@ -8,19 +8,9 @@ class RentModel extends RentEntity {
       required String name,
       required String prePayment,
       required String price,
-      required String seats,
-      required String transmission,
-      required String transmissionType})
-      : super(
-            id: id,
-            category: category,
-            image: image,
-            name: name,
-            prePayment: prePayment,
-            price: price,
-            seats: seats,
-            transmission: transmission,
-            transmissionType: transmissionType);
+      required List<Map<dynamic, dynamic>>? characters,
+      required List<dynamic>? documents})
+      : super(id: id, category: category, image: image, name: name, prePayment: prePayment, price: price, characters: characters, documents: documents);
 
   factory RentModel.fromJson(Map<String, dynamic> json, String id) => RentModel(
       id: id,
@@ -29,7 +19,10 @@ class RentModel extends RentEntity {
       name: json['name'],
       prePayment: json['prePayment'],
       price: json['price'],
-      seats: json['seats'],
-      transmission: json['transmission'],
-      transmissionType: json['transmissionType']);
+      characters: json['characters'] == null
+          ? null
+          : List<Map<String, dynamic>>.from(
+              json['characters'],
+            ),
+      documents: json['documents']);
 }

@@ -130,7 +130,7 @@ class _RoomScreenState extends State<RoomScreen> {
                         return GestureDetector(
                           onTap: () {
                             context.read<RoomsBloc>().add(RoomsChooseEvent(room: state.rooms[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
-                            Navigator.of(context).push(MaterialPageRoute(builder: (gridContext) => const ProductScreen()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (gridContext) => const RoomDetailScreen()));
                           },
                           child: CardRoom(
                             roomModel: state.rooms[index],

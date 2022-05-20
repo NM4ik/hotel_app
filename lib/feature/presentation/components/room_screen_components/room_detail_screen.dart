@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
-import 'package:hotel_ma/feature/presentation/bloc/booking_bloc/booking_bloc.dart';
-import 'package:hotel_ma/feature/presentation/screens/order_screen.dart';
+import 'package:hotel_ma/feature/presentation/components/room_screen_components/room_order_screen.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:intl/intl.dart';
@@ -16,16 +15,16 @@ import '../../../data/models/user_model.dart';
 import '../../bloc/rooms_bloc/rooms_bloc.dart';
 import '../onboarding_dot.dart';
 
-class ProductScreen extends StatefulWidget {
-  const ProductScreen({
+class RoomDetailScreen extends StatefulWidget {
+  const RoomDetailScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
+  State<RoomDetailScreen> createState() => _RoomDetailScreenState();
 }
 
-class _ProductScreenState extends State<ProductScreen> {
+class _RoomDetailScreenState extends State<RoomDetailScreen> {
   final controller = PageController();
   final userModel = locator.get<SqlRepository>().getUserFromSql();
 
@@ -277,10 +276,8 @@ class _ProductScreenState extends State<ProductScreen> {
                   if (userModel == UserModel.empty) {
                     showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
                   } else {
-                    context.read<BookingBloc>().add(StartBookingEvent(
-                        dateEnd: state.lastDate, dateStart: state.firstDate, roomModel: state.room, totalPrice: totalCost!, userModel: userModel));
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => OrderScreen(
+                        builder: (context) => RoomOrderScreen(
                               dateStart: state.firstDate,
                               roomModel: state.room,
                               dateEnd: state.lastDate,

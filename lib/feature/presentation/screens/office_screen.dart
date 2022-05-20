@@ -3,9 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/feature/presentation/components/office_components/office_rent_component.dart';
-
-import '../bloc/office_bloc/office_bloc.dart';
+import 'package:hotel_ma/feature/presentation/components/office_components/office_rent_screen.dart';
 
 class OfficeScreen extends StatefulWidget {
   const OfficeScreen({Key? key}) : super(key: key);

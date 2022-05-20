@@ -2,13 +2,16 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
+import 'package:hotel_ma/feature/presentation/bloc/service_rent_bloc/service_rent_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/office_filters.dart';
+import 'package:hotel_ma/feature/presentation/components/office_components/office_product_detail_screen.dart';
+import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
 import '../../widgets/default_appbar_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 
 class OfficeListProductsComponent extends StatefulWidget {
   const OfficeListProductsComponent({Key? key, required this.type, required this.title}) : super(key: key);
@@ -50,10 +53,18 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                   );
                 }
 
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: Text(
+                      'Услуги не загрузились....',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  );
+                }
+
                 if (snapshot.hasData) {
                   final List<RentModel> entities = [];
-
-                  final data = snapshot.data!.docs.map((e) => entities.add(RentModel.fromJson(e.data() as Map<String, dynamic>, e.id))).toList();
+                  snapshot.data!.docs.map((e) => entities.add(RentModel.fromJson(e.data() as Map<String, dynamic>, e.id))).toList();
 
                   return CustomScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -80,7 +91,12 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                         delegate: SliverChildBuilderDelegate(
                           (gridContext, index) {
                             return GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context
+                                    .read<ServiceRentBloc>()
+                                    .add(ServiceRentChooseEvent(rent: entities[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
+                                Navigator.of(context).push(createRouteAnim(const OfficeProductDetailScreen()));
+                              },
                               child: _productCard(entities[index], context),
                             );
                           },
@@ -114,18 +130,12 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                   width: double.infinity,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(kEdgeMainBorder * 2),
-                    child:
-                    CachedNetworkImage(
+                    child: CachedNetworkImage(
                       imageUrl: entity.image,
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          CircularProgressIndicator(value: downloadProgress.progress),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                       fit: BoxFit.cover,
                     ),
-                    // child: Image.asset(
-                    //   'assets/images/${entity.image}',
-                    //   // fit: BoxFi,
-                    // ),
                   )),
               Container(
                 decoration: BoxDecoration(color: Colors.black.withOpacity(0.3), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
@@ -146,14 +156,18 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                       const SizedBox(
                         height: kEdgeVerticalPadding / 4,
                       ),
-                      Text(
-                        entity.transmission,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
-                      ),
-                      Text(
-                        '${entity.seats} мест',
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
-                      ),
+                      entity.characters?[1]['value'] == null
+                          ? Container()
+                          : Text(
+                              entity.characters?[0]['value'] ?? '',
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+                            ),
+                      entity.characters?[1]['value'] == null
+                          ? Container()
+                          : Text(
+                              entity.characters?[1]['value'] ?? '',
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+                            ),
                       const SizedBox(
                         height: kEdgeVerticalPadding / 4,
                       ),

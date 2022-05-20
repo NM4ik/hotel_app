@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hotel_ma/core/firebase.dart';
+import 'package:hotel_ma/core/firebase_config_hotel.dart';
 import 'package:hotel_ma/core/platform/network_info.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
@@ -8,10 +8,9 @@ import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:hotel_ma/feature/presentation/bloc/booking_bloc/booking_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'package:hotel_ma/feature/data/repositories/payment_controller.dart';
-import 'package:hotel_ma/feature/presentation/bloc/office_bloc/office_bloc.dart';
+import 'package:hotel_ma/feature/presentation/bloc/service_rent_bloc/service_rent_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +33,7 @@ Future<void> setup() async {
   locator.registerFactory(() => RoomsBloc());
   locator.registerFactory(() => LoginPhoneCubit());
   locator.registerFactory(() => AuthBloc(authenticationRepository: locator()));
-  locator.registerFactory(() => BookingBloc());
-  locator.registerFactory(() => OfficeBloc());
+  locator.registerFactory(() => ServiceRentBloc());
 
   /// Core
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfo(locator()));

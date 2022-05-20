@@ -9,6 +9,9 @@
 .history
 .svn/
 
+# code
+firebase_config_hotel.dart
+
 # IntelliJ related
 *.iml
 *.ipr

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
-import 'office_list_rent_component.dart';
-import 'office_products_component.dart';
+import 'office_list_rent_screen.dart';
+import 'office_list_products_screen.dart';
 
 class OfficeRentComponent extends StatefulWidget {
   const OfficeRentComponent({Key? key}) : super(key: key);
