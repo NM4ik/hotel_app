@@ -25,8 +25,9 @@ class RoomDetailScreen extends StatefulWidget {
 }
 
 class _RoomDetailScreenState extends State<RoomDetailScreen> {
-  final controller = PageController();
   final userModel = locator.get<SqlRepository>().getUserFromSql();
+  late PageController pageController;
+  late PhotoViewController photoController;
 
   int currentPage = 0;
   String? totalCost;
@@ -34,14 +35,27 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
 
   @override
   void initState() {
+    pageController = PageController();
+    photoController = PhotoViewController();
     initializeDateFormatting();
     dateFormat = DateFormat.MMMEd("ru");
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    pageController.dispose();
+    photoController.dispose();
+
+    pageController = PageController();
+    photoController = PhotoViewController();
+  }
+
+  @override
   void dispose() {
-    controller.dispose();
+    photoController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -87,6 +101,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                                 scrollPhysics: const BouncingScrollPhysics(),
                                 builder: (BuildContext context, int index) {
                                   return PhotoViewGalleryPageOptions(
+                                    controller: photoController,
                                     imageProvider: AssetImage(images[index]),
                                     // imageProvider: const NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
                                     heroAttributes: PhotoViewHeroAttributes(tag: index),
@@ -96,7 +111,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                                     maxScale: PhotoViewComputedScale.covered * 2,
                                   );
                                 },
-                                pageController: controller,
+                                pageController: pageController,
                                 onPageChanged: (index) {
                                   setState(() {
                                     currentPage = index;
@@ -162,7 +177,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                                   Center(
                                     child: ViewDots(
                                       currentPage: currentPage,
-                                      controller: controller,
+                                      controller: pageController,
                                       length: 4,
                                       dotColor: Colors.white.withOpacity(0.4),
                                     ),
@@ -197,7 +212,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
 
                                 /// product type subtitle
                                 Text(state.room.roomTypeModel.title,
-                                    style: TextStyle(color: Color(int.parse(state.room.roomTypeModel.color)), fontSize: 14, fontWeight: FontWeight.w500)),
+                                    style: TextStyle(color: Color(int.parse('0xFF${state.room.roomTypeModel.color}')), fontSize: 14, fontWeight: FontWeight.w500)),
 
                                 const SizedBox(
                                   height: kEdgeVerticalPadding / 2,

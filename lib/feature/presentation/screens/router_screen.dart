@@ -9,6 +9,7 @@ import 'package:hotel_ma/feature/presentation/screens/chat_screen.dart';
 
 import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/office_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/office_test_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/profile_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/room_screen.dart';
 import 'package:hotel_ma/feature/data/repositories/payment_controller.dart';
@@ -33,7 +34,8 @@ class _RouterScreenState extends State<RouterScreen> {
   }
 
   final screens = [
-    HomeScreen(),
+    // HomeScreen(),
+    OfficeTestScreen(),
     const RoomScreen(),
     const OfficeScreen(),
     const ChatScreen(),
