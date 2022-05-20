@@ -212,7 +212,8 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
 
                                 /// product type subtitle
                                 Text(state.room.roomTypeModel.title,
-                                    style: TextStyle(color: Color(int.parse('0xFF${state.room.roomTypeModel.color}')), fontSize: 14, fontWeight: FontWeight.w500)),
+                                    style:
+                                        TextStyle(color: Color(int.parse('0xFF${state.room.roomTypeModel.color}')), fontSize: 14, fontWeight: FontWeight.w500)),
 
                                 const SizedBox(
                                   height: kEdgeVerticalPadding / 2,
@@ -246,6 +247,14 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                       ),
 
                       /// Divider which divides product_info and product_description
+                      const SizedBox(
+                        height: 40,
+                        child: Divider(
+                          height: 1,
+                          color: Color(0xFF979797),
+                        ),
+                      ),
+
                       const SizedBox(
                         height: 40,
                         child: Divider(

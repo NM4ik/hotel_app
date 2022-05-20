@@ -66,6 +66,7 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                   final List<RentModel> entities = [];
                   snapshot.data!.docs.map((e) => entities.add(RentModel.fromJson(e.data() as Map<String, dynamic>, e.id))).toList();
 
+
                   return CustomScrollView(
                     physics: const BouncingScrollPhysics(),
                     slivers: [

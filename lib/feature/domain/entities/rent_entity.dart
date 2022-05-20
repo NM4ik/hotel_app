@@ -7,8 +7,8 @@ class RentEntity extends Equatable {
   final String name;
   final String prePayment;
   final String price;
-  final List<Map<dynamic, dynamic>>? characters;
-  final List<dynamic>? documents;
+  final List<Map<String, dynamic>>? characters;
+  final List<Map<String, dynamic>>? documents;
 
   const RentEntity(
       {required this.id,
@@ -17,7 +17,8 @@ class RentEntity extends Equatable {
       required this.name,
       required this.prePayment,
       required this.price,
-      required this.characters, required this.documents});
+      required this.characters,
+      required this.documents});
 
   @override
   List<Object?> get props => [id, category, image, name, prePayment, price, characters, documents];

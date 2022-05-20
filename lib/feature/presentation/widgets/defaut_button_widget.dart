@@ -19,8 +19,8 @@ class DefaultButtonWidget extends StatelessWidget {
           ),
           onPressed: press,
           child: Text(
-           title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, fontFamily: "Inter"),
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400, fontFamily: "Inter"),
           )),
     );
   }

@@ -34,8 +34,7 @@ class _RouterScreenState extends State<RouterScreen> {
   }
 
   final screens = [
-    // HomeScreen(),
-    OfficeTestScreen(),
+    HomeScreen(),
     const RoomScreen(),
     const OfficeScreen(),
     const ChatScreen(),
