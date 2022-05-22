@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -38,15 +39,21 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 ElevatedButton(
-                    onPressed: () {
-                      log(locator.get<SqlRepository>().getUserFromSql().toString());
+                    onPressed: () async {
+                      // log(locator.get<SqlRepository>().getUserFromSql().toString());
+                      final map = await FirebaseFirestore.instance
+                          .collection('bookings')
+                          .where("status", isEqualTo: "active")
+                          .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
+                          .get();
+
+                      log(map.docs.toString());
                     },
                     child: const Text('test')),
 
                 const SizedBox(
                   height: 25,
                 ),
-
 
                 /// search-field
                 DefaultTextFieldWidget(
