@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import '../feature/presentation/bloc/office_bloc/office_bloc.dart';
 import '../feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 
 final locator = GetIt.instance;
@@ -34,6 +35,7 @@ Future<void> setup() async {
   locator.registerFactory(() => LoginPhoneCubit());
   locator.registerFactory(() => AuthBloc(authenticationRepository: locator()));
   locator.registerFactory(() => ServiceRentBloc());
+  locator.registerFactory(() => OfficeBloc());
 
   /// Core
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfo(locator()));

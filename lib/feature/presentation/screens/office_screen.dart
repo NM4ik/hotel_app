@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/office_rent_screen.dart';
 
+import '../bloc/office_bloc/office_bloc.dart';
+
 class OfficeScreen extends StatefulWidget {
   const OfficeScreen({Key? key}) : super(key: key);
 
@@ -15,100 +17,94 @@ class OfficeScreen extends StatefulWidget {
 class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    context.read<OfficeBloc>().add(OfficeCheckStatusEvent());
     TabController _tabController = TabController(length: 4, vsync: this);
 
-    return SafeArea(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TabBar(
-              controller: _tabController,
-              labelPadding: const EdgeInsets.only(left: 15, right: 15),
-              labelColor: Colors.black,
-              isScrollable: true,
-              indicator: CircleTabIndicator(color: kMainBlueColor, radius: 4),
-              onTap: (value) => log(value.toString()),
-              tabs: const [
-                Tab(
-                  text: "Номер",
+    return BlocConsumer<OfficeBloc, OfficeState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is OfficeLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is OfficeUnLiveState) {
+          return const Center(
+            child: Text("Вы здесь не проживаете"),
+          );
+        }
+        if (state is OfficeErrorState) {
+          return const Center(
+            child: Text("Ошибка"),
+          );
+        }
+        if (state is OfficeUnAuthState) {
+          return const Center(
+            child: Text("Вы не авторизованы"),
+          );
+        }
+        if (state is OfficeLiveState) {
+          return SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TabBar(
+                    controller: _tabController,
+                    labelPadding: const EdgeInsets.only(left: 15, right: 15),
+                    labelColor: Colors.black,
+                    isScrollable: true,
+                    indicator: const CircleTabIndicator(color: kMainBlueColor, radius: 4),
+                    onTap: (value) => log(value.toString()),
+                    tabs: const [
+                      Tab(
+                        text: "Номер",
+                      ),
+                      Tab(
+                        text: "Аренда",
+                      ),
+                      Tab(
+                        text: "Услуги",
+                      ),
+                      Tab(
+                        text: "Мероприятия",
+                      ),
+                    ],
+                  ),
                 ),
-                Tab(
-                  text: "Аренда",
-                ),
-                Tab(
-                  text: "Услуги",
-                ),
-                Tab(
-                  text: "Мероприятия",
-                ),
+                SizedBox(
+                  width: double.maxFinite,
+                  height: 600,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: const [
+                      Text('1'),
+                      OfficeRentComponent(),
+                      Text('2'),
+                      Text('3'),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
-          SizedBox(
-            width: double.maxFinite,
-            height: 600,
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                Text('1'),
-                OfficeRentComponent(),
-                Text('2'),
-                Text('3'),
-              ],
-            ),
-          )
-        ],
-      ),
-    ));
+          ));
+        } else {
+          return const Center(
+            child: Text("Непредвиденная ошибка.."),
+          );
+        }
+      },
+    );
   }
 }
 
-// class NamesClass extends StatelessWidget {
-//   const NamesClass({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     context.read<OfficeBloc>().add(OfficeRentEvent());
-//
-//     return BlocConsumer<OfficeBloc, OfficeState>(
-//       listener: (context, state) {
-//         log(state.toString());
-//       },
-//       builder: (context, state) {
-//         if (state is OfficeLoadingState) {
-//           return const Center(
-//             child: CircularProgressIndicator(),
-//           );
-//         } else if (state is OfficeErrorState) {
-//           return Center(
-//             child: Text(state.message.toString()),
-//           );
-//         } else if (state is OfficeRoomState) {
-//           return ListView.builder(
-//               itemCount: state.names.length,
-//               itemBuilder: (_, index) => Text(
-//                     state.names[index].toString(),
-//                     style: TextStyle(color: Colors.black),
-//                   ));
-//           // return OfficeRentInner();
-//         } else {
-//           return const Center(
-//             child: Text('WTF'),
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
-
 class CircleTabIndicator extends Decoration {
   final Color color;
-  double radius;
+  final double radius;
 
-  CircleTabIndicator({required this.color, required this.radius});
+  const CircleTabIndicator({required this.color, required this.radius});
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {

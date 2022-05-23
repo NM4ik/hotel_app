@@ -21,6 +21,8 @@ class OfficeLiveState extends OfficeState {
   List<Object> get props => [bookingId, uid];
 }
 
+class OfficeUnAuthState extends OfficeState{}
+
 class OfficeUnLiveState extends OfficeState {}
 
 class OfficeErrorState extends OfficeState {}
