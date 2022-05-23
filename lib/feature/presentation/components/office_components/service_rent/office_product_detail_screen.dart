@@ -10,10 +10,10 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import '../../../../common/app_constants.dart';
-import '../../../data/models/user_model.dart';
-import '../../widgets/page_animation.dart';
-import '../onboarding_dot.dart';
+import '../../../../../common/app_constants.dart';
+import '../../../../data/models/user_model.dart';
+import '../../../widgets/page_animation.dart';
+import '../../onboarding_dot.dart';
 import 'office_order_screen.dart';
 
 class OfficeProductDetailScreen extends StatefulWidget {

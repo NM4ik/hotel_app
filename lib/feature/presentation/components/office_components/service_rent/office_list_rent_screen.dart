@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/feature/presentation/components/office_components/office_list_products_screen.dart';
+import 'package:hotel_ma/feature/presentation/components/office_components/service_rent/office_list_products_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
 import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
-import '../../../../common/app_constants.dart';
+import '../../../../../common/app_constants.dart';
 
 class OfficeListRentComponent extends StatelessWidget {
   const OfficeListRentComponent({Key? key, required this.doc, required this.title}) : super(key: key);

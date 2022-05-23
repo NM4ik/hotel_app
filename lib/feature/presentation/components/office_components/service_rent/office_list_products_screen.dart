@@ -7,10 +7,10 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
 import 'package:hotel_ma/feature/presentation/bloc/service_rent_bloc/service_rent_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/office_filters.dart';
-import 'package:hotel_ma/feature/presentation/components/office_components/office_product_detail_screen.dart';
+import 'package:hotel_ma/feature/presentation/components/office_components/service_rent/office_product_detail_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
-import '../../widgets/default_appbar_widget.dart';
+import '../../../widgets/default_appbar_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class OfficeListProductsComponent extends StatefulWidget {

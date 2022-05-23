@@ -37,14 +37,19 @@ class _OfficeRentComponentState extends State<OfficeRentComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemCount: map.length, itemBuilder: (context, index) => _rentComponent(map[index], context));
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: map.length,
+      itemBuilder: (context, index) => _rentComponent(map[index], context),
+      shrinkWrap: true,
+    );
   }
 }
 
 Widget _rentComponent(Map<String, dynamic> json, BuildContext context) => Column(
       children: [
         const SizedBox(
-          height: kEdgeVerticalPadding,
+          height: kEdgeVerticalPadding / 2,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
