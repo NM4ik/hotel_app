@@ -252,13 +252,13 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 40,
-                        child: Divider(
-                          height: 1,
-                          color: Color(0xFF979797),
-                        ),
-                      ),
+                      // const SizedBox(
+                      //   height: 40,
+                      //   child: Divider(
+                      //     height: 1,
+                      //     color: Color(0xFF979797),
+                      //   ),
+                      // ),
 
                       /// dates inserts bloc
                       Row(

@@ -66,7 +66,6 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                   final List<RentModel> entities = [];
                   snapshot.data!.docs.map((e) => entities.add(RentModel.fromJson(e.data() as Map<String, dynamic>, e.id))).toList();
 
-
                   return CustomScrollView(
                     physics: const BouncingScrollPhysics(),
                     slivers: [
@@ -174,20 +173,36 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                entity.price,
-                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+                                '${entity.price} ₽',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: Colors.redAccent,
+                                    decorationThickness: 2.0),
                               ),
                               const SizedBox(
-                                width: 3,
+                                height: 5,
                               ),
-                              const Text(
-                                'руб/день',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: kMainBlueColor,
+                                  borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                                  child: Text(
+                                    '${entity.price} ₽',
+                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -202,7 +217,7 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
