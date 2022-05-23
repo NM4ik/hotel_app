@@ -86,9 +86,6 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                     children: [
                       Stack(
                         children: [
-                          /*image carousel   not working correctly. an exception throwing when returning back. try to fix or use another from pub.dev
-                    Looking up a deactivated widget's ancestor is unsafe. - exception*/
-
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(kEdgeMainBorder),

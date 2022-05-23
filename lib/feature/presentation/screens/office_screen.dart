@@ -1,9 +1,13 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/office_rent_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../bloc/office_bloc/office_bloc.dart';
 
@@ -15,14 +19,28 @@ class OfficeScreen extends StatefulWidget {
 }
 
 class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMixin {
+  bool isNotifications = true;
+  late DateFormat dateFormat;
+
+  @override
+  void initState() {
+    initializeDateFormatting();
+    dateFormat = DateFormat.MMMEd("ru");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    context.read<OfficeBloc>().add(OfficeCheckStatusEvent());
     TabController _tabController = TabController(length: 4, vsync: this);
 
     return BlocConsumer<OfficeBloc, OfficeState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        log(state.toString(), name: "LISTENER");
+
+      },
       builder: (context, state) {
+        log(state.toString(), name: "STATE");
+
         if (state is OfficeLoadingState) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -44,52 +62,176 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
           );
         }
         if (state is OfficeLiveState) {
-          return SafeArea(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+          final room = state.roomModel;
+
+          return SingleChildScrollView(
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TabBar(
-                    controller: _tabController,
-                    labelPadding: const EdgeInsets.only(left: 15, right: 15),
-                    labelColor: Colors.black,
-                    isScrollable: true,
-                    indicator: const CircleTabIndicator(color: kMainBlueColor, radius: 4),
-                    onTap: (value) => log(value.toString()),
-                    tabs: const [
-                      Tab(
-                        text: "Номер",
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: Stack(
+                    children: [
+                      Stack(
+                        children: [
+                          Image.asset(
+
+                              /// rerun to network image from fireStorage
+                              'assets/images/room_image_3.png',
+                              fit: BoxFit.cover,
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center),
+                          Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+                          )
+                        ],
                       ),
-                      Tab(
-                        text: "Аренда",
-                      ),
-                      Tab(
-                        text: "Услуги",
-                      ),
-                      Tab(
-                        text: "Мероприятия",
-                      ),
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    room.name,
+                                    style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    width: kEdgeHorizontalPadding / 3,
+                                  ),
+                                  const Icon(
+                                    Icons.king_bed_rounded,
+                                    color: Colors.lightBlueAccent,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: kEdgeVerticalPadding / 3,
+                              ),
+                              Row(
+                                children: [
+                                  ClipRRect(
+                                    child: BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                        sigmaX: 2.0,
+                                        sigmaY: 2.0,
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(kEdgeMainBorder / 2),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                                          child: Text(
+                                            "№${room.id}",
+                                            style: Theme.of(context).textTheme.headline3!.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: kEdgeHorizontalPadding,
+                                  ),
+                                  Text('${dateFormat.format(state.bookingModel.dateStart)} - ${dateFormat.format(state.bookingModel.dateEnd)}',
+                                      style: Theme.of(context).textTheme.headline3!.copyWith(color: kMainGreyColor, fontSize: 16)),
+                                ],
+                              ),
+                              const Spacer(),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Не беспокоить',
+                                    style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white, fontSize: 16),
+                                  ),
+                                  const SizedBox(
+                                    width: kEdgeHorizontalPadding,
+                                  ),
+                                  FlutterSwitch(
+                                    width: 70,
+                                    height: 30,
+                                    valueFontSize: 9,
+                                    toggleSize: 14.0,
+                                    value: isNotifications,
+                                    borderRadius: 20.0,
+                                    padding: 8.0,
+                                    activeColor: kMainBlueColor,
+                                    inactiveColor: Colors.white.withOpacity(0.3),
+                                    showOnOff: true,
+                                    activeText: "Вкл",
+                                    inactiveText: "Выкл",
+                                    onToggle: (value) {
+                                      setState(() {
+                                        isNotifications = !isNotifications;
+                                      });
+                                      // locator.get<FirestoreRepository>().updateField(value, 'isNotifications', userModel.uid);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: double.maxFinite,
-                  height: 600,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      Text('1'),
-                      OfficeRentComponent(),
-                      Text('2'),
-                      Text('3'),
+                SafeArea(
+                    child: Padding(
+                  padding: const EdgeInsets.fromLTRB(kEdgeHorizontalPadding, kEdgeVerticalPadding / 5, kEdgeHorizontalPadding, kEdgeVerticalPadding),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TabBar(
+                          controller: _tabController,
+                          labelPadding: const EdgeInsets.only(left: 15, right: 15),
+                          labelColor: Colors.black,
+                          isScrollable: true,
+                          indicator: const CircleTabIndicator(color: kMainBlueColor, radius: 4),
+                          onTap: (value) => log(value.toString()),
+                          tabs: const [
+                            Tab(
+                              text: "Номер",
+                            ),
+                            Tab(
+                              text: "Аренда",
+                            ),
+                            Tab(
+                              text: "Услуги",
+                            ),
+                            Tab(
+                              text: "Мероприятия",
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.maxFinite,
+                        height: 600,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: const [
+                            Text('1'),
+                            OfficeRentComponent(),
+                            Text('2'),
+                            Text('3'),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
+                )),
               ],
             ),
-          ));
+          );
         } else {
           return const Center(
             child: Text("Непредвиденная ошибка.."),

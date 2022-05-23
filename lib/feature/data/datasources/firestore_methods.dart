@@ -130,6 +130,27 @@ class FirestoreMethods {
     }
   }
 
+  /// request one room
+  Future<RoomModel?> getRoom(String roomId) async {
+    try {
+      RoomModel room;
+      List<RoomTypeModel> roomTypesList = [];
+      final snapshot = await rooms.doc(roomId).get();
+      final roomTypeSnapshot = await roomType.get();
+
+      for (var element in roomTypeSnapshot.docs) {
+        roomTypesList.add(RoomTypeModel.fromJson(element.data() as Map<String, dynamic>, element.id));
+      }
+
+      room = RoomModel.fromJson(snapshot.data() as Map<String, dynamic>, snapshot.id, roomTypesList);
+
+      return room;
+    } catch (e) {
+      log('$e', name: 'Exception by getRooms()');
+      return null;
+    }
+  }
+
   void createBooking(BookingModel bookingModel) {
     bookings.add(bookingModel.toJson());
   }

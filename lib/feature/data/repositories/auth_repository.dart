@@ -44,8 +44,6 @@ class AuthenticationRepository {
 
       final user = await _firebaseAuth.signInWithCredential(credential);
 
-      log(user.user.toString(), name: "QWEQWEQWE");
-
       if (user.user != null) {
         final userModel = await locator.get<FirestoreRepository>().addUserToUserCollection(UserModel.toUser(user.user));
 

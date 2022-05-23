@@ -40,14 +40,14 @@ class HomeScreen extends StatelessWidget {
 
                 ElevatedButton(
                     onPressed: () async {
-                      // log(locator.get<SqlRepository>().getUserFromSql().toString());
-                      final map = await FirebaseFirestore.instance
-                          .collection('bookings')
-                          .where("status", isEqualTo: "active")
-                          .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
-                          .get();
+                      log(locator.get<SqlRepository>().getUserFromSql().toString());
+                      // final map = await FirebaseFirestore.instance
+                      //     .collection('bookings')
+                      //     .where("status", isEqualTo: "active")
+                      //     .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
+                      //     .get();
 
-                      log(map.docs.toString());
+                      // log(map.docs.toString());
                     },
                     child: const Text('test')),
 

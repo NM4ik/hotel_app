@@ -7,4 +7,4 @@ abstract class OfficeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OfficeCheckStatusEvent extends OfficeEvent {}
+class OfficeCheckoutEvent extends OfficeEvent {}

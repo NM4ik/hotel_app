@@ -19,6 +19,7 @@ class FirestoreRepository {
   }
 
   Future<List<RoomModel>?> getRooms() async => await firestoreMethods.getRooms();
+  Future<RoomModel?> getRoom(String roomId) async => await firestoreMethods.getRoom(roomId);
 
   updateUser(String field, String value, String uid) {
     firestoreMethods.updateUser(field, value, uid);

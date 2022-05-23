@@ -4,7 +4,12 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
+import 'package:hotel_ma/feature/data/models/booking_model.dart';
+import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
+import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
+import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 
 import '../../../../core/locator_service.dart';
 import '../../../data/repositories/sql_repository.dart';
@@ -14,21 +19,42 @@ part 'office_event.dart';
 part 'office_state.dart';
 
 class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
+  final AuthenticationRepository _authenticationRepository = AuthenticationRepository();
+  late final StreamSubscription<UserModel> _userSubscription;
+
   OfficeBloc() : super(OfficeInitialState()) {
-    on<OfficeCheckStatusEvent>(_onOfficeCheckStatusEvent);
+    on<OfficeCheckoutEvent>(_onOfficeCheckStatusEvent);
+
+    _userSubscription = _authenticationRepository.userModel.listen(
+      (user) {
+        showUser(user);
+        Timer(const Duration(seconds: 2), () => add(OfficeCheckoutEvent()));
+
+        /// need fix this moment. A delay is needed in order to wait for the user to log in to the local storage
+      },
+    );
   }
 
-  FutureOr<void> _onOfficeCheckStatusEvent(OfficeCheckStatusEvent event, Emitter<OfficeState> emit) async {
+  void showUser(user) {
+    log(user.toString(), name: "USER");
+    log(locator.get<SqlRepository>().getUserFromSql().toString(), name: "USER3");
+  }
+
+  FutureOr<void> _onOfficeCheckStatusEvent(OfficeCheckoutEvent event, Emitter<OfficeState> emit) async {
+    final firebaseFirestore = FirebaseFirestore.instance;
+    final firestoreRepository = FirestoreRepository(firestoreMethods: locator.get<FirestoreMethods>());
+
     emit(OfficeLoadingState());
 
     final user = locator.get<SqlRepository>().getUserFromSql();
+    log(user.toString(), name: "USER2");
 
     if (user == UserModel.empty) {
       emit(OfficeUnAuthState());
     } else {
       try {
-        final map = await FirebaseFirestore.instance
-            .collection('bookings')
+        final map = await firebaseFirestore
+            .collection("bookings")
             .where("status", isEqualTo: "active")
             .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
             .get();
@@ -38,9 +64,12 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
 
           final bookingId = map.docs.single.id;
           final uid = documentData['uid'];
+          final roomId = documentData['roomId'];
 
-          emit(OfficeLiveState(bookingId: bookingId, uid: uid));
-          log(documentData.toString());
+          final room = await firestoreRepository.getRoom(roomId);
+          final booking = BookingModel.fromJson(documentData);
+
+          room == null ? emit(OfficeErrorState()) : emit(OfficeLiveState(bookingId: bookingId, uid: uid, roomModel: room, bookingModel: booking));
         } else {
           emit(OfficeUnLiveState());
         }

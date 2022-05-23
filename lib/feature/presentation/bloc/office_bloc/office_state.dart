@@ -14,14 +14,16 @@ class OfficeLoadingState extends OfficeState {}
 class OfficeLiveState extends OfficeState {
   final String bookingId;
   final String uid;
+  final RoomModel roomModel;
+  final BookingModel bookingModel;
 
-  const OfficeLiveState({required this.bookingId, required this.uid});
+  const OfficeLiveState({required this.bookingId, required this.uid, required this.roomModel, required this.bookingModel});
 
   @override
   List<Object> get props => [bookingId, uid];
 }
 
-class OfficeUnAuthState extends OfficeState{}
+class OfficeUnAuthState extends OfficeState {}
 
 class OfficeUnLiveState extends OfficeState {}
 

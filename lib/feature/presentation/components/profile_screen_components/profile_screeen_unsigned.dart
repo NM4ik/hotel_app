@@ -9,6 +9,7 @@ import 'package:hotel_ma/feature/presentation/screens/information_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/help_tile_widget.dart';
 import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
+import '../../bloc/office_bloc/office_bloc.dart';
 import '../../screens/phone_enter_screen.dart';
 import '../toat_attachments.dart';
 
