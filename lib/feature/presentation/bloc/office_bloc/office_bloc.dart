@@ -12,6 +12,7 @@ import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 
 import '../../../../core/locator_service.dart';
+import '../../../data/models/room_type_model.dart';
 import '../../../data/repositories/sql_repository.dart';
 
 part 'office_event.dart';
@@ -59,15 +60,20 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
             .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
             .get();
 
+        final types = await firebaseFirestore.collection('roomTypes').get();
+
         if (map.docs.isNotEmpty) {
           final documentData = map.docs.single.data();
+          final List<RoomTypeModel> roomTypesList = [];
+
+          types.docs.map((e) => roomTypesList.add(RoomTypeModel.fromJson(e.data(), e.id)));
 
           final bookingId = map.docs.single.id;
           final uid = documentData['uid'];
           final roomId = documentData['roomId'];
 
           final room = await firestoreRepository.getRoom(roomId);
-          final booking = BookingModel.fromJson(documentData);
+          final booking = BookingModel.fromJson(documentData, roomTypesList);
 
           room == null ? emit(OfficeErrorState()) : emit(OfficeLiveState(bookingId: bookingId, uid: uid, roomModel: room, bookingModel: booking));
         } else {

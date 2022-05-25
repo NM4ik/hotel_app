@@ -8,6 +8,7 @@ import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
+import 'package:hotel_ma/feature/presentation/screens/onboarding.dart';
 import 'feature/presentation/bloc/login_phone_cubit/login_phone_cubit.dart';
 import 'feature/presentation/bloc/office_bloc/office_bloc.dart';
 import 'feature/presentation/bloc/service_rent_bloc/service_rent_bloc.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           home: const RouterScreen(
             page: null,
           )),
+    // home: Onboarding()),
     );
   }
 }

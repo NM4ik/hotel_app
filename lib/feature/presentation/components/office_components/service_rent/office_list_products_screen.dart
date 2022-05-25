@@ -178,19 +178,21 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${entity.price} ₽',
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationColor: Colors.redAccent,
-                                    decorationThickness: 2.0),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
+                              entity.salePrice == null
+                                  ? Container()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        '${entity.price} ₽',
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            decoration: TextDecoration.lineThrough,
+                                            decorationColor: Colors.redAccent,
+                                            decorationThickness: 2.0),
+                                      ),
+                                    ),
                               Container(
                                 decoration: BoxDecoration(
                                   color: kMainBlueColor,

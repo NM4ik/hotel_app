@@ -45,12 +45,12 @@ class CardRoom extends StatelessWidget {
                       Align(
                         alignment: Alignment.topRight,
                         child: Container(
-                          decoration:
-                              BoxDecoration(color: Color(int.parse('0xFF${roomModel.roomTypeModel.color}')), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                          decoration: BoxDecoration(
+                              color: Color(int.parse('0xFF${roomModel.roomTypeModel.color}')), borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                             child: Text(
-                              roomModel.roomTypeModel.title,
+                              roomModel.roomTypeModel.title.toString(),
                               style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
                             ),
                           ),

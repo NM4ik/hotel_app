@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -5,10 +7,33 @@ import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
 
 import '../../../data/models/booking_model.dart';
+import '../../../data/models/room_type_model.dart';
 
 class ProfileScreenVisits extends StatelessWidget {
   const ProfileScreenVisits({Key? key, required this.uid}) : super(key: key);
   final String uid;
+
+  Future<List<BookingModel>> _fetchBooking() async {
+    List<BookingModel> bookings = [];
+    List<RoomTypeModel> roomTypesList = [];
+
+    try {
+      final data = await FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).orderBy("dateEnd", descending: true).get();
+      final types = await FirebaseFirestore.instance.collection('roomTypes').get();
+
+      for (var element in types.docs) {
+        roomTypesList.add(RoomTypeModel.fromJson(element.data(), element.id));
+      }
+
+      for (var element in data.docs) {
+        bookings.add(BookingModel.fromJson(element.data(), roomTypesList));
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return bookings;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +47,9 @@ class ProfileScreenVisits extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding),
         child: FutureBuilder(
-            future: FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).orderBy("dateEnd", descending: true).get(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            // future: FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).orderBy("dateEnd", descending: true).get(),
+            future: _fetchBooking(),
+            builder: (BuildContext context, AsyncSnapshot<List<BookingModel>> snapshot) {
               if (snapshot.hasError) {
                 return const Text("Не удалось загрузить данные");
               }
@@ -42,7 +68,7 @@ class ProfileScreenVisits extends StatelessWidget {
                 return const Center(child: Text('Что-то пошло не так..'));
               }
 
-              if (snapshot.data!.docs.isEmpty) {
+              if (snapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
                   "У вас еще не было посещений",
@@ -51,11 +77,11 @@ class ProfileScreenVisits extends StatelessWidget {
               }
 
               if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                List<BookingModel> visits = [];
-                snapshot.data?.docs.map((e) => visits.add(BookingModel.fromJson(e.data() as Map<String, dynamic>))).toList();
+                final data = snapshot.data;
+
                 return ListView.separated(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: visits.length,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) => Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColorLight,
@@ -76,20 +102,20 @@ class ProfileScreenVisits extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${visits[index].dateStart.toString()}  -  ${visits[index].dateEnd.toString()}',
+                                    '${data![index].dateStart.toString()}  -  ${data[index].dateEnd.toString()}',
                                     style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    visits[index].roomName,
+                                    data[index].roomName.toString(),
                                     style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
                                   ),
                                 ],
                               ),
                               Text(
-                                'Счет: ${visits[index].totalPrice}',
+                                'Счет: ${data[index].totalPrice}',
                                 style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10, color: kMainGreyColor),
                               ),
                             ],
@@ -101,12 +127,12 @@ class ProfileScreenVisits extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: visits[index].roomType == 'Премиум' ? kVinousColor : kMainBlueColor,
+                                        color: Color(int.parse('0xFF${data[index].roomTypeModel.color}')),
                                         borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                                       child: Text(
-                                        visits[index].roomType,
+                                        data[index].roomTypeModel.title.toString(),
                                         style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
                                       ),
                                     ),
@@ -116,12 +142,12 @@ class ProfileScreenVisits extends StatelessWidget {
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: visits[index].status == 'Забронировано' ? kMainGreyColor : kMainBlueColor,
+                                        color: data[index].status == 'Забронировано' ? kMainGreyColor : kMainBlueColor,
                                         borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                                       child: Text(
-                                        visits[index].status.toString(),
+                                        data[index].status.toString(),
                                         style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
                                       ),
                                     ),

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/booking_model.dart';
+import 'package:hotel_ma/feature/data/models/room_type_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
 import 'package:hotel_ma/feature/presentation/components/toat_attachments.dart';
@@ -326,13 +327,14 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
                   press: () async {
                     BookingModel bookingModel = BookingModel(
                         roomName: widget.roomModel.name,
-                        roomType: widget.roomModel.roomTypeModel.title,
+                        roomType: widget.roomModel.roomTypeModel.title!,
                         dateStart: widget.dateStart,
                         dateEnd: widget.dateEnd,
                         roomId: widget.roomModel.id,
-                        status: 'Забронировано',
+                        status: 'booked',
                         totalPrice: int.parse(widget.totalCost),
-                        uid: userModel.uid);
+                        uid: userModel.uid,
+                        roomTypeModel: RoomTypeModel(id: widget.roomModel.type));
 
                     _createOrder(context, bookingModel);
                   },

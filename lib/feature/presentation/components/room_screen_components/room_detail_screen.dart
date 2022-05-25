@@ -208,7 +208,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                                 ),
 
                                 /// product type subtitle
-                                Text(state.room.roomTypeModel.title,
+                                Text(state.room.roomTypeModel.title.toString(),
                                     style:
                                         TextStyle(color: Color(int.parse('0xFF${state.room.roomTypeModel.color}')), fontSize: 14, fontWeight: FontWeight.w500)),
 

@@ -87,7 +87,7 @@ class _FiltersState extends State<Filters> {
                 height: kEdgeVerticalPadding,
               ),
               Row(
-                children:  const [
+                children: const [
                   Expanded(child: DefaultTextFieldWidget(text: 'Поиск по номерам')),
                   SizedBox(
                     width: kEdgeHorizontalPadding / 2,
@@ -121,6 +121,8 @@ class _FiltersState extends State<Filters> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20.0, right: 10.0),
                   child: DropdownButton(
+                    underline: const SizedBox(),
+                    elevation: 0,
                     items: items.map(buildMenuItem).toList(),
                     onChanged: (value) => setState(() => {this.value = value.toString(), _updateRooms(value.toString(), state.rooms)}),
                     value: value,

@@ -97,6 +97,9 @@ dependencies:
 
   flutter_stripe: ^2.3.0
 
+  # shimmer effect
+  shimmer: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:

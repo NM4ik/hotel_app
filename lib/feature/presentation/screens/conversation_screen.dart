@@ -26,7 +26,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     FirestoreMethods firestoreData = FirestoreMethods();
     late bool isData;
 
-    _sendMessage(String message, bool isData) async{
+    _sendMessage(String message, bool isData) async {
       if (isData == false) {
         await firestoreData.initializeChat(message, widget.userModel);
       }
@@ -101,37 +101,59 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           ),
                         ),
                       );
-                    }else{
+                    } else {
                       isData = true;
                     }
 
                     return Expanded(
-                        child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            reverse: true,
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              final isUser = widget.userModel.uid == data[index]['sendBy'];
+                        child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      reverse: true,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        final isUser = widget.userModel.uid == data[index]['sendBy'];
 
-                              return Bubble(
-                                alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                                color: isUser ? const Color(0xFF809BD4) : Theme.of(context).cardColor,
-                                padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
-                                margin: const BubbleEdges.only(top: kEdgeVerticalPadding / 2),
-                                nip: isUser ? BubbleNip.rightBottom : BubbleNip.leftBottom,
-                                child: Text(
-                                  data[index]['content'].toString(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context).brightness == Brightness.light
-                                          ? isUser
-                                              ? Colors.white
-                                              : Colors.black
-                                          : Colors.white,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              );
-                            }));
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: data[index]['name'] == null
+                                  ? const SizedBox()
+                                  : Text(
+                                      data[index]['name'],
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        color: kMainGreyColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                            ),
+                            Bubble(
+                              alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                              color: isUser ? const Color(0xFF809BD4) : Theme.of(context).cardColor,
+                              padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
+                              margin: const BubbleEdges.only(top: 3),
+                              nip: isUser ? BubbleNip.rightBottom : BubbleNip.leftBottom,
+                              child: Text(
+                                data[index]['content'].toString(),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).brightness == Brightness.light
+                                        ? isUser
+                                            ? Colors.white
+                                            : Colors.black
+                                        : Colors.white,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                        height: kEdgeVerticalPadding / 2,
+                      ),
+                    ));
                   }),
 
               const SizedBox(

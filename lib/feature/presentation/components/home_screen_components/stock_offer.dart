@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/common/app_themes.dart';
+import 'package:hotel_ma/feature/data/models/rent_model.dart';
 
 class StockOffer extends StatelessWidget {
-  const StockOffer({Key? key}) : super(key: key);
+  const StockOffer({Key? key, required this.rents}) : super(key: key);
+  final List<RentModel>? rents;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +30,10 @@ class StockOffer extends StatelessWidget {
           SizedBox(
             height: 250,
             child: ListView.separated(
-              itemCount: 3,
+              itemCount: rents!.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Stack(children: [
                     Padding(
@@ -40,10 +43,11 @@ class StockOffer extends StatelessWidget {
                         height: 140,
                         decoration: BoxDecoration(
                           color: Theme.of(context).primaryColorLight,
+                          borderRadius: BorderRadius.circular(kEdgeMainBorder),
                         ),
-                        // child: CachedNetworkImage(
-                        //   imageUrl: images[index],
-                        // )
+                        child: CachedNetworkImage(
+                          imageUrl: rents![index].image,
+                        )
                       ),
                     ),
                     Align(
@@ -66,10 +70,10 @@ class StockOffer extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Container(
+                  SizedBox(
                       width: 120,
                       child: Text(
-                        'Название автопрома',
+                        rents![index].name,
                         // names[index],
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                       )),
@@ -87,7 +91,7 @@ class StockOffer extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                           child: Text(
-                            '3000Р',
+                            rents![index].price,
                             // '${prices[index]}P',
                             style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
                           ),
@@ -98,7 +102,7 @@ class StockOffer extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                           child: Text(
-                            '2300P',
+                            rents![index].salePrice.toString(),
                             style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 decorationColor: Theme.of(context).primaryColor,

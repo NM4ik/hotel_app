@@ -39,6 +39,7 @@ class FirestoreMethods {
           "email": userModel.email,
           "name": userModel.name,
           "phone": userModel.phoneNumber,
+          "role": "guest",
           "isNotifications": true,
         });
         log('user was added', name: "UserToFireBase");

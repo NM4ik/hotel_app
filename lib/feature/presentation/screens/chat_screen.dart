@@ -50,11 +50,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   future: FirebaseFirestore.instance.collection('FAQ').get(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) {
-                      return const SizedBox(
-                          height: 110,
-                          child: CircularProgressIndicator(
-                            color: kMainBlueColor,
-                          ));
+                      return const CircularProgressIndicator(
+                        color: kMainBlueColor,
+                      );
                     }
 
                     if (snapshot.hasData) {

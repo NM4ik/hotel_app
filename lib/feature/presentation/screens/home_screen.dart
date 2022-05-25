@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,99 +7,135 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
+import 'package:hotel_ma/feature/data/models/home_model.dart';
+import 'package:hotel_ma/feature/data/models/rent_model.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
-import 'package:hotel_ma/feature/presentation/components/main_screen_components/info.dart';
-import 'package:hotel_ma/feature/presentation/components/main_screen_components/personal_offer.dart';
-import 'package:hotel_ma/feature/presentation/components/main_screen_components/playbill.dart';
-import 'package:hotel_ma/feature/presentation/components/main_screen_components/stock_offer.dart';
+import 'package:hotel_ma/feature/presentation/components/home_screen_components/info.dart';
+import 'package:hotel_ma/feature/presentation/components/home_screen_components/personal_offer.dart';
+import 'package:hotel_ma/feature/presentation/components/home_screen_components/playbill.dart';
+import 'package:hotel_ma/feature/presentation/components/home_screen_components/stock_offer.dart';
 
 import '../../data/repositories/payment_controller.dart';
+import '../components/home_screen_components/shimmer_home_screen.dart';
 import '../widgets/default_text_field_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
-  PageController cardController = PageController();
-  TextEditingController textEditingController = TextEditingController();
+  final PageController cardController = PageController();
+  final TextEditingController textEditingController = TextEditingController();
   final PaymentController paymentController = PaymentController();
+
+  Future<HomeModel> _homeFetch() async {
+    List<Map<String, dynamic>> about = [];
+    // Map<String, dynamic> personalOffer;
+    List<RentModel> stockOffer = [];
+    List<Map<String, dynamic>> playBill = [];
+
+    final aboutData = await FirebaseFirestore.instance.collection('hotel').get();
+    aboutData.docs.map((e) => about.add(e.data())).toList();
+
+    final stockOfferData = await FirebaseFirestore.instance.collection('rent').orderBy("salePrice", descending: false).limit(4).get();
+    stockOfferData.docs.map((e) => stockOffer.add(RentModel.fromJson(e.data(), e.id))).toList();
+
+    final playBillData = await FirebaseFirestore.instance.collection('events').get();
+    playBillData.docs.map((e) => playBill.add(e.data())).toList();
+
+    HomeModel homeModel = HomeModel(about: about, stockOffer: stockOffer, playBill: playBill);
+
+    return homeModel;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
-            child: Column(
-              children: [
-                /// title = UPDATE TO SPACER OR FLEX OR SOMETHING
-                Text('ASIA HOTEL', style: Theme.of(context).textTheme.headline1),
+    return FutureBuilder(
+        future: _homeFetch(),
+        builder: (BuildContext context, AsyncSnapshot<HomeModel> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const ShimmerHomeScreen();
+          }
 
-                const SizedBox(
-                  height: 25,
-                ),
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+            final data = snapshot.data;
 
-                ElevatedButton(
-                    onPressed: () async {
-                      log(locator.get<SqlRepository>().getUserFromSql().toString());
-                      // final map = await FirebaseFirestore.instance
-                      //     .collection('bookings')
-                      //     .where("status", isEqualTo: "active")
-                      //     .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
-                      //     .get();
+            return SafeArea(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
+                    child: Column(
+                      children: [
+                        /// title = UPDATE TO SPACER OR FLEX OR SOMETHING
+                        Text('ASIA HOTEL', style: Theme.of(context).textTheme.headline1),
 
-                      // log(map.docs.toString());
-                    },
-                    child: const Text('test')),
+                        const SizedBox(
+                          height: 25,
+                        ),
 
-                const SizedBox(
-                  height: 25,
-                ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              log(locator.get<SqlRepository>().getUserFromSql().toString());
+                              // final map = await FirebaseFirestore.instance
+                              //     .collection('bookings')
+                              //     .where("status", isEqualTo: "active")
+                              //     .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
+                              //     .get();
 
-                /// search-field
-                DefaultTextFieldWidget(
-                  text: "Поиск по приложению",
-                ),
+                              // log(map.docs.toString());
+                            },
+                            child: const Text('test')),
 
-                const SizedBox(
-                  height: 30,
-                ),
+                        const SizedBox(
+                          height: 25,
+                        ),
 
-                /// info-block
-                Row(
-                  children: const [
-                    InfoComponent(
-                      text: "План отеля",
-                      image: 'http://domostroy.vglazkov.com/images/chemal800/p_2.jpg',
+                        /// search-field
+                        const DefaultTextFieldWidget(
+                          text: "Поиск по приложению",
+                        ),
+
+                        const SizedBox(
+                          height: 30,
+                        ),
+
+                        /// info-block
+                        Row(
+                          children: [
+                            InfoComponent(
+                              text: data?.about[0]['title'],
+                              image: data?.about[0]['image'],
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            InfoComponent(
+                              text: data?.about[1]['title'],
+                              image: data?.about[1]['image'],
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 30,
+                        ),
+
+                        /// personal-offer block
+                        const PersonalOffer(),
+
+                        /// stocks
+                        StockOffer(rents: data?.stockOffer),
+
+                        /// playbill  Failed assertion: line 1814 pos 12: '!_debugDoingThisLayout': is not true.
+                        const PlayBill(),
+                      ],
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    InfoComponent(
-                      text: "Афиша",
-                      image:
-                          'https://pic-h.cdn-pegast.net/getimage-nc/thumb800/78/af/02/2f110583f5aa5070b197845c698d404e17e74c2094f927eb505afd657f/5db29bb415f03.jpg',
-                    ),
-                  ],
+                  ),
                 ),
-
-                const SizedBox(
-                  height: 30,
-                ),
-
-                /// personal-offer block
-                const PersonalOffer(),
-
-                /// stocks
-                const StockOffer(),
-
-                /// playbill  Failed assertion: line 1814 pos 12: '!_debugDoingThisLayout': is not true.
-                const PlayBill(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+              ),
+            );
+          } else {
+            return const Center(child: Text('qweqwe'));
+          }
+        });
   }
 }

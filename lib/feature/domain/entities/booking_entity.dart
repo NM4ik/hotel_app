@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hotel_ma/feature/data/models/room_type_model.dart';
 
 class BookingEntity extends Equatable {
   final String roomName;
@@ -10,6 +11,7 @@ class BookingEntity extends Equatable {
   final String status;
   final int totalPrice;
   final String uid;
+  final RoomTypeModel roomTypeModel;
 
   const BookingEntity(
       {required this.roomName,
@@ -20,7 +22,9 @@ class BookingEntity extends Equatable {
       required this.roomId,
       required this.status,
       required this.totalPrice,
-      required this.uid});
+      required this.uid,
+      required this.roomTypeModel
+      });
 
   @override
   List<Object> get props => [
@@ -33,5 +37,6 @@ class BookingEntity extends Equatable {
         status,
         totalPrice,
         uid,
+        roomTypeModel
       ];
 }
