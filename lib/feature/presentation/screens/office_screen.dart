@@ -36,8 +36,7 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
     TabController _tabController = TabController(length: 4, vsync: this);
 
     return BlocConsumer<OfficeBloc, OfficeState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is OfficeLoadingState) {
           return const Center(

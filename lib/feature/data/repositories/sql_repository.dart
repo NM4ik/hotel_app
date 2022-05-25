@@ -8,8 +8,8 @@ class SqlRepository {
 
   SqlRepository({required this.sqlMethods});
 
-  void userToSql(UserModel userModel) {
-    sqlMethods.writePersonToCache(userModel);
+  Future<bool> userToSql(UserModel userModel) async{
+    return await sqlMethods.writePersonToCache(userModel);
   }
 
   UserModel getUserFromSql() {

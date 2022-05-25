@@ -78,9 +78,10 @@ class _OtpScreenState extends State<OtpScreen> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => const RouterScreen(
-                        page: 4,
+                        page: null,
                       )),
               (route) => false);
+          toatAuth("Успешная авторизация", context);
         } else if (state is LoginPhoneLoadingState) {
           setState(() {
             loading = true;

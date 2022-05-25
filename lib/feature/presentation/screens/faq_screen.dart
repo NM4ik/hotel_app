@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 
 class FaqScreen extends StatelessWidget {
-  const FaqScreen({Key? key, required this.index, required this.data}) : super(key: key);
-  final int index;
-  final Map<String, dynamic> data;
+  const FaqScreen({Key? key, required this.data}) : super(key: key);
+  final Map<String, dynamic>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +15,11 @@ class FaqScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            data['imageRoot'] == null
+            data?['image'] == null
                 ? Container()
                 : Stack(children: [
-                    Image.network(
-                      data['imageRoot']!,
+                    CachedNetworkImage(
+                      imageUrl: data?['image'] ?? '',
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: MediaQuery.of(context).size.height / 2,
@@ -48,13 +49,13 @@ class FaqScreen extends StatelessWidget {
                   children: [
                     /// faq_date
                     Text(
-                      data['date'],
+                      'Cтатья от ${(data?['date'] as Timestamp).toDate().year} года',
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500, color: kMainGreyColor),
                     ),
 
                     /// faq_nave
                     Text(
-                      data['title'],
+                      data?['title'],
                       style: Theme.of(context).textTheme.headline3!.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
@@ -65,7 +66,12 @@ class FaqScreen extends StatelessWidget {
                     ),
 
                     Text(
-                      '${data['description']} \n',
+                      '${data?['firstText']} \n',
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 13, fontWeight: FontWeight.w400),
+                    ),
+
+                    Text(
+                      '${data?['secondText']} \n',
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 13, fontWeight: FontWeight.w400),
                     ),
                   ],

@@ -22,9 +22,9 @@ class ProfileScreenUnAuth extends StatelessWidget {
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthenticatedState) {
-          toatAuth("Здравствуйте, ${state.userModel.name ?? state.userModel.phoneNumber}", context);
-        }
+        // if (state is AuthenticatedState) {
+        //   toatAuth("Здравствуйте, ${state.userModel.name ?? state.userModel.phoneNumber}", context);
+        // }
       },
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -61,6 +61,7 @@ class ProfileScreenUnAuth extends StatelessWidget {
                           authenticationRepository.singInWithGoogle();
                         } catch (e) {
                           log('$e', name: 'error auth');
+                          toatAuth("Неуспешная авторизация", context);
                         }
                       },
                       child: Row(

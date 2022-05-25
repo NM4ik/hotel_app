@@ -5,20 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../data/models/booking_model.dart';
 import '../../../data/models/room_type_model.dart';
 
-class ProfileScreenVisits extends StatelessWidget {
+class ProfileScreenVisits extends StatefulWidget {
   const ProfileScreenVisits({Key? key, required this.uid}) : super(key: key);
   final String uid;
 
+  @override
+  State<ProfileScreenVisits> createState() => _ProfileScreenVisitsState();
+}
+
+class _ProfileScreenVisitsState extends State<ProfileScreenVisits> {
   Future<List<BookingModel>> _fetchBooking() async {
     List<BookingModel> bookings = [];
     List<RoomTypeModel> roomTypesList = [];
 
     try {
-      final data = await FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).orderBy("dateEnd", descending: true).get();
+      final data = await FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: widget.uid).orderBy("dateEnd", descending: true).get();
       final types = await FirebaseFirestore.instance.collection('roomTypes').get();
 
       for (var element in types.docs) {
@@ -33,6 +40,15 @@ class ProfileScreenVisits extends StatelessWidget {
     }
 
     return bookings;
+  }
+
+  late DateFormat dateFormat;
+
+  @override
+  void initState() {
+    initializeDateFormatting();
+    dateFormat = DateFormat.MMMEd("ru");
+    super.initState();
   }
 
   @override
@@ -102,7 +118,7 @@ class ProfileScreenVisits extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${data![index].dateStart.toString()}  -  ${data[index].dateEnd.toString()}',
+                                    '${dateFormat.format(data![index].dateStart).toString()}  -  ${dateFormat.format(data![index].dateEnd).toString()}',
                                     style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
                                   ),
                                   const SizedBox(

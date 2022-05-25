@@ -14,9 +14,9 @@ class SqlMethods {
     return value;
   }
 
-  void writePersonToCache(UserModel userModel) {
+  Future<bool> writePersonToCache(UserModel userModel) async{
     String person = jsonEncode(userModel);
-    sharedPreferences.setString('personCache', person);
+    return await sharedPreferences.setString('personCache', person);
   }
 
   UserModel getPersonFromCache() {

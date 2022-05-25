@@ -171,13 +171,13 @@ class _ProfileScreenAuthState extends State<ProfileScreenAuth> with SingleTicker
                             "Выход",
                             style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16, color: kMainBlueColor, fontWeight: FontWeight.w500),
                           )),
-                      ElevatedButton(onPressed: () => print(locator.get<SqlRepository>().getUserFromSql()), child: Text('fetch')),
-                      ElevatedButton(
-                          onPressed: () async {
-                            final user = await locator.get<FirestoreRepository>().getUserFromUserCollection(state.userModel.uid);
-                            print(user.toString());
-                          },
-                          child: Text('getUser')),
+                      // ElevatedButton(onPressed: () => print(locator.get<SqlRepository>().getUserFromSql()), child: Text('fetch')),
+                      // ElevatedButton(
+                      //     onPressed: () async {
+                      //       final user = await locator.get<FirestoreRepository>().getUserFromUserCollection(state.userModel.uid);
+                      //       print(user.toString());
+                      //     },
+                      //     child: Text('getUser')),
                     ],
                   ),
                 ),

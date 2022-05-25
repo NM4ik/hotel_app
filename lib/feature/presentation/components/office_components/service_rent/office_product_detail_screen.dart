@@ -75,7 +75,9 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
           listener: (context, state) {},
           builder: (context, state) {
             if (state is ServiceRentChooseState) {
-              totalCost = ((state.lastDate.difference(state.firstDate).inDays) * int.parse(state.rent.price)).toString();
+              totalCost = ((state.lastDate.difference(state.firstDate).inDays + 2) *
+                      (state.rent.salePrice == null ? int.parse(state.rent.price) : int.parse(state.rent.salePrice!)))
+                  .toString();
 
               return SafeArea(
                 child: SingleChildScrollView(
@@ -196,18 +198,18 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Renault Logan',
+                                  state.rent.name,
                                   style: Theme.of(context).textTheme.headline3,
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '12 577',
+                                      totalCost.toString(),
                                       style: Theme.of(context).textTheme.headline3,
                                     ),
                                     Text(
-                                      'за 9 дней',
+                                      'за ${ state.lastDate.difference(state.firstDate).inDays + 2} дней',
                                       style: Theme.of(context).textTheme.bodyText1!.copyWith(color: kMainGreyColor, fontSize: 13),
                                     ),
                                   ],
@@ -224,14 +226,14 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                                   style: Theme.of(context).textTheme.bodyText1!.copyWith(color: kMainGreyColor, fontSize: 13),
                                 ),
                                 Text(
-                                  '11%', // if null return 0%
+                                  state.rent.prePayment == null ? '${state.rent.prePayment}%' : '0%', // if null return 0%
                                   style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 13),
                                 ),
                               ],
                             ),
                             _customDivider(),
-                            _dateFormatter('01 июня, 12:00', 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
-                            _dateFormatter('10 июня, 12:00', 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
+                            _dateFormatter(dateFormat.format(state.firstDate).toString(), 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
+                            _dateFormatter(dateFormat.format(state.lastDate).toString(), 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
                           ],
                         ),
                       ),

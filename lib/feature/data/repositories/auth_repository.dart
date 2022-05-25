@@ -32,7 +32,7 @@ class AuthenticationRepository {
     });
   }
 
-  void singInWithGoogle() async {
+  Future<void> singInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -48,14 +48,15 @@ class AuthenticationRepository {
         final userModel = await locator.get<FirestoreRepository>().addUserToUserCollection(UserModel.toUser(user.user));
 
         if (userModel == null) {
-          locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
+          await locator.get<SqlRepository>().userToSql(UserModel.toUser(user.user));
         } else {
-          locator.get<SqlRepository>().userToSql(userModel);
+          await locator.get<SqlRepository>().userToSql(userModel);
         }
       }
+      return;
     } catch (e) {
       log('$e', name: 'Exception by singInWithGoogle');
-      return null;
+      return;
     }
   }
 

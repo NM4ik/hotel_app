@@ -102,19 +102,13 @@ class HomeScreen extends StatelessWidget {
                         Row(
                           children: [
                             InfoComponent(
-                              text: data?.about[0]['title'],
-                              image: data?.about[0]['image'],
-                              description: data?.about[0]['description'],
-                              dateTime: (data?.about[0]['date'] as Timestamp).toDate(),
+                              data: data?.about[1],
                             ),
                             const SizedBox(
                               width: 10,
                             ),
                             InfoComponent(
-                              text: data?.about[1]['title'],
-                              image: data?.about[1]['image'],
-                              description: data?.about[1]['description'],
-                              dateTime: (data?.about[1]['date'] as Timestamp).toDate(),
+                              data: data?.about[0],
                             ),
                           ],
                         ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -56,7 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     }
 
                     if (snapshot.hasData) {
-                      final data = snapshot.data!.docs.map((e) => e.data() as Map<String, dynamic>).toList();
+                      final List<Map<String, dynamic>> data = snapshot.data!.docs.map((e) => e.data() as Map<String, dynamic>).toList();
 
                       return SizedBox(
                         height: 110,
@@ -64,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => _cardWidget(context, index, data),
+                            itemBuilder: (context, index) => _cardWidget(context, data[index]),
                             separatorBuilder: (context, index) => const SizedBox(
                                   width: 15,
                                 ),
@@ -207,11 +208,11 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  _cardWidget(BuildContext context, int index, List<dynamic> data) {
+  _cardWidget(BuildContext context, Map<String,dynamic> data) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FaqScreen(index: index, data: data[index]),
+          builder: (context) => FaqScreen(data: data),
         ));
       },
       child: SizedBox(
@@ -221,22 +222,29 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(kEdgeMainBorder),
-              child: Image.asset(
-                imageRoot,
-                fit: BoxFit.cover,
-                width: 74,
+              child: CachedNetworkImage(
                 height: 74,
+                imageUrl: data['image'],
+                fit: BoxFit.cover,
               ),
+              // child: Image.asset(
+              //   imageRoot,
+              //   fit: BoxFit.cover,
+              //   width: 74,
+              //   height: 74,
+              // ),
             ),
             const SizedBox(
               height: 5,
             ),
-            Text(
-              data[index]['title'],
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 11),
+            Flexible(
+              child: Text(
+                data['title'],
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w400, fontSize: 11),
+              ),
             ),
           ],
         ),

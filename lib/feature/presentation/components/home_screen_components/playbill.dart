@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -25,10 +26,9 @@ class PlayBill extends StatelessWidget {
           height: 15,
         ),
         GridView.builder(
-          shrinkWrap: true,
+            shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3 / 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.2, mainAxisSpacing: 10, crossAxisSpacing: 10),
             itemCount: events?.length,
             itemBuilder: (context, index) {
               return Column(
@@ -39,7 +39,7 @@ class PlayBill extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(kEdgeMainBorder),
                       child: CachedNetworkImage(
-                        imageUrl: events?[index]['image'],
+                        imageUrl: events?[index]['image'] ?? '',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -48,10 +48,10 @@ class PlayBill extends StatelessWidget {
                     height: 8,
                   ),
                   Text(
-                    events?[index]['name'],
+                    'до ${(events?[index]['dateEnd'] as Timestamp).toDate().day}',
                     style: const TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
                   ),
-                  Text('Мероприятие', style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
+                  Text(events?[index]['name'], style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
                 ],
               );
             }),

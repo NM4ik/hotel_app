@@ -173,7 +173,8 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                           ],
                         ),
                         CachedNetworkImage(
-                          imageUrl: 'https://exat.ru/upload/iblock/e56/e56f843be5b904bd720480696d9080e1.jpeg',
+                          imageUrl:
+                              'https://firebasestorage.googleapis.com/v0/b/hotelmobileapp-flutter.appspot.com/o/office%2Fproduct%2Frenault_logan.png?alt=media&token=7864b7d1-e005-4efc-b44a-e521e6cc8ff8',
                           width: 100,
                         ),
                       ],
@@ -183,12 +184,11 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                       color: Colors.black,
                     ),
                     Text(
-                      '${dateFormat.format(widget.dateStart)} - ${dateFormat.format(widget.dateEnd)}, 1 номер',
+                      '${dateFormat.format(widget.dateStart)} - ${dateFormat.format(widget.dateEnd)}',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Text(
-                      // 'Заезд с ${widget.roomModel.checkIn.toString()}, выезд до ${widget.roomModel.eviction.toString()}',
-                      'заезд выезд',
+                      'Забрать с 12:00, вернуть до 12:00',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
@@ -265,7 +265,7 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                       height: 20,
                     ),
                     const Text(
-                      'Полная стоимость проживания будет оплачена в момент бронирования. Бронирование будет подтверждено сразу после нажатия на кнопку "Оплатить"',
+                      'Полная стоимость будет оплачена в момент бронирования. Бронирование будет подтверждено сразу после нажатия на кнопку "Забронировать"',
                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: kMainGreyColor),
                     ),
                   ],
@@ -299,7 +299,7 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Важная информация и правила проживания',
+                          'Важная информация и правила пользования',
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         const Icon(
@@ -335,7 +335,7 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                     //     status: 'Забронировано',
                     //     totalPrice: int.parse(widget.totalCost),
                     //     uid: userModel.uid);
-
+                    //
                     // _createOrder(context, bookingModel);
                   },
                   title: 'Забронировать'),

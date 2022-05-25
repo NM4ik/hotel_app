@@ -5,23 +5,16 @@ import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/screens/faq_screen.dart';
 
 class InfoComponent extends StatelessWidget {
-  const InfoComponent({Key? key, required this.text, this.image, required this.description, required this.dateTime}) : super(key: key);
-  final String text;
-  final String? image;
-  final String? description;
-  final DateTime dateTime;
+  const InfoComponent({Key? key, required this.data}) : super(key: key);
+  final Map<String, dynamic>? data;
+
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => FaqScreen(index: 1, data: {
-                  'imageRoot': image,
-                  'date': 'от ${dateTime.year} года',
-                  'title': text,
-              'description': description,
-                }))),
+            builder: (context) => FaqScreen(data: data))),
         child: Container(
             decoration: BoxDecoration(color: Theme.of(context).primaryColorLight, borderRadius: BorderRadius.circular(kEdgeMainBorder)),
             width: double.infinity,
@@ -37,7 +30,7 @@ class InfoComponent extends StatelessWidget {
                       child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Text(
-                            text,
+                            data?['title'],
                             style: Theme.of(context).textTheme.headline3,
                           )),
                     )),
@@ -50,7 +43,7 @@ class InfoComponent extends StatelessWidget {
                     ),
                     width: double.infinity,
                     child: CachedNetworkImage(
-                      imageUrl: image ?? '',
+                      imageUrl: data?['image'] ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),

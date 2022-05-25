@@ -183,7 +183,7 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                                   : Padding(
                                       padding: const EdgeInsets.only(bottom: 5),
                                       child: Text(
-                                        '${entity.salePrice} ₽',
+                                        '${entity.price} ₽',
                                         style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w500,
@@ -201,7 +201,7 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
                                   child: Text(
-                                    '${entity.price} ₽',
+                                    entity.salePrice == null ? '${entity.price} ₽' : '${entity.salePrice} ₽',
                                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14),
                                   ),
                                 ),
