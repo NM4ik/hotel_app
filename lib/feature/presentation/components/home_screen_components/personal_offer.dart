@@ -42,13 +42,15 @@ class PersonalOffer extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: Container(
-              width: 150,
               height: 20,
               decoration: BoxDecoration(
                 color: kMainBlueColor,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Center(child: Text('до окончания: 35 дней 23:26:21', style: const TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 9, color: Colors.white),)),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                child: Text('до окончания: 35 дней', style: TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 11, color: Colors.white),),
+              ),
             ),
           ),
         ])

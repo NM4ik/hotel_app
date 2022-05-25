@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/screens/faq_screen.dart';
 
 class InfoComponent extends StatelessWidget {
-  const InfoComponent({Key? key, required this.text, this.image}) : super(key: key);
+  const InfoComponent({Key? key, required this.text, this.image, required this.description, required this.dateTime}) : super(key: key);
   final String text;
   final String? image;
+  final String? description;
+  final DateTime dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +18,9 @@ class InfoComponent extends StatelessWidget {
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => FaqScreen(index: 1, data: {
                   'imageRoot': image,
-                  'date': 'Карта от 20 февраля 2022',
-                  'title': 'План отеля',
-                  'firstText':
-                      'План 1-го этажа гостиницы является представительским интерьером. Первое впечатление  которое производит на гостей ресепшн остается навсегда. Комфорт и уют созданный в интерьере лоби и зоны ожидания очень важен.  Хорошо продуманный план гостиницы и выполненный дизайн интерьера',
-                  'secondText':
-                      'Второй этаж мини гостиницы максимально используется для размещения номеров. В зависимости от звезд гостиницы варьируется площадь номера и размеры ванной комнаты и качество сантехники и мебели.План мини гостиницы максимально использует преимущества места расположения и вписывается или в городскую застройку или в природу.',
+                  'date': 'от ${dateTime.year} года',
+                  'title': text,
+              'description': description,
                 }))),
         child: Container(
             decoration: BoxDecoration(color: Theme.of(context).primaryColorLight, borderRadius: BorderRadius.circular(kEdgeMainBorder)),

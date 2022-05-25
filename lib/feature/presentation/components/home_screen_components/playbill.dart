@@ -4,7 +4,8 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 
 class PlayBill extends StatelessWidget {
-  const PlayBill({Key? key}) : super(key: key);
+  const PlayBill({Key? key, required this.events}) : super(key: key);
+  final List<Map<String, dynamic>>? events;
 
   @override
   Widget build(BuildContext context) {
@@ -23,41 +24,37 @@ class PlayBill extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        SizedBox(
-          height: 300,
-          child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3 / 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(kEdgeMainBorder)
-                        ),
-                        height: 100,
-                        alignment: Alignment.center,
-                        // child: Image.network(images[index], fit: BoxFit.cover,),
+        GridView.builder(
+          shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3 / 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+            itemCount: events?.length,
+            itemBuilder: (context, index) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                      child: CachedNetworkImage(
+                        imageUrl: events?[index]['image'],
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    const Text(
-                      'В будущем',
-                      style: TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
-                    ),
-                    Text('Мероприятие', style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
-                  ],
-                );
-              }),
-        ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    events?[index]['name'],
+                    style: const TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
+                  ),
+                  Text('Мероприятие', style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
+                ],
+              );
+            }),
       ],
     );
   }

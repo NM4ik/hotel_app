@@ -42,6 +42,8 @@ class HomeScreen extends StatelessWidget {
 
     HomeModel homeModel = HomeModel(about: about, stockOffer: stockOffer, playBill: playBill);
 
+    // await Future.delayed(const Duration(seconds: 20));
+
     return homeModel;
   }
 
@@ -68,22 +70,20 @@ class HomeScreen extends StatelessWidget {
                         /// title = UPDATE TO SPACER OR FLEX OR SOMETHING
                         Text('ASIA HOTEL', style: Theme.of(context).textTheme.headline1),
 
-                        const SizedBox(
-                          height: 25,
-                        ),
-
-                        ElevatedButton(
-                            onPressed: () async {
-                              log(locator.get<SqlRepository>().getUserFromSql().toString());
-                              // final map = await FirebaseFirestore.instance
-                              //     .collection('bookings')
-                              //     .where("status", isEqualTo: "active")
-                              //     .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
-                              //     .get();
-
-                              // log(map.docs.toString());
-                            },
-                            child: const Text('test')),
+                        // const SizedBox(
+                        //   height: 25,
+                        // ),
+                        // ElevatedButton(
+                        //     onPressed: () async {
+                        //       log(locator.get<SqlRepository>().getUserFromSql().toString());
+                        // final map = await FirebaseFirestore.instance
+                        //     .collection('bookings')
+                        //     .where("status", isEqualTo: "active")
+                        //     .where("uid", isEqualTo: locator.get<SqlRepository>().getUserFromSql().uid)
+                        //     .get();
+                        // log(map.docs.toString());
+                        // },
+                        // child: const Text('test')),
 
                         const SizedBox(
                           height: 25,
@@ -104,13 +104,17 @@ class HomeScreen extends StatelessWidget {
                             InfoComponent(
                               text: data?.about[0]['title'],
                               image: data?.about[0]['image'],
+                              description: data?.about[0]['description'],
+                              dateTime: (data?.about[0]['date'] as Timestamp).toDate(),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             InfoComponent(
                               text: data?.about[1]['title'],
                               image: data?.about[1]['image'],
+                              description: data?.about[1]['description'],
+                              dateTime: (data?.about[1]['date'] as Timestamp).toDate(),
                             ),
                           ],
                         ),
@@ -125,8 +129,10 @@ class HomeScreen extends StatelessWidget {
                         /// stocks
                         StockOffer(rents: data?.stockOffer),
 
-                        /// playbill  Failed assertion: line 1814 pos 12: '!_debugDoingThisLayout': is not true.
-                        const PlayBill(),
+                        /// playbill
+                        PlayBill(
+                          events: data?.playBill,
+                        ),
                       ],
                     ),
                   ),

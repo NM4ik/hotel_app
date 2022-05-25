@@ -48,7 +48,6 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
     emit(OfficeLoadingState());
 
     final user = locator.get<SqlRepository>().getUserFromSql();
-    log(user.toString(), name: "USER2");
 
     if (user == UserModel.empty) {
       emit(OfficeUnAuthState());
@@ -66,21 +65,24 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
           final documentData = map.docs.single.data();
           final List<RoomTypeModel> roomTypesList = [];
 
-          types.docs.map((e) => roomTypesList.add(RoomTypeModel.fromJson(e.data(), e.id)));
+          types.docs.map((e) => roomTypesList.add(RoomTypeModel.fromJson(e.data(), e.id))).toList();
 
           final bookingId = map.docs.single.id;
           final uid = documentData['uid'];
           final roomId = documentData['roomId'];
 
           final room = await firestoreRepository.getRoom(roomId);
+
           final booking = BookingModel.fromJson(documentData, roomTypesList);
 
-          room == null ? emit(OfficeErrorState()) : emit(OfficeLiveState(bookingId: bookingId, uid: uid, roomModel: room, bookingModel: booking));
+          room == null
+              ? emit(const OfficeErrorState(message: "Номеров нет..."))
+              : emit(OfficeLiveState(bookingId: bookingId, uid: uid, roomModel: room, bookingModel: booking));
         } else {
           emit(OfficeUnLiveState());
         }
       } catch (e) {
-        emit(OfficeErrorState());
+        emit(OfficeErrorState(message: e.toString()));
       }
     }
   }

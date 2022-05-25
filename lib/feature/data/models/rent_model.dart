@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hotel_ma/feature/domain/entities/rent_entity.dart';
 
 class RentModel extends RentEntity {
@@ -9,6 +10,7 @@ class RentModel extends RentEntity {
       required String? prePayment,
       required String price,
       required String? salePrice,
+      required DateTime? saleTimeEnd,
       required List<Map<String, dynamic>>? characters,
       required List<Map<String, dynamic>>? documents})
       : super(
@@ -19,6 +21,7 @@ class RentModel extends RentEntity {
             prePayment: prePayment,
             price: price,
             salePrice: salePrice,
+            saleTimeEnd: saleTimeEnd,
             characters: characters,
             documents: documents);
 
@@ -30,6 +33,7 @@ class RentModel extends RentEntity {
         prePayment: json['prePayment'],
         price: json['price'],
         salePrice: json['salePrice'],
+        saleTimeEnd: json['saleTimeEnd'] == null ? null : (json['saleTimeEnd'] as Timestamp).toDate(),
         characters: json['characters'] == null
             ? null
             : List<Map<String, dynamic>>.from(

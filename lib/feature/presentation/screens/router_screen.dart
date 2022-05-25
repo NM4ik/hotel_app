@@ -44,13 +44,16 @@ class _RouterScreenState extends State<RouterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme
+          .of(context)
+          .scaffoldBackgroundColor,
       body: PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) => FadeThroughTransition(
-          animation: primaryAnimation,
-          secondaryAnimation: secondaryAnimation,
-          child: child,
-        ),
+        transitionBuilder: (child, primaryAnimation, secondaryAnimation) =>
+            FadeThroughTransition(
+              animation: primaryAnimation,
+              secondaryAnimation: secondaryAnimation,
+              child: child,
+            ),
         child: screens[currentPageIndex],
       ),
       bottomNavigationBar: Container(
@@ -64,12 +67,17 @@ class _RouterScreenState extends State<RouterScreen> {
           ],
         ),
         child: BottomNavigationBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Theme
+              .of(context)
+              .scaffoldBackgroundColor,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 12,
           unselectedFontSize: 12,
           currentIndex: currentPageIndex,
-          onTap: (index) => setState(() => currentPageIndex = index),
+          onTap: (index) =>
+              setState(() {
+                currentPageIndex = index;
+              }),
           selectedItemColor: const Color(0xFFADADAD),
           unselectedItemColor: Colors.black12,
           items: const [

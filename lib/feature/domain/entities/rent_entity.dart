@@ -8,6 +8,7 @@ class RentEntity extends Equatable {
   final String? prePayment;
   final String price;
   final String? salePrice;
+  final DateTime? saleTimeEnd;
   final List<Map<String, dynamic>>? characters;
   final List<Map<String, dynamic>>? documents;
 
@@ -19,6 +20,7 @@ class RentEntity extends Equatable {
       required this.prePayment,
       required this.price,
       required this.salePrice,
+      required this.saleTimeEnd,
       required this.characters,
       required this.documents});
 

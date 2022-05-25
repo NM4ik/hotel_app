@@ -11,6 +11,8 @@ class StockOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateTimeNow = DateTime.now();
+
     return Padding(
       padding: const EdgeInsets.only(
         top: 30.0,
@@ -39,30 +41,31 @@ class StockOffer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Container(
-                        width: 120,
-                        height: 140,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight,
-                          borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: rents![index].image,
-                        )
-                      ),
+                          width: 120,
+                          height: 140,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorLight,
+                            borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: rents![index].image,
+                          )),
                     ),
                     Align(
                       alignment: Alignment.topRight,
                       child: Container(
-                        width: 90,
                         height: 20,
                         decoration: BoxDecoration(
                           color: index.isEven ? kMainBlueColor : Colors.red,
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: const Center(
-                            child: Text(
-                          '35 дней 23:26:21',
-                          style: TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 9, color: Colors.white),
+                        child: Center(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding / 2),
+                          child: Text(
+                            'До окончания ${(rents![index].saleTimeEnd?.difference(dateTimeNow).inDays)} дней',
+                            style: const TextStyle(fontWeight: FontWeight.w400, fontFamily: "Inter", fontSize: 9, color: Colors.white),
+                          ),
                         )),
                       ),
                     ),

@@ -15,7 +15,6 @@ class _DefaultTextFieldWidgetState extends State<DefaultTextFieldWidget> {
 
   @override
   void initState() {
-    _controller.text = widget.text;
     super.initState();
   }
 

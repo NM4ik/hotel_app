@@ -32,10 +32,12 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    context.read<OfficeBloc>().add(OfficeCheckoutEvent());
     TabController _tabController = TabController(length: 4, vsync: this);
 
     return BlocConsumer<OfficeBloc, OfficeState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+      },
       builder: (context, state) {
         if (state is OfficeLoadingState) {
           return const Center(
@@ -48,6 +50,8 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
           );
         }
         if (state is OfficeErrorState) {
+          log(state.message);
+
           return const Center(
             child: Text("Ошибка"),
           );

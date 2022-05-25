@@ -159,13 +159,13 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                       entity.characters?[1]['value'] == null
                           ? Container()
                           : Text(
-                              entity.characters?[0]['value'] ?? '',
+                              entity.characters?[1]['value'] ?? '',
                               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
                             ),
-                      entity.characters?[1]['value'] == null
+                      entity.characters?[2]['value'] == null
                           ? Container()
                           : Text(
-                              entity.characters?[1]['value'] ?? '',
+                              entity.characters?[2]['value'] ?? '',
                               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
                             ),
                       const SizedBox(
@@ -183,7 +183,7 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                                   : Padding(
                                       padding: const EdgeInsets.only(bottom: 5),
                                       child: Text(
-                                        '${entity.price} ₽',
+                                        '${entity.salePrice} ₽',
                                         style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w500,

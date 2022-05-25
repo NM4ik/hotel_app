@@ -27,4 +27,11 @@ class OfficeUnAuthState extends OfficeState {}
 
 class OfficeUnLiveState extends OfficeState {}
 
-class OfficeErrorState extends OfficeState {}
+class OfficeErrorState extends OfficeState {
+  final String message;
+
+  const OfficeErrorState({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
