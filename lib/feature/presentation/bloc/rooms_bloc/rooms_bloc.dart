@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/platform/network_info.dart';
@@ -37,7 +38,7 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
 
       rooms!.isEmpty ? emit(RoomsEmptyState()) : emit(RoomsLoadedState(rooms: rooms));
     } catch (e) {
-      log('$e', name: 'Expcetion by _onRoomsLoading');
+      log('$e', name: '_onRoomsLoadingException');
       emit(RoomsLoadingErrorState());
     }
   }
@@ -47,7 +48,19 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
     emit(RoomsLoadedState(rooms: event.rooms));
   }
 
-  FutureOr<void> _onRoomsChooseEvent(RoomsChooseEvent event, Emitter<RoomsState> emit) {
-    emit(RoomsChooseState(room: event.room, firstDate: event.firstDate, lastDate: event.lastDate));
+  FutureOr<void> _onRoomsChooseEvent(RoomsChooseEvent event, Emitter<RoomsState> emit) async {
+    try {
+      final List<String> tags = [];
+      if (event.room.tags!.isNotEmpty) {
+        final response = await FirebaseFirestore.instance.collection('roomTags').where(FieldPath.documentId, whereIn: event.room.tags).get();
+        response.docs.map((e) => tags.add(e['title'])).toList();
+        log(tags.toString(), name: "TAGS");
+      }
+
+      emit(RoomsChooseState(room: event.room, firstDate: event.firstDate, lastDate: event.lastDate, tags: tags));
+    } catch (e) {
+      log(e.toString(), name: "_onRoomsChoseEventException");
+      emit(RoomsLoadingErrorState());
+    }
   }
 }

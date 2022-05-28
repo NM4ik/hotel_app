@@ -4,10 +4,10 @@ import 'package:hotel_ma/feature/domain/entities/room_entity.dart';
 class RoomModel extends RoomEntity {
   const RoomModel(
       {required String id,
-      required String? isSmoking,
       required int bedsCount,
-      required String? description,
-      required List<String>? images,
+      required List<dynamic>? description,
+      required List<dynamic>? images,
+      required List<dynamic>? tags,
       required RoomTypeModel roomTypeModel,
       required String name,
       required int price,
@@ -17,7 +17,7 @@ class RoomModel extends RoomEntity {
       required String eviction})
       : super(
             id: id,
-            isSmoking: isSmoking,
+            tags: tags,
             bedsCount: bedsCount,
             description: description,
             name: name,
@@ -31,7 +31,7 @@ class RoomModel extends RoomEntity {
 
   factory RoomModel.fromJson(Map<String, dynamic> json, String id, List<RoomTypeModel> roomTypes) => RoomModel(
       id: id,
-      isSmoking: json['isSmoking'],
+      tags: json['tags'],
       bedsCount: json['bedsCount'],
       images: json['images'],
       description: json['description'],

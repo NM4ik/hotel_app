@@ -77,7 +77,7 @@ class _RoomScreenState extends State<RoomScreen> {
                 slivers: [
                   SliverAppBar(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    leading: const SquareButtonWidget(color: kMainBlueColor, icon: Icons.no_accounts_outlined, iconColor: Colors.white),
+                    leading: const SquareButtonWidget(color: kMainBlueColor, icon: Icons.account_circle_outlined, iconColor: Colors.white),
                     title: Text(
                       'Никита',
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),

@@ -69,7 +69,7 @@ class _PlayBillState extends State<PlayBill> {
                   ),
                   Text(
                     // '${123} - ${123}',
-                    "${dateFormat.format(event!.dateStart)} - ${dateFormat.format(event!.dateEnd)}",
+                    "${dateFormat.format(event!.dateStart)} - ${dateFormat.format(event.dateEnd)}",
                     style: const TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
                   ),
                   Text(widget.events?[index].title ?? '',

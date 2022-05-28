@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/locator_service.dart';
@@ -61,13 +59,6 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> images = [
-      'assets/images/room_image_4.jpg',
-      'assets/images/room_image_3.jpg',
-      'assets/images/room_image_2.jpg',
-      "assets/images/room_image_1.jpg"
-    ];
-
     return BlocConsumer<RoomsBloc, RoomsState>(
       listener: (context, state) {
         if (state is RoomsLoadedState) {
@@ -82,211 +73,247 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
             body: SafeArea(
               child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                            ),
-                            // width: double.infinity,
-                            height: 330,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                              child: PhotoViewGallery.builder(
-                                scrollPhysics: const BouncingScrollPhysics(),
-                                builder: (BuildContext context, int index) {
-                                  return PhotoViewGalleryPageOptions(
-                                    controller: photoController,
-                                    imageProvider: AssetImage(images[index]),
-                                    // imageProvider: const NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
-                                    heroAttributes: PhotoViewHeroAttributes(tag: index),
-                                    basePosition: Alignment.center,
-                                    // initialScale: PhotoViewComputedScale.covered * 0.5,
-                                    minScale: PhotoViewComputedScale.covered,
-                                    maxScale: PhotoViewComputedScale.covered * 2,
-                                  );
-                                },
-                                pageController: pageController,
-                                onPageChanged: (index) {
-                                  setState(() {
-                                    currentPage = index;
-                                  });
-                                },
-                                itemCount: 4,
-                                enableRotation: true,
-                                backgroundDecoration: BoxDecoration(
-                                  color: Theme.of(context).canvasColor,
-                                ),
-                                loadingBuilder: (context, event) => const Center(
-                                  child: SizedBox(
-                                    width: 20.0,
-                                    height: 20.0,
-                                    child: CircularProgressIndicator(
-                                      color: kMainBlueColor,
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                              ),
+                              height: 330,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                                child: PhotoViewGallery.builder(
+                                  scrollPhysics: const BouncingScrollPhysics(),
+                                  builder: (BuildContext context, int index) {
+                                    return PhotoViewGalleryPageOptions(
+                                      controller: photoController,
+                                      imageProvider: NetworkImage(state.room.images?[index] ?? ''),
+                                      heroAttributes: PhotoViewHeroAttributes(tag: index),
+                                      basePosition: Alignment.center,
+                                      minScale: PhotoViewComputedScale.covered,
+                                      maxScale: PhotoViewComputedScale.covered * 2,
+                                    );
+                                  },
+                                  pageController: pageController,
+                                  onPageChanged: (index) {
+                                    setState(() {
+                                      currentPage = index;
+                                    });
+                                  },
+                                  itemCount: 4,
+                                  enableRotation: true,
+                                  backgroundDecoration: BoxDecoration(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                  loadingBuilder: (context, event) => const Center(
+                                    child: SizedBox(
+                                      width: 20.0,
+                                      height: 20.0,
+                                      child: CircularProgressIndicator(
+                                        color: kMainBlueColor,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
 
-                          /// back_button from product_screen and indicator image's dots
-                          SizedBox(
-                            height: 330,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 1.5, horizontal: kEdgeHorizontalPadding),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  /// back button
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      context.read<RoomsBloc>().add(RoomsLoadingEvent());
-                                    },
-                                    child: ClipRRect(
-                                      child: BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                          sigmaX: 4.0,
-                                          sigmaY: 4.0,
-                                        ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.4),
-                                            borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                            /// back_button from product_screen and indicator image's dots
+                            SizedBox(
+                              height: 330,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 1.5, horizontal: kEdgeHorizontalPadding),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    /// back button
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        context.read<RoomsBloc>().add(RoomsLoadingEvent());
+                                      },
+                                      child: ClipRRect(
+                                        child: BackdropFilter(
+                                          filter: ImageFilter.blur(
+                                            sigmaX: 4.0,
+                                            sigmaY: 4.0,
                                           ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Icon(
-                                              Icons.arrow_back_ios_rounded,
-                                              color: kMainBlueColor,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.4),
+                                              borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(10.0),
+                                              child: Icon(
+                                                Icons.arrow_back_ios_rounded,
+                                                color: kMainBlueColor,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
+
+                                    /// indicator dots
+                                    Center(
+                                      child: ViewDots(
+                                        currentPage: currentPage,
+                                        controller: pageController,
+                                        length: 4,
+                                        dotColor: Colors.white.withOpacity(0.4),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: kEdgeVerticalPadding,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  /// product name
+                                  Text(
+                                    state.room.name,
+                                    style: Theme.of(context).textTheme.headline1,
                                   ),
 
-                                  /// indicator dots
-                                  Center(
-                                    child: ViewDots(
-                                      currentPage: currentPage,
-                                      controller: pageController,
-                                      length: 4,
-                                      dotColor: Colors.white.withOpacity(0.4),
-                                    ),
+                                  const SizedBox(
+                                    height: kEdgeVerticalPadding / 4,
                                   ),
+
+                                  /// product type subtitle
+                                  Text(state.room.roomTypeModel.title.toString(),
+                                      style: TextStyle(
+                                          color: Color(int.parse('0xFF${state.room.roomTypeModel.color}')), fontSize: 14, fontWeight: FontWeight.w500)),
+
+                                  const SizedBox(
+                                    height: kEdgeVerticalPadding / 4,
+                                  ),
+
+                                  /// product dates subtitle
+                                  Text('${dateFormat.format(state.firstDate)} - ${dateFormat.format(state.lastDate)}',
+                                      style: const TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: kEdgeVerticalPadding,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                /// product name
-                                Text(
-                                  state.room.name,
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  /// product price
+                                  Text(
+                                    '₽ ${state.room.price}',
+                                    style: Theme.of(context).textTheme.headline1,
+                                  ),
 
-                                const SizedBox(
-                                  height: kEdgeVerticalPadding / 2,
-                                ),
-
-                                /// product type subtitle
-                                Text(state.room.roomTypeModel.title.toString(),
-                                    style:
-                                        TextStyle(color: Color(int.parse('0xFF${state.room.roomTypeModel.color}')), fontSize: 14, fontWeight: FontWeight.w500)),
-
-                                const SizedBox(
-                                  height: kEdgeVerticalPadding / 2,
-                                ),
-
-                                /// product dates subtitle
-                                Text('${dateFormat.format(state.firstDate)} - ${dateFormat.format(state.lastDate)}',
-                                    style: const TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                /// product price
-                                Text(
-                                  '₽ ${state.room.price}',
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
-
-                                // const SizedBox(height: kEdgeVerticalPadding/2,),
-
-                                /// product price type subtitle
-                                const Text('ночь', style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-
-                      /// Divider which divides product_info and product_description
-                      const SizedBox(
-                        height: 40,
-                        child: Divider(
-                          height: 1,
-                          color: Color(0xFF979797),
+                                  /// product price type subtitle
+                                  const Text('ночь', style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
-                      ),
 
-                      // const SizedBox(
-                      //   height: 40,
-                      //   child: Divider(
-                      //     height: 1,
-                      //     color: Color(0xFF979797),
-                      //   ),
-                      // ),
-
-                      /// dates inserts bloc
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.watch_later_outlined,
-                            color: kMainGreyColor,
+                        /// Divider which divides product_info and product_description
+                        const SizedBox(
+                          height: 40,
+                          child: Divider(
+                            height: 1,
+                            color: Color(0xFF979797),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Заезд с ${state.room.checkIn.toString()}, выезд до ${state.room.eviction.toString()}',
-                            style: const TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 14),
-                          ),
-                        ],
-                      ),
+                        ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
+                        // const SizedBox(
+                        //   height: 40,
+                        //   child: Divider(
+                        //     height: 1,
+                        //     color: Color(0xFF979797),
+                        //   ),
+                        // ),
 
-                      /// Description bloc
-                      Text(
-                        state.room.description.toString(),
-                        style: const TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
-                      ),
-                    ],
+                        /// dates inserts bloc
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.watch_later_outlined,
+                              color: kMainGreyColor,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Заезд с ${state.room.checkIn.toString()}, выезд до ${state.room.eviction.toString()}',
+                              style: const TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 14),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: kEdgeVerticalPadding / 3,
+                        ),
+
+                        ListView.separated(
+                          itemBuilder: (context, index) => Text(
+                            state.room.description?[index] ?? '',
+                            style: const TextStyle(color: Color(0xFF979797), fontWeight: FontWeight.w400, fontSize: 12),
+                          ),
+                          itemCount: state.room.description?.length ?? 0,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                            height: 10,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kEdgeVerticalPadding / 2,
+                        ),
+                        const Text('Услуги и удобства в отеле', style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
+                        const SizedBox(
+                          height: kEdgeVerticalPadding / 4,
+                        ),
+                        ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: state.tags.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) => Container(
+                            decoration:
+                                BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(kEdgeMainBorder / 2)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Text(
+                                state.tags[index],
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                          ),
+                          separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                            height: kEdgeVerticalPadding / 5,
+                          ),
+                        ),
+
+                        const SizedBox(
+                          height: 60,
+                        ),
+                      ],
+                    ),
                   )),
             ),
             floatingActionButton: Padding(

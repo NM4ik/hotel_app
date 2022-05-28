@@ -16,9 +16,9 @@ class RoomsInitial extends RoomsState {
 /// USIC = unsuccessful internet connection
 
 class RoomsSICState extends RoomsState {
-  final bool;
+  final bool connection;
 
-  const RoomsSICState({required this.bool});
+  const RoomsSICState({required this.connection});
 
   @override
   List<Object> get props => [bool];
@@ -43,8 +43,9 @@ class RoomsChooseState extends RoomsState {
   final RoomModel room;
   final DateTime firstDate;
   final DateTime lastDate;
+  final List<String> tags;
 
-  const RoomsChooseState({required this.room, required this.firstDate, required this.lastDate});
+  const RoomsChooseState({required this.room, required this.firstDate, required this.lastDate, required this.tags});
 
   @override
   List<Object> get props => [room, firstDate, lastDate];

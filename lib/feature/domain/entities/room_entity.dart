@@ -4,10 +4,10 @@ import 'package:hotel_ma/feature/domain/entities/room_type_entity.dart';
 
 class RoomEntity extends Equatable {
   final String id;
-  final String? isSmoking;
   final int bedsCount;
-  final String? description;
-  final List<String>? images;
+  final List<dynamic>? description;
+  final List<dynamic>? images;
+  final List<dynamic>? tags;
   final RoomTypeModel roomTypeModel;
   final String name;
   final int price;
@@ -17,8 +17,8 @@ class RoomEntity extends Equatable {
   final String eviction;
 
   const RoomEntity(
-      {required this.id,
-      required this.isSmoking,
+      {required this.tags,
+      required this.id,
       required this.bedsCount,
       required this.description,
       required this.images,
@@ -31,18 +31,5 @@ class RoomEntity extends Equatable {
       required this.eviction});
 
   @override
-  List<Object?> get props => [
-        roomTypeModel,
-        images,
-        id,
-        isSmoking,
-        bedsCount,
-        description,
-        name,
-        price,
-        rating,
-        type,
-    checkIn,
-    eviction
-      ];
+  List<Object?> get props => [roomTypeModel, images, id, tags, bedsCount, description, name, price, rating, type, checkIn, eviction];
 }
