@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/models/faq_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:hotel_ma/feature/presentation/screens/conversation_screen.dart';
 import 'package:hotel_ma/feature/presentation/screens/faq_screen.dart';
+
+import '../widgets/build_shimmer.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -16,8 +21,20 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
+Future<List<FaqModel>> _fetchFaq() async {
+  final List<FaqModel> faqs = [];
+
+  try {
+    final data = await FirebaseFirestore.instance.collection('FAQ').get();
+    data.docs.map((e) => faqs.add(FaqModel.fromJson(e.data()))).toList();
+    return faqs;
+  } catch (e) {
+    log(e.toString());
+    return faqs;
+  }
+}
+
 class _ChatScreenState extends State<ChatScreen> {
-  final String imageRoot = "assets/images/car_2.png";
   final userModel = locator.get<SqlRepository>().getUserFromSql();
 
   @override
@@ -48,16 +65,28 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
 
               FutureBuilder(
-                  future: FirebaseFirestore.instance.collection('FAQ').get(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator(
-                        color: kMainBlueColor,
+                  future: _fetchFaq(),
+                  builder: (BuildContext context, AsyncSnapshot<List<FaqModel>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData || snapshot.hasError) {
+                      return SizedBox(
+                        height: 75,
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) => const SizedBox(
+                                  width: 15,
+                                ),
+                            itemCount: 4,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) => const BuildShimmer(
+                                  width: 74,
+                                  height: 74,
+                                )),
                       );
                     }
 
                     if (snapshot.hasData) {
-                      final List<Map<String, dynamic>> data = snapshot.data!.docs.map((e) => e.data() as Map<String, dynamic>).toList();
+                      final List<FaqModel>? data = snapshot.data;
 
                       return SizedBox(
                         height: 110,
@@ -65,11 +94,11 @@ class _ChatScreenState extends State<ChatScreen> {
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => _cardWidget(context, data[index]),
+                            itemBuilder: (context, index) => _cardWidget(context, data![index]),
                             separatorBuilder: (context, index) => const SizedBox(
                                   width: 15,
                                 ),
-                            itemCount: snapshot.data!.docs.length),
+                            itemCount: data!.length),
                       );
                     } else {
                       return const Text('Что-то пошло не так');
@@ -208,11 +237,13 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  _cardWidget(BuildContext context, Map<String,dynamic> data) {
+  _cardWidget(BuildContext context, FaqModel faqModel) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FaqScreen(data: data),
+          builder: (context) => FaqScreen(
+            faqModel: faqModel,
+          ),
         ));
       },
       child: SizedBox(
@@ -224,22 +255,16 @@ class _ChatScreenState extends State<ChatScreen> {
               borderRadius: BorderRadius.circular(kEdgeMainBorder),
               child: CachedNetworkImage(
                 height: 74,
-                imageUrl: data['image'],
+                imageUrl: faqModel.image ?? '',
                 fit: BoxFit.cover,
               ),
-              // child: Image.asset(
-              //   imageRoot,
-              //   fit: BoxFit.cover,
-              //   width: 74,
-              //   height: 74,
-              // ),
             ),
             const SizedBox(
               height: 5,
             ),
             Flexible(
               child: Text(
-                data['title'],
+                faqModel.title,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

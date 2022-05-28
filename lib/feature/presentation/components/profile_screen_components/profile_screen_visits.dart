@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
+import 'package:hotel_ma/feature/presentation/components/profile_screen_components/shimmer_profile_visits_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -63,21 +64,13 @@ class _ProfileScreenVisitsState extends State<ProfileScreenVisits> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding),
         child: FutureBuilder(
-            // future: FirebaseFirestore.instance.collection('bookings').where('uid', isEqualTo: uid).orderBy("dateEnd", descending: true).get(),
             future: _fetchBooking(),
             builder: (BuildContext context, AsyncSnapshot<List<BookingModel>> snapshot) {
               if (snapshot.hasError) {
                 return const Text("Не удалось загрузить данные");
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(
-                      color: kMainBlueColor,
-                    ),
-                  ],
-                );
+                return const ShimmerProfileVisitsScreen();
               }
 
               if (snapshot.hasError) {
@@ -118,7 +111,7 @@ class _ProfileScreenVisitsState extends State<ProfileScreenVisits> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${dateFormat.format(data![index].dateStart).toString()}  -  ${dateFormat.format(data![index].dateEnd).toString()}',
+                                    '${dateFormat.format(data![index].dateStart).toString()}  -  ${dateFormat.format(data[index].dateEnd).toString()}',
                                     style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
                                   ),
                                   const SizedBox(

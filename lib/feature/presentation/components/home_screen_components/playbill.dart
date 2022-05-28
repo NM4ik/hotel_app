@@ -13,7 +13,7 @@ class PlayBill extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          height: 30,
+          height: kEdgeVerticalPadding/2
         ),
         Align(
           child: Text(
@@ -48,10 +48,11 @@ class PlayBill extends StatelessWidget {
                     height: 8,
                   ),
                   Text(
-                    'до ${(events?[index]['dateEnd'] as Timestamp).toDate().day}',
+                    'до ${(events?[index]['dateEnd'] as Timestamp).toDate()}',
                     style: const TextStyle(fontFamily: "Inter", fontSize: 10, color: Colors.grey),
                   ),
-                  Text(events?[index]['name'], style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
+                  Text(events?[index]['name'],
+                      overflow: TextOverflow.ellipsis, maxLines: 1, style: Theme.of(context).textTheme.headline3!.copyWith(fontSize: 14)),
                 ],
               );
             }),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
@@ -13,7 +15,7 @@ class RoomsUsicScreen extends StatelessWidget {
     return BlocListener<RoomsBloc, RoomsState>(
       listener: (context, state) {
         if (state is RoomsSICState) {
-          print('Соеденение восстановлено в RoomsScreen (rooms_usic_screen)');
+          log('Соеденение восстановлено в RoomsScreen (rooms_usic_screen)');
         }
       },
       child: Scaffold(

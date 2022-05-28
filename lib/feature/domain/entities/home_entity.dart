@@ -1,7 +1,9 @@
+import 'package:hotel_ma/feature/data/models/faq_model.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
 
 class HomeEntity {
-  final List<Map<String, dynamic>> about;
+  final List<FaqModel> about;
+
   // final Map<String, dynamic> personalOffer;
   final List<RentModel> stockOffer;
   final List<Map<String, dynamic>> playBill;

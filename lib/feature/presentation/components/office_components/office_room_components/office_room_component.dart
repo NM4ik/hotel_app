@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/feature/presentation/components/office_components/office_room_components/office_room_shimmer_component.dart';
 
 import '../../../../data/models/rent_model.dart';
 
@@ -16,7 +17,7 @@ class OfficeRoomComponent extends StatelessWidget {
           future: FirebaseFirestore.instance.collection('rent').where("category", isEqualTo: 'roomService').get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
+              return const OfficeRoomShimmerComponent();
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.connectionState == ConnectionState.none) {

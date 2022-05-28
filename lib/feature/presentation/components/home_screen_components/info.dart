@@ -2,19 +2,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
+import 'package:hotel_ma/feature/data/models/faq_model.dart';
 import 'package:hotel_ma/feature/presentation/screens/faq_screen.dart';
 
 class InfoComponent extends StatelessWidget {
-  const InfoComponent({Key? key, required this.data}) : super(key: key);
-  final Map<String, dynamic>? data;
-
+  const InfoComponent({Key? key, required this.faqModel}) : super(key: key);
+  final FaqModel faqModel;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => FaqScreen(data: data))),
+            builder: (context) => FaqScreen(
+                  faqModel: faqModel,
+                ))),
         child: Container(
             decoration: BoxDecoration(color: Theme.of(context).primaryColorLight, borderRadius: BorderRadius.circular(kEdgeMainBorder)),
             width: double.infinity,
@@ -30,7 +32,7 @@ class InfoComponent extends StatelessWidget {
                       child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Text(
-                            data?['title'],
+                            faqModel.title,
                             style: Theme.of(context).textTheme.headline3,
                           )),
                     )),
@@ -43,7 +45,7 @@ class InfoComponent extends StatelessWidget {
                     ),
                     width: double.infinity,
                     child: CachedNetworkImage(
-                      imageUrl: data?['image'] ?? '',
+                      imageUrl: faqModel.image ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -7,6 +7,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
+import 'package:hotel_ma/feature/data/models/faq_model.dart';
 import 'package:hotel_ma/feature/data/models/home_model.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
@@ -26,13 +27,13 @@ class HomeScreen extends StatelessWidget {
   final PaymentController paymentController = PaymentController();
 
   Future<HomeModel> _homeFetch() async {
-    List<Map<String, dynamic>> about = [];
+    List<FaqModel> about = [];
     // Map<String, dynamic> personalOffer;
     List<RentModel> stockOffer = [];
     List<Map<String, dynamic>> playBill = [];
 
     final aboutData = await FirebaseFirestore.instance.collection('hotel').get();
-    aboutData.docs.map((e) => about.add(e.data())).toList();
+    aboutData.docs.map((e) => about.add(FaqModel.fromJson(e.data()))).toList();
 
     final stockOfferData = await FirebaseFirestore.instance.collection('rent').orderBy("salePrice", descending: false).limit(4).get();
     stockOfferData.docs.map((e) => stockOffer.add(RentModel.fromJson(e.data(), e.id))).toList();
@@ -102,13 +103,13 @@ class HomeScreen extends StatelessWidget {
                         Row(
                           children: [
                             InfoComponent(
-                              data: data?.about[1],
+                              faqModel: data!.about[1],
                             ),
                             const SizedBox(
                               width: 10,
                             ),
                             InfoComponent(
-                              data: data?.about[0],
+                              faqModel: data.about[0],
                             ),
                           ],
                         ),
@@ -121,11 +122,11 @@ class HomeScreen extends StatelessWidget {
                         const PersonalOffer(),
 
                         /// stocks
-                        StockOffer(rents: data?.stockOffer),
+                        StockOffer(rents: data.stockOffer),
 
                         /// playbill
                         PlayBill(
-                          events: data?.playBill,
+                          events: data.playBill,
                         ),
                       ],
                     ),

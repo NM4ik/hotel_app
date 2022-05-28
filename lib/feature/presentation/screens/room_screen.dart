@@ -10,6 +10,7 @@ import '../../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';
 import '../components/room_screen_components/header.dart';
 import '../components/room_screen_components/rooms_usic_screen.dart';
+import '../widgets/build_shimmer.dart';
 import '../widgets/default_text_field_widget.dart';
 import '../widgets/square_button_widget.dart';
 
@@ -39,9 +40,18 @@ class _RoomScreenState extends State<RoomScreen> {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is RoomsLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: kMainBlueColor,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15,
+                  childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.55),
+                ),
+                itemBuilder: (context, index) => const BuildShimmer(width: double.infinity, height: 100),
+                itemCount: 8,
               ),
             );
           }

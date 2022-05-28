@@ -15,7 +15,7 @@ class StockOffer extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(
-        top: 30.0,
+        top: kEdgeVerticalPadding
       ),
       child: Column(
         children: [
@@ -30,7 +30,7 @@ class StockOffer extends StatelessWidget {
             height: 15,
           ),
           SizedBox(
-            height: 250,
+            height: 220,
             child: ListView.separated(
               itemCount: rents!.length,
               scrollDirection: Axis.horizontal,
