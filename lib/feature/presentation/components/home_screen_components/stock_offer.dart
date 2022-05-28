@@ -76,8 +76,7 @@ class StockOffer extends StatelessWidget {
                   SizedBox(
                       width: 120,
                       child: Text(
-                        rents![index].name,
-                        // names[index],
+                        rents![index].title,
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                       )),
                   const SizedBox(

@@ -167,7 +167,7 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                             //           )),
                             // ),
                             Text(
-                              widget.rent.name.toString(),
+                              widget.rent.title.toString(),
                               style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w500, fontSize: 16),
                             ),
                           ],

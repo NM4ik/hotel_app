@@ -198,7 +198,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  state.rent.name,
+                                  state.rent.title,
                                   style: Theme.of(context).textTheme.headline3,
                                 ),
                                 Column(
@@ -209,7 +209,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                                       style: Theme.of(context).textTheme.headline3,
                                     ),
                                     Text(
-                                      'за ${ state.lastDate.difference(state.firstDate).inDays + 2} дней',
+                                      'за ${state.lastDate.difference(state.firstDate).inDays + 2} дней',
                                       style: Theme.of(context).textTheme.bodyText1!.copyWith(color: kMainGreyColor, fontSize: 13),
                                     ),
                                   ],
@@ -232,8 +232,10 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                               ],
                             ),
                             _customDivider(),
-                            _dateFormatter(dateFormat.format(state.firstDate).toString(), 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
-                            _dateFormatter(dateFormat.format(state.lastDate).toString(), 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
+                            _dateFormatter(
+                                dateFormat.format(state.firstDate).toString(), 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
+                            _dateFormatter(
+                                dateFormat.format(state.lastDate).toString(), 'ASIA Grand Resort Hotel. Геленджик, ул. Мира, д. 23., +7 (921) 306-98-35.'),
                           ],
                         ),
                       ),

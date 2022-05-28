@@ -68,7 +68,7 @@ Widget _serviceCard(BuildContext context, RentModel model) => Container(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  model.name,
+                  model.title,
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
                 ),
                 Text(

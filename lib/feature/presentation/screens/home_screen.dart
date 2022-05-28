@@ -7,6 +7,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
+import 'package:hotel_ma/feature/data/models/event_model.dart';
 import 'package:hotel_ma/feature/data/models/faq_model.dart';
 import 'package:hotel_ma/feature/data/models/home_model.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
@@ -27,25 +28,27 @@ class HomeScreen extends StatelessWidget {
   final PaymentController paymentController = PaymentController();
 
   Future<HomeModel> _homeFetch() async {
-    List<FaqModel> about = [];
-    // Map<String, dynamic> personalOffer;
-    List<RentModel> stockOffer = [];
-    List<Map<String, dynamic>> playBill = [];
+    try {
+      List<FaqModel> about = [];
+      // Map<String, dynamic> personalOffer;
+      List<RentModel> stockOffer = [];
+      List<EventModel> playBill = [];
 
-    final aboutData = await FirebaseFirestore.instance.collection('hotel').get();
-    aboutData.docs.map((e) => about.add(FaqModel.fromJson(e.data()))).toList();
+      final aboutData = await FirebaseFirestore.instance.collection('hotel').get();
+      aboutData.docs.map((e) => about.add(FaqModel.fromJson(e.data()))).toList();
 
-    final stockOfferData = await FirebaseFirestore.instance.collection('rent').orderBy("salePrice", descending: false).limit(4).get();
-    stockOfferData.docs.map((e) => stockOffer.add(RentModel.fromJson(e.data(), e.id))).toList();
+      final stockOfferData = await FirebaseFirestore.instance.collection('rent').orderBy("salePrice", descending: false).limit(4).get();
+      stockOfferData.docs.map((e) => stockOffer.add(RentModel.fromJson(e.data(), e.id))).toList();
 
-    final playBillData = await FirebaseFirestore.instance.collection('events').get();
-    playBillData.docs.map((e) => playBill.add(e.data())).toList();
+      final playBillData = await FirebaseFirestore.instance.collection('events').get();
+      playBillData.docs.map((e) => playBill.add(EventModel.fromJson(e.data()))).toList();
 
-    HomeModel homeModel = HomeModel(about: about, stockOffer: stockOffer, playBill: playBill);
-
-    // await Future.delayed(const Duration(seconds: 20));
-
-    return homeModel;
+      HomeModel homeModel = HomeModel(about: about, stockOffer: stockOffer, playBill: playBill);
+      return homeModel;
+    } catch (e) {
+      log(e.toString(), name: "_homeFetchException");
+      return Future.error(e.toString());
+    }
   }
 
   @override
@@ -135,7 +138,19 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: Text('qweqwe'));
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  SafeArea(
+                      child: Center(
+                          child: Text(
+                    'Error',
+                    style: Theme.of(context).textTheme.headline3,
+                  ))),
+                  const ShimmerHomeScreen(),
+                ],
+              ),
+            );
           }
         });
   }

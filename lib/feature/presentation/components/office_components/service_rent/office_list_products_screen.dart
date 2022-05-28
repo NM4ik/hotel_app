@@ -150,7 +150,7 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        entity.name,
+                        entity.title,
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
                       ),
                       const SizedBox(
