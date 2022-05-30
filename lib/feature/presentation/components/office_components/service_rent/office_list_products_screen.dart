@@ -95,7 +95,7 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                                 context
                                     .read<ServiceRentBloc>()
                                     .add(ServiceRentChooseEvent(rent: entities[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
-                                Navigator.of(context).push(createRouteAnim(const OfficeProductDetailScreen()));
+                                Navigator.of(context).push(createRouteAnimFromBottom(const OfficeProductDetailScreen()));
                               },
                               child: _productCard(entities[index], context),
                             );

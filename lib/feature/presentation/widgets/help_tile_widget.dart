@@ -15,7 +15,7 @@ class HelpTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding/4),
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(createRouteAnim(whereTo)),
+        onTap: () => Navigator.of(context).push(createRouteAnimFromBottom(whereTo)),
         child: Row(
           children: [
             Icon(

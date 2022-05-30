@@ -11,12 +11,12 @@ class ShimmerProfileVisitsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
+            padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: 0),
             child: Center(
               child: ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemBuilder: (context, index) => const BuildShimmer(width: 120.0, height: 100.0),
+                itemBuilder: (context, index) => const BuildShimmer(width: double.infinity, height: 110.0),
                 itemCount: 10,
                 scrollDirection: Axis.vertical,
                 separatorBuilder: (BuildContext context, int index) => const SizedBox(

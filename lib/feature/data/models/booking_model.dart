@@ -4,7 +4,9 @@ import 'package:hotel_ma/feature/domain/entities/booking_entity.dart';
 
 class BookingModel extends BookingEntity {
   BookingModel(
-      {required String roomName,
+      {
+        required String id,
+        required String roomName,
       required String roomType,
       required DateTime dateStart,
       required DateTime dateEnd,
@@ -14,6 +16,7 @@ class BookingModel extends BookingEntity {
       required String uid,
       required RoomTypeModel roomTypeModel})
       : super(
+    id: id,
             roomName: roomName,
             roomType: roomType,
             dateStart: dateStart,
@@ -26,12 +29,12 @@ class BookingModel extends BookingEntity {
 
 // DateFormat dateFormat = DateFormat("MMMEd");
 
-  factory BookingModel.fromJson(Map<String, dynamic> json, List<RoomTypeModel> roomTypes) => BookingModel(
+  factory BookingModel.fromJson(Map<String, dynamic> json, List<RoomTypeModel> roomTypes, String id) => BookingModel(
         // dateEnd: DateFormat("MMMEd").format(DateTime.fromMicrosecondsSinceEpoch(json['dateEnd'])),
         // dateStart: DateFormat("MMMEd").format(DateTime.fromMicrosecondsSinceEpoch((json['dateStart'] as Timestamp).toDate())),
         // dateEnd: (json['dateEnd'] as Timestamp).toDate(),
         // dateStart: (json['dateStart'] as Timestamp).toDate(),
-
+        id: id,
         roomName: json['roomName'],
         roomType: json['roomType'],
         dateStart: (json['dateStart'] as Timestamp).toDate(),

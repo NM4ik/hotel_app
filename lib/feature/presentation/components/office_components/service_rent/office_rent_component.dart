@@ -60,7 +60,7 @@ Widget _rentComponent(Map<String, dynamic> json, BuildContext context) => Column
               style: Theme.of(context).textTheme.headline3,
             ),
             GestureDetector(
-              onTap: () => Navigator.of(context).push(createRouteAnim(OfficeListRentComponent(
+              onTap: () => Navigator.of(context).push(createRouteAnimFromBottom(OfficeListRentComponent(
                 doc: json['doc'],
                 title: json['title'],
               ))),
@@ -92,7 +92,7 @@ Widget _rentComponent(Map<String, dynamic> json, BuildContext context) => Column
                 .map(
                   (item) => GestureDetector(
                     onTap: () async {
-                      Navigator.of(context).push(createRouteAnim(OfficeListProductsComponent(
+                      Navigator.of(context).push(createRouteAnimFromBottom(OfficeListProductsComponent(
                         type: item['doc'],
                         title: item['title'],
                       )));

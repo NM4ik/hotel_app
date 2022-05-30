@@ -53,7 +53,7 @@ class OfficeListRentComponent extends StatelessWidget {
                                 .where("title", isEqualTo: data[index]['title'])
                                 .get();
 
-                            Navigator.of(context).push(createRouteAnim(OfficeListProductsComponent(type: category.docs.single.id, title: data[index]['title'],)));
+                            Navigator.of(context).push(createRouteAnimFromBottom(OfficeListProductsComponent(type: category.docs.single.id, title: data[index]['title'],)));
                           },
                           child: _listComponent(context, data[index])),
                       separatorBuilder: (context, index) => const SizedBox(

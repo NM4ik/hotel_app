@@ -244,7 +244,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: kEdgeHorizontalPadding, vertical: kEdgeVerticalPadding),
                         child: DefaultButtonWidget(
-                            press: () => Navigator.of(context).push(createRouteAnim(
+                            press: () => Navigator.of(context).push(createRouteAnimFromBottom(
                                 OfficeOrderScreen(rent: state.rent, dateStart: state.firstDate, dateEnd: state.lastDate, totalCost: totalCost!))),
                             title: "Перейти к оплате"),
                       ),

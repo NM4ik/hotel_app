@@ -232,22 +232,10 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                           ],
                         ),
 
-                        /// Divider which divides product_info and product_description
-                        const SizedBox(
-                          height: 40,
-                          child: Divider(
-                            height: 1,
-                            color: Color(0xFF979797),
-                          ),
+                        const Divider(
+                          height: kEdgeVerticalPadding,
+                          color: Color(0xFF979797),
                         ),
-
-                        // const SizedBox(
-                        //   height: 40,
-                        //   child: Divider(
-                        //     height: 1,
-                        //     color: Color(0xFF979797),
-                        //   ),
-                        // ),
 
                         /// dates inserts bloc
                         Row(
@@ -282,8 +270,12 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                             height: 10,
                           ),
                         ),
-                        const SizedBox(
-                          height: kEdgeVerticalPadding / 2,
+                        // const SizedBox(
+                        //   height: kEdgeVerticalPadding / 2,
+                        // ),
+                        const Divider(
+                          height: kEdgeVerticalPadding,
+                          color: Color(0xFF979797),
                         ),
                         const Text('Услуги и удобства в отеле', style: TextStyle(color: Color(0xFF979797), fontSize: 14, fontWeight: FontWeight.w500)),
                         const SizedBox(
@@ -294,8 +286,8 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                           itemCount: state.tags.length,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) => Container(
-                            decoration:
-                                BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(kEdgeMainBorder / 2)),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: kMainBlueColor.withOpacity(0.5), width: 1), borderRadius: BorderRadius.circular(kEdgeMainBorder / 2)),
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: Text(

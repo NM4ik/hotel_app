@@ -326,6 +326,7 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
               child: DefaultButtonWidget(
                   press: () async {
                     BookingModel bookingModel = BookingModel(
+                        id: "1",
                         roomName: widget.roomModel.name,
                         roomType: widget.roomModel.roomTypeModel.title!,
                         dateStart: widget.dateStart,

@@ -96,7 +96,7 @@ class ProfileScreenUnAuth extends StatelessWidget {
                         elevation: 2,
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(createRouteAnim(const PhoneEnterScreen()));
+                        Navigator.of(context).push(createRouteAnimFromBottom(const PhoneEnterScreen()));
                       },
                       child: const Text(
                         'Войти по телефону',

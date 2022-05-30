@@ -36,7 +36,7 @@ class _PhoneEnterScreenState extends State<PhoneEnterScreen> {
           setState(() {
             loading = false;
           });
-          Navigator.of(context).push(createRouteAnim(OtpScreen(
+          Navigator.of(context).push(createRouteAnimFromBottom(OtpScreen(
             phoneNumber: phoneNumber,
           )));
         }

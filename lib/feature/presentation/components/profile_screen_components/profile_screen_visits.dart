@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/presentation/components/profile_screen_components/shimmer_profile_visits_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/booking_detail_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
+import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -34,7 +36,7 @@ class _ProfileScreenVisitsState extends State<ProfileScreenVisits> {
       }
 
       for (var element in data.docs) {
-        bookings.add(BookingModel.fromJson(element.data(), roomTypesList));
+        bookings.add(BookingModel.fromJson(element.data(), roomTypesList, element.id));
       }
     } catch (e) {
       log(e.toString());
@@ -89,95 +91,102 @@ class _ProfileScreenVisitsState extends State<ProfileScreenVisits> {
                 final data = snapshot.data;
 
                 return ListView.separated(
+                  shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) => Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColorLight,
-                      borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                    ),
-                    width: double.infinity,
-                    height: 110,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 2, horizontal: kEdgeHorizontalPadding),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${dateFormat.format(data![index].dateStart).toString()}  -  ${dateFormat.format(data[index].dateEnd).toString()}',
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    data[index].roomName.toString(),
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                'Счет: ${data[index].totalPrice}',
-                                style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10, color: kMainGreyColor),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Color(int.parse('0xFF${data[index].roomTypeModel.color}')),
-                                        borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                                      child: Text(
-                                        data[index].roomTypeModel.title.toString(),
-                                        style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: () => Navigator.push(context, createRouteAnimFromLeft( BookingDetailScreen(id: data![index].id))),
+                    // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BookingDetailScreen())),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorLight,
+                        borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                      ),
+                      width: double.infinity,
+                      height: 110,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 2, horizontal: kEdgeHorizontalPadding),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${dateFormat.format(data![index].dateStart).toString()}  -  ${dateFormat.format(data[index].dateEnd).toString()}',
+                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      data[index].roomName.toString(),
+                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  'Счет: ${data[index].totalPrice}',
+                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10, color: kMainGreyColor),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Color(int.parse('0xFF${data[index].roomTypeModel.color}')),
+                                          borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                        child: Text(
+                                          data[index].roomTypeModel.title.toString(),
+                                          style:
+                                              Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: data[index].status == 'Забронировано' ? kMainGreyColor : kMainBlueColor,
-                                        borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-                                      child: Text(
-                                        data[index].status.toString(),
-                                        style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: data[index].status == 'Забронировано' ? kMainGreyColor : kMainBlueColor,
+                                          borderRadius: BorderRadius.circular(kEdgeMainBorder * 2)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                        child: Text(
+                                          data[index].status.toString(),
+                                          style:
+                                              Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                decoration: BoxDecoration(color: kMainBlueColor, borderRadius: BorderRadius.circular(10)),
-                                child: const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                                    child: Text(
-                                      'Посмотреть',
-                                      style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
+                                  ],
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(color: kMainBlueColor, borderRadius: BorderRadius.circular(10)),
+                                  child: const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                                      child: Text(
+                                        'Посмотреть',
+                                        style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

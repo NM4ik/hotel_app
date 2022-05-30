@@ -73,7 +73,7 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
 
           final room = await firestoreRepository.getRoom(roomId);
 
-          final booking = BookingModel.fromJson(documentData, roomTypesList);
+          final booking = BookingModel.fromJson(documentData, roomTypesList, bookingId);
 
           room == null
               ? emit(const OfficeErrorState(message: "Номеров нет..."))
