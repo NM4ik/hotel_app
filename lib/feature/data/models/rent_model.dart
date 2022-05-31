@@ -5,7 +5,7 @@ class RentModel extends RentEntity {
   const RentModel(
       {required String id,
       required String category,
-      required String image,
+      required List<dynamic>? images,
       required String title,
       required String? prePayment,
       required String price,
@@ -16,7 +16,7 @@ class RentModel extends RentEntity {
       : super(
             id: id,
             category: category,
-            image: image,
+            images: images,
             title: title,
             prePayment: prePayment,
             price: price,
@@ -28,7 +28,7 @@ class RentModel extends RentEntity {
   factory RentModel.fromJson(Map<String, dynamic> json, String id) => RentModel(
         id: id,
         category: json['category'],
-        image: json['image'],
+        images: json['images'] ,
         title: json['title'],
         prePayment: json['prePayment'],
         price: json['price'],

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class RentEntity extends Equatable {
   final String id;
   final String category;
-  final String image;
+  final List<dynamic>? images;
   final String title;
   final String price;
 
@@ -16,7 +16,7 @@ class RentEntity extends Equatable {
   const RentEntity(
       {required this.id,
       required this.category,
-      required this.image,
+      required this.images,
       required this.title,
       required this.prePayment,
       required this.price,
@@ -26,5 +26,5 @@ class RentEntity extends Equatable {
       required this.documents});
 
   @override
-  List<Object?> get props => [id, category, image, title, prePayment, price, salePrice, characters, documents];
+  List<Object?> get props => [id, category, images, title, prePayment, price, salePrice, characters, documents];
 }

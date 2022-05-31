@@ -56,7 +56,7 @@ Widget _serviceCard(BuildContext context, RentModel model) => Container(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
-              IconData(int.parse(model.image), fontFamily: 'MaterialIcons'),
+              IconData(int.parse(model.images?[0]), fontFamily: 'MaterialIcons'),
               color: kMainBlueColor,
               size: 45,
             ),

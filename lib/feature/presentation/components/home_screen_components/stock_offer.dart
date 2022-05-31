@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hotel_ma/common/app_constants.dart';
-import 'package:hotel_ma/common/app_themes.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
 
 class StockOffer extends StatelessWidget {
@@ -14,9 +13,7 @@ class StockOffer extends StatelessWidget {
     final dateTimeNow = DateTime.now();
 
     return Padding(
-      padding: const EdgeInsets.only(
-        top: kEdgeVerticalPadding
-      ),
+      padding: const EdgeInsets.only(top: kEdgeVerticalPadding),
       child: Column(
         children: [
           Align(
@@ -48,7 +45,8 @@ class StockOffer extends StatelessWidget {
                             borderRadius: BorderRadius.circular(kEdgeMainBorder),
                           ),
                           child: CachedNetworkImage(
-                            imageUrl: rents![index].image,
+                            fit: BoxFit.cover,
+                            imageUrl: rents![index].images?[0],
                           )),
                     ),
                     Align(
