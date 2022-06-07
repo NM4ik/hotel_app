@@ -2,11 +2,14 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/booking_model.dart';
+import 'package:hotel_ma/feature/data/models/booking_rent_model.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
+import 'package:hotel_ma/feature/presentation/bloc/office_bloc/office_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/toat_attachments.dart';
 import 'package:hotel_ma/feature/presentation/screens/router_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
@@ -154,18 +157,6 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // SizedBox(
-                            //   width: 70,
-                            //   height: 20,
-                            //   child: ListView.builder(
-                            //       itemCount: widget.rent.rating,
-                            //       scrollDirection: Axis.horizontal,
-                            //       itemBuilder: (context, index) => const Icon(
-                            //             Icons.star,
-                            //             color: Color(0xFFFEC007),
-                            //             size: 14,
-                            //           )),
-                            // ),
                             Text(
                               widget.rent.title.toString(),
                               style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w500, fontSize: 16),
@@ -173,8 +164,7 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                           ],
                         ),
                         CachedNetworkImage(
-                          imageUrl:
-                              'https://firebasestorage.googleapis.com/v0/b/hotelmobileapp-flutter.appspot.com/o/office%2Fproduct%2Frenault_logan.png?alt=media&token=7864b7d1-e005-4efc-b44a-e521e6cc8ff8',
+                          imageUrl: widget.rent.images?[0] ?? '',
                           width: 100,
                         ),
                       ],
@@ -220,22 +210,6 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                     OrderTextFieldWidget(field: secondName, title: "Фамилия", function: _setField),
                     OrderTextFieldWidget(field: phoneNumber, title: "Номер", function: _setField),
                     OrderTextFieldWidget(field: email, title: "Почта", function: _setField),
-                    // const RowTableWidget(
-                    //   title: 'Имя',
-                    //   query: 'Никита',
-                    // ),
-                    // const RowTableWidget(
-                    //   title: 'Фамилия',
-                    //   query: 'Михайлов',
-                    // ),
-                    // const RowTableWidget(
-                    //   title: 'Номер',
-                    //   query: '+79324788174',
-                    // ),
-                    // RowTableWidget(
-                    //   title: 'Почта',
-                    //   query: userModel.email,
-                    // ),
                   ],
                 ),
               ),
@@ -324,21 +298,31 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(30),
-              child: DefaultButtonWidget(
-                  press: () async {
-                    // BookingModel bookingModel = BookingModel(
-                    //     roomName: widget.roomModel.name,
-                    //     roomType: widget.roomModel.roomTypeModel.title,
-                    //     dateStart: widget.dateStart,
-                    //     dateEnd: widget.dateEnd,
-                    //     roomId: widget.roomModel.id,
-                    //     status: 'Забронировано',
-                    //     totalPrice: int.parse(widget.totalCost),
-                    //     uid: userModel.uid);
-                    //
-                    // _createOrder(context, bookingModel);
-                  },
-                  title: 'Забронировать'),
+              child: BlocBuilder<OfficeBloc, OfficeState>(
+                builder: (context, state) {
+                  if (state is OfficeLiveState) {
+                    return DefaultButtonWidget(
+                        press: () async {
+                          final bookingRent = BookingRentModel(
+                              dateStart: widget.dateStart,
+                              dateEnd: widget.dateEnd,
+                              rentItemId: widget.rent.id,
+                              rentItemName: widget.rent.title,
+                              totalPrice: widget.totalCost);
+
+                          _createOrder(context, bookingRent, state.bookingId);
+                        },
+                        title: 'Забронировать');
+                  } else {
+                    return Center(
+                      child: DefaultButtonWidget(
+                        title: "Ошибка",
+                        press: () {},
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -346,13 +330,12 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
     );
   }
 
-  void _createOrder(BuildContext context, BookingModel bookingModel) async {
+  void _createOrder(BuildContext context, BookingRentModel bookingRentModel, String bookingId) async {
     try {
       final response = await paymentController.makePayment(amount: widget.totalCost, currency: "RUB");
-      log(response.toString());
-      locator.get<FirestoreRepository>().createBooking(bookingModel);
+      locator.get<FirestoreRepository>().createBookingRent(bookingRentModel, bookingId);
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const RouterScreen(page: null)), (route) => false);
-      // successCreateBooking(widget.roomModel.name, context);
+      successCreateBooking(bookingRentModel.rentItemName, context);
     } catch (e) {
       toatAuth('$e', context);
     }

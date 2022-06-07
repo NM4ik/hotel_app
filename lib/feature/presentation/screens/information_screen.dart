@@ -84,14 +84,24 @@ class InformationScreen extends StatelessWidget {
                     'Наш отель в соцсетях:',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
-                  SizedBox(
-                    height: 100,
-                    width: double.infinity,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 4,
-                      itemBuilder: (context, index) => const Text('VK'),
-                    ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding / 3,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/vk.png',
+                        width: 36,
+                      ),
+                      const SizedBox(
+                        width: kEdgeHorizontalPadding / 2,
+                      ),
+                      Image.asset(
+                        'assets/images/youtube.png',
+                        width: 36,
+                      ),
+                    ],
                   )
                 ],
               )

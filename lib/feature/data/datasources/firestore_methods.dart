@@ -9,6 +9,7 @@ import 'package:hotel_ma/feature/data/models/room_type_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
 
 import '../../../core/locator_service.dart';
+import '../models/booking_rent_model.dart';
 import '../models/user_model.dart';
 import '../repositories/firestore_repository.dart';
 import '../repositories/sql_repository.dart';
@@ -154,6 +155,9 @@ class FirestoreMethods {
 
   void createBooking(BookingModel bookingModel) {
     bookings.add(bookingModel.toJson());
+  }
+  void createBookingRent(BookingRentModel bookingRentModel, String bookingId) {
+    bookings.doc(bookingId).collection('rents').add(bookingRentModel.toJson());
   }
 
   void sendBooking(DateTime dateStart, DateTime dateEnd, String roomName, int totalPrice, String uid, String roomType) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/booking_rent_model.dart';
 import 'package:hotel_ma/feature/presentation/widgets/build_shimmer.dart';
+import 'package:hotel_ma/feature/presentation/widgets/default_appbar_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -45,12 +46,12 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> with TickerPr
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width - 30;
+    var width = MediaQuery.of(context).size.width - 30;
 
     return Scaffold(
+      appBar: const DefaultAppBar(
+        title: "Ваши заказы",
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding / 2, horizontal: kEdgeHorizontalPadding),
@@ -66,10 +67,9 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> with TickerPr
                       itemBuilder: (context, index) {
                         final item = data![index];
                         _controller = AnimationController(
-                          duration: Duration(milliseconds: index * 100),
+                          duration: Duration(milliseconds: (index + 1) * 100),
                           vsync: this,
-                        )
-                          ..forward();
+                        )..forward();
 
                         log((index / 10).toString());
                         return SlideTransition(
@@ -82,9 +82,7 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> with TickerPr
                             )),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Theme
-                                    .of(context)
-                                    .primaryColorLight,
+                                color: Theme.of(context).primaryColorLight,
                                 borderRadius: BorderRadius.circular(kEdgeMainBorder),
                               ),
                               width: double.infinity,
@@ -98,44 +96,30 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> with TickerPr
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${dateFormat.format(item.dateStart).toString()}  -  ${item.dateEnd == null ? '' : dateFormat.format(item.dateEnd!)
-                                              .toString()}',
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(fontSize: 10),
+                                          '${dateFormat.format(item.dateStart).toString()}  -  ${item.dateEnd == null ? '' : dateFormat.format(item.dateEnd!).toString()}',
+                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 10),
                                         ),
                                         const SizedBox(
                                           height: 10,
                                         ),
                                         Text(
                                           item.rentItemName.toString(),
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(fontSize: 14, fontWeight: FontWeight.w500),
+                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
                                         ),
                                       ],
                                     ),
                                     Text(
                                       'Счет: ${item.totalPrice}Р',
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(fontSize: 13, color: kMainGreyColor),
+                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 13, color: kMainGreyColor),
                                     ),
                                   ],
                                 ),
                               ),
                             ));
                       },
-                      separatorBuilder: (context, index) =>
-                      const SizedBox(
-                        height: kEdgeVerticalPadding / 3,
-                      ),
+                      separatorBuilder: (context, index) => const SizedBox(
+                            height: kEdgeVerticalPadding / 3,
+                          ),
                       itemCount: data!.length);
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -144,40 +128,31 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> with TickerPr
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) =>
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Theme
-                                .of(context)
-                                .primaryColorLight,
-                            borderRadius: BorderRadius.circular(kEdgeMainBorder),
-                          ),
-                          width: double.infinity,
-                          height: 60,
-                          child: const BuildShimmer(
-                            height: 60,
-                            width: double.infinity,
-                          ),
-                        ),
+                    itemBuilder: (context, index) => Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorLight,
+                        borderRadius: BorderRadius.circular(kEdgeMainBorder),
+                      ),
+                      width: double.infinity,
+                      height: 60,
+                      child: const BuildShimmer(
+                        height: 60,
+                        width: double.infinity,
+                      ),
+                    ),
                   );
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(
                       child: Text(
-                        "У вас еще не было бронирований",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline3,
-                      ));
+                    "У вас еще не было бронирований",
+                    style: Theme.of(context).textTheme.headline3,
+                  ));
                 } else {
                   return Center(
                       child: Text(
-                        "Ошибка загрузки...",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline3,
-                      ));
+                    "Ошибка загрузки...",
+                    style: Theme.of(context).textTheme.headline3,
+                  ));
                 }
               }),
         ),

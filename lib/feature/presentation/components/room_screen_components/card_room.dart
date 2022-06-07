@@ -28,8 +28,8 @@ class CardRoom extends StatelessWidget {
                       width: double.infinity,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(kEdgeMainBorder * 2),
-                        child: Image.asset(
-                          'assets/images/room_card_example.png',
+                        child: CachedNetworkImage(
+                          imageUrl: roomModel.images?[0],
                           fit: BoxFit.cover,
                         ),
                       )),

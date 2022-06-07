@@ -7,6 +7,9 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/office_room_components/office_room_component.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/service_rent/office_rent_component.dart';
+import 'package:hotel_ma/feature/presentation/screens/home_screen.dart';
+import 'package:hotel_ma/feature/presentation/screens/router_screen.dart';
+import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -40,12 +43,15 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
       builder: (context, state) {
         if (state is OfficeLoadingState) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: kMainBlueColor,),
           );
         }
         if (state is OfficeUnLiveState) {
-          return const Center(
-            child: Text("Вы здесь не проживаете"),
+          return Center(
+            child: Text(
+              "У вас нет активных бронирований...",
+              style: Theme.of(context).textTheme.headline3,
+            ),
           );
         }
         if (state is OfficeErrorState) {
@@ -56,8 +62,40 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
           );
         }
         if (state is OfficeUnAuthState) {
-          return const Center(
-            child: Text("Вы не авторизованы"),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: kEdgeVerticalPadding, horizontal: kEdgeHorizontalPadding),
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Чтобы просматривать и заказывать услуги отеля, нужно быть авторизованным.",
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: kMainBlueColor,
+                      ),
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Авторизоваться',
+                            style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.white,
+                          )
+                        ],
+                      )),
+                )
+              ],
+            )),
           );
         }
         if (state is OfficeLiveState) {
@@ -71,14 +109,7 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
                   children: [
                     Stack(
                       children: [
-                        Image.asset(
-
-                            /// rerun to network image from fireStorage
-                            'assets/images/room_image_3.png',
-                            fit: BoxFit.cover,
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center),
+                        Image.network(room.images?[0], fit: BoxFit.cover, height: double.infinity, width: double.infinity, alignment: Alignment.center),
                         Container(
                           height: double.infinity,
                           width: double.infinity,

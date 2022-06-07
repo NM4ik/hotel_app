@@ -9,7 +9,10 @@ import 'package:hotel_ma/feature/presentation/bloc/service_rent_bloc/service_ren
 import 'package:hotel_ma/feature/presentation/components/office_components/office_filters.dart';
 import 'package:hotel_ma/feature/presentation/components/office_components/service_rent/office_product_detail_screen.dart';
 import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
+import '../../../widgets/calendar_button_widget.dart';
 import '../../../widgets/default_appbar_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -25,13 +28,22 @@ class OfficeListProductsComponent extends StatefulWidget {
 class _OfficeListProductsComponentState extends State<OfficeListProductsComponent> {
   DateTime dateTimeFirst = DateTime.now();
   late DateTime dateTimeSecond = dateTimeFirst.add(const Duration(days: 1));
+  late DateFormat dateFormat;
 
-  void getDateValues(DateTime dateTimeFirst, DateTime dateTimeSecond) {
+  @override
+  void initState() {
+    initializeDateFormatting();
+    dateFormat = DateFormat.MMMEd("ru");
+    super.initState();
+  }
+
+  void getDateValues(DateTimeRange dateTimeRange) {
     setState(() {
-      this.dateTimeFirst = dateTimeFirst;
-      this.dateTimeSecond = dateTimeSecond;
+      this.dateTimeRange = dateTimeRange;
     });
   }
+
+  DateTimeRange dateTimeRange = DateTimeRange(start: DateTime.now(), end: DateTime.now().add(const Duration(days: 1)));
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +82,23 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                     physics: const BouncingScrollPhysics(),
                     slivers: [
                       SliverToBoxAdapter(
-                        child: OfficeFilters(
-                          dateTimeFirst: dateTimeFirst,
-                          dateTimeSecond: dateTimeSecond,
-                          changeDateTime: getDateValues,
-                        ),
-                      ),
+                          child: Row(
+                        children: [
+                          CalendarButtonWidget(
+                            text: dateFormat.format(dateTimeRange.start),
+                            initialDateRange: dateTimeRange,
+                            changeDateTime: getDateValues,
+                          ),
+                          const SizedBox(
+                            width: kEdgeHorizontalPadding,
+                          ),
+                          CalendarButtonWidget(
+                            text: dateFormat.format(dateTimeRange.end),
+                            initialDateRange: dateTimeRange,
+                            changeDateTime: getDateValues,
+                          ),
+                        ],
+                      )),
                       const SliverToBoxAdapter(
                         child: SizedBox(
                           height: kEdgeVerticalPadding,
@@ -94,7 +117,7 @@ class _OfficeListProductsComponentState extends State<OfficeListProductsComponen
                               onTap: () {
                                 context
                                     .read<ServiceRentBloc>()
-                                    .add(ServiceRentChooseEvent(rent: entities[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
+                                    .add(ServiceRentChooseEvent(rent: entities[index], firstDate: dateTimeRange.start, lastDate: dateTimeRange.end));
                                 Navigator.of(context).push(createRouteAnimFromBottom(const OfficeProductDetailScreen()));
                               },
                               child: _productCard(entities[index], context),

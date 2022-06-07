@@ -5,13 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/room_screen_components/card_room.dart';
 import 'package:hotel_ma/feature/presentation/components/room_screen_components/room_detail_screen.dart';
+import 'package:hotel_ma/feature/presentation/widgets/calendar_button_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import '../../../common/app_constants.dart';
 import '../components/room_screen_components/filters.dart';
-import '../components/room_screen_components/header.dart';
 import '../components/room_screen_components/rooms_usic_screen.dart';
 import '../widgets/build_shimmer.dart';
-import '../widgets/default_text_field_widget.dart';
 import '../widgets/square_button_widget.dart';
 
 class RoomScreen extends StatefulWidget {
@@ -24,13 +25,22 @@ class RoomScreen extends StatefulWidget {
 class _RoomScreenState extends State<RoomScreen> {
   DateTime dateTimeFirst = DateTime.now();
   late DateTime dateTimeSecond = dateTimeFirst.add(const Duration(days: 1));
+  late DateFormat dateFormat;
 
-  void getDateValues(DateTime dateTimeFirst, DateTime dateTimeSecond) {
+  @override
+  void initState() {
+    initializeDateFormatting();
+    dateFormat = DateFormat.MMMEd("ru");
+    super.initState();
+  }
+
+  void getDateValues(DateTimeRange dateTimeRange) {
     setState(() {
-      this.dateTimeFirst = dateTimeFirst;
-      this.dateTimeSecond = dateTimeSecond;
+      this.dateTimeRange = dateTimeRange;
     });
   }
+
+  DateTimeRange dateTimeRange = DateTimeRange(start: DateTime.now(), end: DateTime.now().add(const Duration(days: 1)));
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +122,25 @@ class _RoomScreenState extends State<RoomScreen> {
                     ),
                   ),
 
+                  SliverToBoxAdapter(
+                      child: Row(
+                    children: [
+                      CalendarButtonWidget(
+                        text: dateFormat.format(dateTimeRange.start),
+                        initialDateRange: dateTimeRange,
+                        changeDateTime: getDateValues,
+                      ),
+                      const SizedBox(
+                        width: kEdgeHorizontalPadding,
+                      ),
+                      CalendarButtonWidget(
+                        text: dateFormat.format(dateTimeRange.end),
+                        initialDateRange: dateTimeRange,
+                        changeDateTime: getDateValues,
+                      ),
+                    ],
+                  )),
+
                   /// Grid free rooms
                   SliverToBoxAdapter(
                     child: Padding(
@@ -139,7 +168,9 @@ class _RoomScreenState extends State<RoomScreen> {
                       (gridContext, index) {
                         return GestureDetector(
                           onTap: () {
-                            context.read<RoomsBloc>().add(RoomsChooseEvent(room: state.rooms[index], firstDate: dateTimeFirst, lastDate: dateTimeSecond));
+                            context
+                                .read<RoomsBloc>()
+                                .add(RoomsChooseEvent(room: state.rooms[index], firstDate: dateTimeRange.start, lastDate: dateTimeRange.end));
                             Navigator.of(context).push(MaterialPageRoute(builder: (gridContext) => const RoomDetailScreen()));
                           },
                           child: CardRoom(

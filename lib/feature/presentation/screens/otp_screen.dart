@@ -167,9 +167,14 @@ class _OtpScreenState extends State<OtpScreen> {
                     showCursor: true,
                     cursor: cursor,
                   ),
+                  const SizedBox(
+                    height: kEdgeVerticalPadding / 2,
+                  ),
                   loading
                       ? const Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: kMainBlueColor,
+                          ),
                         )
                       : Container(),
                 ],

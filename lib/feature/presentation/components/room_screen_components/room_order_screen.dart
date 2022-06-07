@@ -43,12 +43,12 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
   final UserModel userModel = locator.get<SqlRepository>().getUserFromSql();
   PaymentController paymentController = PaymentController();
   String? name;
-  String? secondName;
   String? phoneNumber;
   String? email;
 
   @override
   void initState() {
+    log(userModel.toString());
     initializeDateFormatting();
     dateFormat = DateFormat.MMMEd("ru");
     name = userModel.name;
@@ -216,7 +216,6 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
                 child: Column(
                   children: [
                     OrderTextFieldWidget(field: name, title: "Имя", function: _setField),
-                    OrderTextFieldWidget(field: secondName, title: "Фамилия", function: _setField),
                     OrderTextFieldWidget(field: phoneNumber, title: "Номер", function: _setField),
                     OrderTextFieldWidget(field: email, title: "Почта", function: _setField),
                     // const RowTableWidget(
@@ -350,7 +349,6 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
   void _createOrder(BuildContext context, BookingModel bookingModel) async {
     try {
       final response = await paymentController.makePayment(amount: widget.totalCost, currency: "RUB");
-      log(response.toString());
       locator.get<FirestoreRepository>().createBooking(bookingModel);
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const RouterScreen(page: null)), (route) => false);
       successCreateBooking(widget.roomModel.name, context);
@@ -366,12 +364,6 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
           name = value;
         });
         log(name.toString(), name: "NAME");
-        break;
-      case "Фамилия":
-        setState(() {
-          secondName = value;
-        });
-        log(secondName.toString(), name: "secondName");
         break;
       case "Номер":
         setState(() {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/models/booking_model.dart';
+import 'package:hotel_ma/feature/data/models/booking_rent_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 
 import '../models/user_model.dart';
@@ -31,5 +32,8 @@ class FirestoreRepository {
 
   createBooking(BookingModel bookingModel) {
     firestoreMethods.createBooking(bookingModel);
+  }
+  createBookingRent(BookingRentModel bookingRentModel, String bookingId) {
+    firestoreMethods.createBookingRent(bookingRentModel, bookingId);
   }
 }

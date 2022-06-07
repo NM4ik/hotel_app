@@ -8,7 +8,7 @@ class RentModel extends RentEntity {
       required List<dynamic>? images,
       required String title,
       required String? prePayment,
-      required String price,
+      required String? price,
       required String? salePrice,
       required DateTime? saleTimeEnd,
       required List<Map<String, dynamic>>? characters,

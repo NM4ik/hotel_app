@@ -91,7 +91,7 @@ class StockOffer extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                           child: Text(
-                            rents![index].price,
+                            rents![index].price ?? '',
                             // '${prices[index]}P',
                             style: Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
                           ),

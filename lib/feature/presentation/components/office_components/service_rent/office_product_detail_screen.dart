@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/locator_service.dart';
@@ -60,13 +61,6 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
     super.dispose();
   }
 
-  final List<String> images = [
-    'assets/images/room_image_4.jpg',
-    'assets/images/room_image_3.jpg',
-    'assets/images/room_image_2.jpg',
-    "assets/images/room_image_1.jpg"
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +69,8 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
           listener: (context, state) {},
           builder: (context, state) {
             if (state is ServiceRentChooseState) {
-              totalCost = ((state.lastDate.difference(state.firstDate).inDays + 2) *
-                      (state.rent.salePrice == null ? int.parse(state.rent.price) : int.parse(state.rent.salePrice!)))
+              totalCost = ((state.lastDate.difference(state.firstDate).inDays) *
+                      (state.rent.salePrice == null ? int.parse(state.rent.price ?? '') : int.parse(state.rent.salePrice!)))
                   .toString();
 
               return SafeArea(
@@ -104,8 +98,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                                       builder: (BuildContext context, int index) {
                                         return PhotoViewGalleryPageOptions(
                                           controller: photoController,
-                                          imageProvider: AssetImage(images[index]),
-                                          // imageProvider: const NetworkImage('https://www.matratzen-webshop.de/media/image/8b/ac/ef/100600-NP_5283.jpg'),
+                                          imageProvider: NetworkImage(state.rent.images?[index]),
                                           heroAttributes: PhotoViewHeroAttributes(tag: index),
                                           basePosition: Alignment.center,
                                           // initialScale: PhotoViewComputedScale.covered * 0.5,
@@ -119,7 +112,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                                           currentPage = index;
                                         });
                                       },
-                                      itemCount: 4,
+                                      itemCount: state.rent.images?.length,
                                       enableRotation: true,
                                       backgroundDecoration: BoxDecoration(
                                         color: Theme.of(context).canvasColor,
@@ -180,7 +173,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                                           child: ViewDots(
                                             currentPage: currentPage,
                                             controller: pageController,
-                                            length: 4,
+                                            length: state.rent.images?.length ?? 0,
                                             dotColor: Colors.white.withOpacity(0.4),
                                           ),
                                         ),
@@ -209,7 +202,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                                       style: Theme.of(context).textTheme.headline3,
                                     ),
                                     Text(
-                                      'за ${state.lastDate.difference(state.firstDate).inDays + 2} дней',
+                                      'за ${state.lastDate.difference(state.firstDate).inDays} суток',
                                       style: Theme.of(context).textTheme.bodyText1!.copyWith(color: kMainGreyColor, fontSize: 13),
                                     ),
                                   ],

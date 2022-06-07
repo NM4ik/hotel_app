@@ -72,7 +72,7 @@ Widget _serviceCard(BuildContext context, RentModel model) => Container(
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
                 ),
                 Text(
-                  model.price,
+                  model.price ?? 'Бесплатно',
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black.withOpacity(0.5), fontSize: 14),
                 ),
               ],

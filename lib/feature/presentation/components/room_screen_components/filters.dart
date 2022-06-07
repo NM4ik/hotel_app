@@ -144,21 +144,21 @@ class _FiltersState extends State<Filters> {
               const SizedBox(
                 height: kEdgeHorizontalPadding,
               ),
-              Row(
-                children: [
-                  CalendarButtonWidget(
-                    text: dateFormat.format(dateTimeFirst),
-                    changeDateTime: changeDateTimeFirst,
-                    initialDate: dateTimeFirst,
-                  ),
-
-                  /// refactor, https://gallery.flutter.dev/ = find calendar picker
-                  const SizedBox(
-                    width: kEdgeHorizontalPadding,
-                  ),
-                  CalendarButtonWidget(text: dateFormat.format(dateTimeSecond), changeDateTime: changeDateTimeSecond, initialDate: dateTimeSecond),
-                ],
-              )
+              // Row(
+              //   children: [
+              //     CalendarButtonWidget(
+              //       text: dateFormat.format(dateTimeFirst),
+              //       changeDateTime: changeDateTimeFirst,
+              //       initialDate: dateTimeFirst,
+              //     ),
+              //
+              //     /// refactor, https://gallery.flutter.dev/ = find calendar picker
+              //     const SizedBox(
+              //       width: kEdgeHorizontalPadding,
+              //     ),
+              //     // CalendarButtonWidget(text: dateFormat.format(dateTimeSecond), changeDateTime: changeDateTimeSecond, initialDate: dateTimeSecond),
+              //   ],
+              // )
             ],
           );
         } else {

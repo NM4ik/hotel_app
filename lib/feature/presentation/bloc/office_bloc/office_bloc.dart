@@ -25,20 +25,6 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
 
   OfficeBloc() : super(OfficeInitialState()) {
     on<OfficeCheckoutEvent>(_onOfficeCheckStatusEvent);
-
-    _userSubscription = _authenticationRepository.userModel.listen(
-      (user) {
-        showUser(user);
-        Timer(const Duration(seconds: 2), () => add(OfficeCheckoutEvent()));
-
-        /// need fix this moment. A delay is needed in order to wait for the user to log in to the local storage
-      },
-    );
-  }
-
-  void showUser(user) {
-    log(user.toString(), name: "USER");
-    log(locator.get<SqlRepository>().getUserFromSql().toString(), name: "USER3");
   }
 
   FutureOr<void> _onOfficeCheckStatusEvent(OfficeCheckoutEvent event, Emitter<OfficeState> emit) async {

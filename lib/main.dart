@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
         BlocProvider(create: (context) => locator<LoginPhoneCubit>()),
         BlocProvider(create: (context) => locator<ServiceRentBloc>()),
-        BlocProvider(create: (context) => locator<OfficeBloc>()..add(OfficeCheckoutEvent())),
+        BlocProvider(create: (context) => locator<OfficeBloc>()),
       ],
       child: MaterialApp(
           builder: BotToastInit(),

@@ -75,17 +75,17 @@ class _OfficeFiltersState extends State<OfficeFilters> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CalendarButtonWidget(
-          text: dateFormat.format(dateTimeFirst),
-          changeDateTime: changeDateTimeFirst,
-          initialDate: dateTimeFirst,
-        ),
-
-        /// refactor, https://gallery.flutter.dev/ = find calendar picker
-        const SizedBox(
-          width: kEdgeHorizontalPadding,
-        ),
-        CalendarButtonWidget(text: dateFormat.format(dateTimeSecond), changeDateTime: changeDateTimeSecond, initialDate: dateTimeSecond),
+        // CalendarButtonWidget(
+        //   text: dateFormat.format(dateTimeFirst),
+        //   changeDateTime: changeDateTimeFirst,
+        //   initialDate: dateTimeFirst,
+        // ),
+        //
+        // /// refactor, https://gallery.flutter.dev/ = find calendar picker
+        // const SizedBox(
+        //   width: kEdgeHorizontalPadding,
+        // ),
+        // CalendarButtonWidget(text: dateFormat.format(dateTimeSecond), changeDateTime: changeDateTimeSecond, initialDate: dateTimeSecond),
       ],
     );
   }

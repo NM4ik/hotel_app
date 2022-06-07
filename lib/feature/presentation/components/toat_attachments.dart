@@ -35,8 +35,8 @@ void errorOtpCode(String title, context) => BotToast.showSimpleNotification(
     );
 
 void successCreateBooking(String title, context) => BotToast.showSimpleNotification(
-      title: 'Бронирование $title успешно',
+      title: '"$title" успешно забронирован',
       hideCloseButton: true,
       backgroundColor: Colors.green,
-      titleStyle: Theme.of(context).textTheme.bodyText1,
+      titleStyle: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white),
     );

@@ -5,7 +5,7 @@ class RentEntity extends Equatable {
   final String category;
   final List<dynamic>? images;
   final String title;
-  final String price;
+  final String? price;
 
   final String? prePayment;
   final String? salePrice;
