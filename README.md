@@ -1,16 +1,7 @@
 # hotel_ma
 
-A new Flutter project.
 
-## Getting Started
+<img src="https://user-images.githubusercontent.com/78036389/175915016-146ab8b3-d772-49e6-9efc-781e22af54d9.png" width="500">
+<img src="https://user-images.githubusercontent.com/78036389/175915641-eb708263-7ab3-45c3-ace6-e7a65f7e745f.png" width="500">
+<img src="https://user-images.githubusercontent.com/78036389/175915560-6bc220e9-0e13-4b21-bb81-56b5272879bb.png" width="500">
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
