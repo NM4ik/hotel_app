@@ -96,7 +96,7 @@ class _ProfileScreenAuthState extends State<ProfileScreenAuth> with SingleTicker
                         uid: state.userModel.uid,
                         fieldName: 'phoneNumber',
                         fieldValue: state.userModel.phoneNumber ?? "",
-                        enable: true,
+                        enable: false,
                       ),
                       const SizedBox(
                         height: kEdgeVerticalPadding / 3,
@@ -161,7 +161,7 @@ class _ProfileScreenAuthState extends State<ProfileScreenAuth> with SingleTicker
                         height: kEdgeVerticalPadding,
                       ),
                       const HelpTile(whereTo: InformationScreen(), title: 'Информация', icon: Icons.info_outline_rounded),
-                      HelpTile(whereTo: ProfileScreenVisits(uid: state.userModel.uid), title: 'Посещения', icon: Icons.event_available_rounded),
+                      HelpTile(whereTo: ProfileScreenVisits(uid: state.userModel.uid), title: 'Бронирования', icon: Icons.event_available_rounded),
                       const Divider(
                         color: kMainGreyColor,
                       ),

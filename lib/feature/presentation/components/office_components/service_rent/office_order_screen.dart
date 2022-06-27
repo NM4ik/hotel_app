@@ -207,7 +207,7 @@ class _OfficeOrderScreenState extends State<OfficeOrderScreen> {
                 child: Column(
                   children: [
                     OrderTextFieldWidget(field: name, title: "Имя", function: _setField),
-                    OrderTextFieldWidget(field: secondName, title: "Фамилия", function: _setField),
+                    // OrderTextFieldWidget(field: secondName, title: "Фамилия", function: _setField),
                     OrderTextFieldWidget(field: phoneNumber, title: "Номер", function: _setField),
                     OrderTextFieldWidget(field: email, title: "Почта", function: _setField),
                   ],

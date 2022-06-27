@@ -11,6 +11,7 @@
 
 # code
 firebase_config_hotel.dart
+.platform/
 
 # IntelliJ related
 *.iml

@@ -53,6 +53,8 @@ class RoomsBloc extends Bloc<RoomsEvent, RoomsState> {
       final List<String> tags = [];
       if (event.room.tags!.isNotEmpty) {
         final response = await FirebaseFirestore.instance.collection('roomTags').where(FieldPath.documentId, whereIn: event.room.tags).get();
+        log(response.docs.toString());
+        // print(response.docs.map((e) => e.data().toString()));
         response.docs.map((e) => tags.add(e['title'])).toList();
         log(tags.toString(), name: "TAGS");
       }

@@ -2,12 +2,9 @@ import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hotel_ma/common/app_themes.dart';
-import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
-import 'package:hotel_ma/feature/data/datasources/sql_methods.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../common/app_constants.dart';
 
@@ -82,6 +79,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     }
 
                     final data = snapshot.data!.docs.map((DocumentSnapshot e) => e.data()! as Map<String, dynamic>).toList();
+                    final docs = snapshot.data!.docs.map((DocumentSnapshot e) => e.id).toList();
 
                     if (data.isEmpty) {
                       isData = false;
@@ -113,41 +111,68 @@ class _ConversationScreenState extends State<ConversationScreen> {
                       itemBuilder: (context, index) {
                         final isUser = widget.userModel.uid == data[index]['sendBy'];
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: data[index]['name'] == null
-                                  ? const SizedBox()
-                                  : Text(
-                                      data[index]['name'],
-                                      style: const TextStyle(
-                                        fontSize: 11,
-                                        color: kMainGreyColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                            ),
-                            Bubble(
-                              alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                              color: isUser ? const Color(0xFF809BD4) : Theme.of(context).cardColor,
-                              padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
-                              margin: const BubbleEdges.only(top: 3),
-                              nip: isUser ? BubbleNip.rightBottom : BubbleNip.leftBottom,
-                              child: Text(
-                                data[index]['content'].toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).brightness == Brightness.light
-                                        ? isUser
-                                            ? Colors.white
-                                            : Colors.black
-                                        : Colors.white,
-                                    fontWeight: FontWeight.w400),
+                        void _deleteMessage() {}
+
+                        return Slidable(
+                          key: ValueKey(index),
+                          endActionPane: ActionPane(
+                            // dismissible: DismissiblePane(onDismissed: () => ),
+                            motion: const ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) async {
+                                  await FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc(widget.userModel.uid)
+                                      .collection('messages')
+                                      .doc(docs[index])
+                                      .delete();
+
+                                  Scaffold.of(context).showSnackBar(const SnackBar(content: Text('Сообщение удалено'), backgroundColor: Colors.green,));
+                                },
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'удалить',
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: data[index]['name'] == null
+                                    ? const SizedBox()
+                                    : Text(
+                                        data[index]['name'],
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          color: kMainGreyColor,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                              ),
+                              Bubble(
+                                alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                                color: isUser ? const Color(0xFF809BD4) : Theme.of(context).cardColor,
+                                padding: const BubbleEdges.all(kEdgeVerticalPadding / 2),
+                                margin: const BubbleEdges.only(top: 3),
+                                nip: isUser ? BubbleNip.rightBottom : BubbleNip.leftBottom,
+                                child: Text(
+                                  data[index]['content'].toString(),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Theme.of(context).brightness == Brightness.light
+                                          ? isUser
+                                              ? Colors.white
+                                              : Colors.black
+                                          : Colors.white,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) => const SizedBox(

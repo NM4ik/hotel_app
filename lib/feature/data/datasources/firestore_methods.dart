@@ -125,6 +125,8 @@ class FirestoreMethods {
         roomsList.add(RoomModel.fromJson(element.data() as Map<String, dynamic>, element.id, roomTypesList));
       }
 
+      roomsList.sort((a, b) => b.id.compareTo(a.id),); // fix this
+
       return roomsList;
     } catch (e) {
       log('$e', name: 'Exception by getRooms()');

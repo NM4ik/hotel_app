@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotel_ma/core/locator_service.dart';
 import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
+import 'package:hotel_ma/feature/presentation/bloc/office_bloc/office_bloc.dart';
 import 'package:hotel_ma/feature/presentation/bloc/service_rent_bloc/service_rent_bloc.dart';
 import 'package:hotel_ma/feature/presentation/widgets/defaut_button_widget.dart';
 import 'package:photo_view/photo_view.dart';
@@ -190,9 +191,11 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  state.rent.title,
-                                  style: Theme.of(context).textTheme.headline3,
+                                Flexible(
+                                  child: Text(
+                                    state.rent.title,
+                                    style: Theme.of(context).textTheme.headline3,
+                                  ),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -245,33 +248,6 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
                   ),
                 ),
               );
-              // floatingActionButton:
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: kEdgeVerticalPadding),
-              //   child: FloatingActionButton.extended(
-              //     backgroundColor: kMainBlueColor,
-              //     onPressed: () {
-              //       if (userModel == UserModel.empty) {
-              //         showCustomDialog(context, 'Нельзя забронировать номер, будучи неавторизованным');
-              //       } else {
-              //         // Navigator.of(context).pushReplacement(MaterialPageRoute(
-              //         //     builder: (context) => OrderScreen(
-              //         //           dateStart: state.firstDate,
-              //         //           roomModel: state.room,
-              //         //           dateEnd: state.lastDate,
-              //         //           totalCost: totalCost!,
-              //         //         )));
-              //
-              //         Navigator.of(context).push(
-              //             createRouteAnim(OfficeOrderScreen(rent: state.rent, dateStart: state.firstDate, dateEnd: state.lastDate, totalCost: totalCost!)));
-              //       }
-              //     },
-              //     elevation: 3,
-              //     label: Text(
-              //       'Забронировать номер за $totalCost ₽',
-              //     ),
-              //   ),
-              // );
             } else {
               return const Center(
                 child: CircularProgressIndicator(
@@ -679,7 +655,7 @@ class _OfficeProductDetailScreenState extends State<OfficeProductDetailScreen> {
 //   }
 // }
 
-void showCustomDialog(BuildContext context, String content) => showDialog(
+Future<void> showCustomDialog(BuildContext context, String content) => showDialog(
     context: context,
     builder: (context) => Dialog(
           shape: RoundedRectangleBorder(

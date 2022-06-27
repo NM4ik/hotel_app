@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hotel_ma/common/app_constants.dart';
 import 'package:hotel_ma/feature/data/models/booking_model.dart';
+import 'package:hotel_ma/feature/data/models/booking_status_model.dart';
 import 'package:hotel_ma/feature/data/models/room_type_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/firestore_repository.dart';
@@ -52,7 +53,7 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
     initializeDateFormatting();
     dateFormat = DateFormat.MMMEd("ru");
     name = userModel.name;
-    phoneNumber = userModel.phoneNumber;
+    phoneNumber ='+71111111111';
     email = userModel.email;
 
     super.initState();
@@ -151,30 +152,37 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 70,
-                              height: 20,
-                              child: ListView.builder(
-                                  itemCount: widget.roomModel.rating,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => const Icon(
-                                        Icons.star,
-                                        color: Color(0xFFFEC007),
-                                        size: 14,
-                                      )),
-                            ),
-                            Text(
-                              widget.roomModel.name.toString(),
-                              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w500, fontSize: 16),
-                            ),
-                          ],
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 70,
+                                height: 20,
+                                child: ListView.builder(
+                                    itemCount: widget.roomModel.rating,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) => const Icon(
+                                          Icons.star,
+                                          color: Color(0xFFFEC007),
+                                          size: 14,
+                                        )),
+                              ),
+                              Text(
+                                widget.roomModel.name.toString(),
+                                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w500, fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
-                        CachedNetworkImage(
-                          imageUrl: 'https://exat.ru/upload/iblock/e56/e56f843be5b904bd720480696d9080e1.jpeg',
-                          width: 100,
+                        SizedBox(width: 10,),
+                        Expanded(
+                          flex: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: 'https://exat.ru/upload/iblock/e56/e56f843be5b904bd720480696d9080e1.jpeg',
+                            width: 100,
+                          ),
                         ),
                       ],
                     ),
@@ -325,16 +333,18 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
               child: DefaultButtonWidget(
                   press: () async {
                     BookingModel bookingModel = BookingModel(
-                        id: "1",
-                        roomName: widget.roomModel.name,
-                        roomType: widget.roomModel.roomTypeModel.title!,
-                        dateStart: widget.dateStart,
-                        dateEnd: widget.dateEnd,
-                        roomId: widget.roomModel.id,
-                        status: 'booked',
-                        totalPrice: int.parse(widget.totalCost),
-                        uid: userModel.uid,
-                        roomTypeModel: RoomTypeModel(id: widget.roomModel.type));
+                      id: "1",
+                      roomName: widget.roomModel.name,
+                      roomType: widget.roomModel.roomTypeModel.title!,
+                      dateStart: widget.dateStart,
+                      dateEnd: widget.dateEnd,
+                      roomId: widget.roomModel.id,
+                      status: 'booked',
+                      totalPrice: int.parse(widget.totalCost),
+                      uid: userModel.uid,
+                      roomTypeModel: RoomTypeModel(id: widget.roomModel.type),
+                      bookingStatus: const BookingStatusModel(id: 'booked'),
+                    );
 
                     _createOrder(context, bookingModel);
                   },
@@ -349,6 +359,7 @@ class _RoomOrderScreenState extends State<RoomOrderScreen> {
   void _createOrder(BuildContext context, BookingModel bookingModel) async {
     try {
       final response = await paymentController.makePayment(amount: widget.totalCost, currency: "RUB");
+      log(response.toString(), name: "RESPONSE");
       locator.get<FirestoreRepository>().createBooking(bookingModel);
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const RouterScreen(page: null)), (route) => false);
       successCreateBooking(widget.roomModel.name, context);

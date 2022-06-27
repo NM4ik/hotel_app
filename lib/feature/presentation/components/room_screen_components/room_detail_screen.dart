@@ -105,7 +105,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                                       currentPage = index;
                                     });
                                   },
-                                  itemCount: 4,
+                                  itemCount: state.room.images?.length ?? 0,
                                   enableRotation: true,
                                   backgroundDecoration: BoxDecoration(
                                     color: Theme.of(context).canvasColor,

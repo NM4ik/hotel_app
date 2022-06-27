@@ -14,13 +14,15 @@ import 'feature/presentation/bloc/office_bloc/office_bloc.dart';
 import 'feature/presentation/bloc/service_rent_bloc/service_rent_bloc.dart';
 import 'feature/presentation/screens/router_screen.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FireBase.initialize();
   await setup();
-  Stripe.publishableKey = "pk_test_51KzoBqB80MaXbORHYNqCSCaseL5WbwEXhmRc5povmp9iKtA1F2ABQBKjRWngW1LAHvAupIZSvAHfPpC07jf4qDNy00uZm3cdQI";
   UserModel.updateUser();
+  initializeDateFormatting();
 
   runApp(const MyApp());
 }
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => locator<AuthBloc>()..add(AuthUserChangedEvent(authenticationRepository.currentUser))),
         BlocProvider(create: (context) => locator<LoginPhoneCubit>()),
         BlocProvider(create: (context) => locator<ServiceRentBloc>()),
-        BlocProvider(create: (context) => locator<OfficeBloc>()),
+        BlocProvider(create: (context) => locator<OfficeBloc>()..add(OfficeCheckoutEvent())),
       ],
       child: MaterialApp(
           builder: BotToastInit(),
@@ -48,10 +50,10 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
-          home: const RouterScreen(
-            page: null,
-          )),
-    // home: Onboarding()),
+          // home: const RouterScreen(
+          //   page: null,
+          // )),
+    home: Onboarding()),
     );
   }
 }

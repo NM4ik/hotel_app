@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hotel_ma/feature/data/datasources/firestore_methods.dart';
 import 'package:hotel_ma/feature/data/models/booking_model.dart';
+import 'package:hotel_ma/feature/data/models/booking_status_model.dart';
 import 'package:hotel_ma/feature/data/models/room_model.dart';
 import 'package:hotel_ma/feature/data/models/user_model.dart';
 import 'package:hotel_ma/feature/data/repositories/auth_repository.dart';
@@ -46,12 +47,15 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
             .get();
 
         final types = await firebaseFirestore.collection('roomTypes').get();
+        final statuses = await firebaseFirestore.collection('bookingStatuses').get();
 
         if (map.docs.isNotEmpty) {
           final documentData = map.docs.single.data();
           final List<RoomTypeModel> roomTypesList = [];
+          final List<BookingStatusModel> bookingStatusList = [];
 
           types.docs.map((e) => roomTypesList.add(RoomTypeModel.fromJson(e.data(), e.id))).toList();
+          statuses.docs.map((e) => bookingStatusList.add(BookingStatusModel.fromJson(e.data(), e.id))).toList();
 
           final bookingId = map.docs.single.id;
           final uid = documentData['uid'];
@@ -59,7 +63,7 @@ class OfficeBloc extends Bloc<OfficeEvent, OfficeState> {
 
           final room = await firestoreRepository.getRoom(roomId);
 
-          final booking = BookingModel.fromJson(documentData, roomTypesList, bookingId);
+          final booking = BookingModel.fromJson(documentData, roomTypesList, bookingStatusList, bookingId);
 
           room == null
               ? emit(const OfficeErrorState(message: "Номеров нет..."))

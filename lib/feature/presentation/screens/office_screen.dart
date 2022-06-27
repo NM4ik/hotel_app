@@ -109,7 +109,7 @@ class _OfficeScreenState extends State<OfficeScreen> with TickerProviderStateMix
                   children: [
                     Stack(
                       children: [
-                        Image.network(room.images?[0], fit: BoxFit.cover, height: double.infinity, width: double.infinity, alignment: Alignment.center),
+                        Image.network(room.images?[0] ?? '', fit: BoxFit.cover, height: double.infinity, width: double.infinity, alignment: Alignment.center),
                         Container(
                           height: double.infinity,
                           width: double.infinity,

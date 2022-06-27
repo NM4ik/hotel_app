@@ -11,6 +11,7 @@ import 'package:hotel_ma/feature/presentation/widgets/page_animation.dart';
 
 import '../../bloc/office_bloc/office_bloc.dart';
 import '../../screens/phone_enter_screen.dart';
+import '../../screens/router_screen.dart';
 import '../toat_attachments.dart';
 
 class ProfileScreenUnAuth extends StatelessWidget {
@@ -56,9 +57,16 @@ class ProfileScreenUnAuth extends StatelessWidget {
                         primary: kMainBlueColor,
                         elevation: 2,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         try {
-                          authenticationRepository.singInWithGoogle();
+                          await authenticationRepository.singInWithGoogle();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const RouterScreen(
+                                    page: null,
+                                  )),
+                                  (route) => false);
+                          toatAuth("Успешная авторизация", context);
                         } catch (e) {
                           log('$e', name: 'error auth');
                           toatAuth("Неуспешная авторизация", context);

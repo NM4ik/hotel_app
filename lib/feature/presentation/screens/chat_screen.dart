@@ -174,12 +174,12 @@ class _ChatScreenState extends State<ChatScreen> {
                             lastMessageUid = '';
                           }
 
-                          if (!snapshot.hasData || snapshot.hasData) {
+                          if (!snapshot.hasData) {
                             lastMessage = 'Сообщений еще не было или они не загрузились..';
                             lastMessageUid = '';
                           }
 
-                          if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.connectionState == ConnectionState.done || snapshot.hasData) {
                             lastMessage = snapshot.data['recentMessage']['content'];
                             lastMessageUid = snapshot.data['recentMessage']['sendBy'];
                           }

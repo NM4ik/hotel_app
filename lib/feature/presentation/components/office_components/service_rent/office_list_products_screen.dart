@@ -155,7 +155,7 @@ Widget _productCard(RentModel entity, BuildContext context) => SizedBox(
                     borderRadius: BorderRadius.circular(kEdgeMainBorder * 2),
                     child: CachedNetworkImage(
                       imageUrl: entity.images?[0],
-                      progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                      progressIndicatorBuilder: (context, url, downloadProgress) => const Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) => const Icon(Icons.error),
                       fit: BoxFit.cover,
                     ),

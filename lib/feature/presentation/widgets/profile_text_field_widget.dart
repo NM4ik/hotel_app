@@ -102,14 +102,14 @@ class _ProfileTextFieldWidgetState extends State<ProfileTextFieldWidget> {
       ],
     );
   }
-  // void _updateField(String value) async {
-  //   try {
-  //     await locator.get<FirestoreRepository>().updateUser(widget.fieldName, value, widget.uid);
-  //     final userModel = await locator.get<FirestoreRepository>().getUserFromUserCollection(widget.uid);
-  //     locator.get<SqlRepository>().userToSql(userModel);
-  //     print('EXCEPTION NONE');
-  //   } catch (e) {
-  //     print('EXCEPTION');
-  //   }
-  // }
+  void _updateField(String value) async {
+    try {
+      await locator.get<FirestoreRepository>().updateUser(widget.fieldName, value, widget.uid);
+      final userModel = await locator.get<FirestoreRepository>().getUserFromUserCollection(widget.uid);
+      locator.get<SqlRepository>().userToSql(userModel);
+      print('EXCEPTION NONE');
+    } catch (e) {
+      print('EXCEPTION');
+    }
+  }
 }

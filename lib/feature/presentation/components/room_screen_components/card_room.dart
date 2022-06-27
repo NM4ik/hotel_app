@@ -29,7 +29,7 @@ class CardRoom extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(kEdgeMainBorder * 2),
                         child: CachedNetworkImage(
-                          imageUrl: roomModel.images?[0],
+                          imageUrl: roomModel.images?[0] ?? '',
                           fit: BoxFit.cover,
                         ),
                       )),
@@ -69,11 +69,15 @@ class CardRoom extends StatelessWidget {
                             child: ListView.builder(
                                 itemCount: 5,
                                 scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => const Icon(
-                                      Icons.star,
-                                      color: Color(0xFFFEC007),
+                                itemBuilder: (context, index) {
+                                  var indexes = roomModel.rating;
+
+                                  return Icon(
+                                  // roomModel.rating < 5 ? Icons.star : Icons.star_border,
+                                  index < indexes ? Icons.star : Icons.star_border,
+                                      color: const Color(0xFFFEC007),
                                       size: 14,
-                                    )),
+                                    );}),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

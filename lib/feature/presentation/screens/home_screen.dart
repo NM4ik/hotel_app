@@ -11,7 +11,7 @@ import 'package:hotel_ma/feature/data/models/home_model.dart';
 import 'package:hotel_ma/feature/data/models/rent_model.dart';
 import 'package:hotel_ma/feature/presentation/components/home_screen_components/info.dart';
 import 'package:hotel_ma/feature/presentation/components/home_screen_components/personal_offer.dart';
-import 'package:hotel_ma/feature/presentation/components/home_screen_components/playbill.dart';
+import 'package:hotel_ma/feature/presentation/components/home_screen_components/events.dart';
 import 'package:hotel_ma/feature/presentation/components/home_screen_components/stock_offer.dart';
 
 import '../../data/repositories/payment_controller.dart';

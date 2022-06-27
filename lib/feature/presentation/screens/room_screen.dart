@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotel_ma/core/locator_service.dart';
+import 'package:hotel_ma/feature/data/models/user_model.dart';
+import 'package:hotel_ma/feature/data/repositories/sql_repository.dart';
 import 'package:hotel_ma/feature/presentation/bloc/rooms_bloc/rooms_bloc.dart';
 import 'package:hotel_ma/feature/presentation/components/room_screen_components/card_room.dart';
 import 'package:hotel_ma/feature/presentation/components/room_screen_components/room_detail_screen.dart';
@@ -26,6 +29,7 @@ class _RoomScreenState extends State<RoomScreen> {
   DateTime dateTimeFirst = DateTime.now();
   late DateTime dateTimeSecond = dateTimeFirst.add(const Duration(days: 1));
   late DateFormat dateFormat;
+  UserModel userModel = locator.get<SqlRepository>().getUserFromSql();
 
   @override
   void initState() {
@@ -89,7 +93,7 @@ class _RoomScreenState extends State<RoomScreen> {
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     leading: const SquareButtonWidget(color: kMainBlueColor, icon: Icons.account_circle_outlined, iconColor: Colors.white),
                     title: Text(
-                      'Никита',
+                      userModel.name ?? '',
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
                     ),
                     actions: [
@@ -104,7 +108,8 @@ class _RoomScreenState extends State<RoomScreen> {
                             style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
                           ),
                           Icon(
-                            Icons.outlined_flag_outlined,
+                            Icons.translate_rounded,
+                            size: 14,
                             color: Theme.of(context).primaryColor,
                           )
                         ],
